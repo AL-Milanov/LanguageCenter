@@ -11,11 +11,11 @@ namespace LanguageCenter.Core.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        [StringLength(25)]
+        [StringLength(Constraints.Course.TitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(2)]
+        [StringLength(Constraints.Course.LevelLength)]
         public string Level { get; set; }
 
         public short DurationInMonths { get; set; }
