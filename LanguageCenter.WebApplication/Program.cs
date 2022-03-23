@@ -1,4 +1,4 @@
-using LanguageCenter.WebApplication.Data;
+using LanguageCenter.Core.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

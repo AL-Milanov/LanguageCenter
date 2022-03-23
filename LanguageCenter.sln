@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCenter.WebApplication", "LanguageCenter.WebApplication\LanguageCenter.WebApplication.csproj", "{2461831D-2AF8-4EF8-9327-74BB39DCBE3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCenter.WebApplication", "LanguageCenter.WebApplication\LanguageCenter.WebApplication.csproj", "{2461831D-2AF8-4EF8-9327-74BB39DCBE3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCenter.Infrastructure", "LanguageCenter.Infrastructure\LanguageCenter.Infrastructure.csproj", "{30303807-01DF-4480-AFE3-0E37E4B14695}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCenter.Core", "LanguageCenter.Infrastructure\LanguageCenter.Core.csproj", "{30303807-01DF-4480-AFE3-0E37E4B14695}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
