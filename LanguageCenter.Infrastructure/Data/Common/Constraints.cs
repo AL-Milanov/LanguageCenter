@@ -12,5 +12,13 @@
             public const int LastNameMinLength = 2;
             public const int LastNameMaxLength = 70;
         }
+
+        public static class Course
+        {
+            public const int TitleMinLength = 10;
+            public const int TitleMaxLength = 20;
+
+            public const int LevelLength = 2;
+        }
     }
 }
