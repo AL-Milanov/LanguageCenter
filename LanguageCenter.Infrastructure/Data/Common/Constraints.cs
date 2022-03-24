@@ -19,6 +19,8 @@
             public const int TitleMaxLength = 20;
 
             public const int LevelLength = 2;
+
+            public const int DescriptionLength = 100;
         }
     }
 }
