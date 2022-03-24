@@ -46,6 +46,8 @@ namespace LanguageCenter.Core.Data.Models
         public Course()
         {
             EndDate = StartDate.AddMonths(DurationInMonths);
+
+            Students = new HashSet<Student>();
         }
 
     }
