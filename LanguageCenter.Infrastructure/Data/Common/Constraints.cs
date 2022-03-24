@@ -22,5 +22,10 @@
 
             public const int DescriptionLength = 100;
         }
+
+        public static class Language
+        {
+            public const int LanguageNameLength = 25;
+        }
     }
 }
