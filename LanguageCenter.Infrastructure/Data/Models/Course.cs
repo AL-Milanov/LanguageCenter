@@ -27,14 +27,12 @@ namespace LanguageCenter.Core.Data.Models
 
         public DateTime EndDate { get; set; }
 
-        [Required]
         [StringLength(Constraints.GuidIdLenght)]
         public string TeacherId { get; set; }
 
         [ForeignKey(nameof(TeacherId))]
         public virtual Teacher Teacher { get; set; }
 
-        [Required]
         [StringLength(Constraints.GuidIdLenght)]
         public string LanguageId { get; set; }
 

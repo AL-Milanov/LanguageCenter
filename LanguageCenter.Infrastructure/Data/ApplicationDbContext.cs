@@ -6,6 +6,16 @@ namespace LanguageCenter.Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Certificate> Certificates { get; set; }
+
+        public DbSet<Course> Courses { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
+        public DbSet<Student> Students { get; set; }
+
+        public DbSet<Teacher> Teacher { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
