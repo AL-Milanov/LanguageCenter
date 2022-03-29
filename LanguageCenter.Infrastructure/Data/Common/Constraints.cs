@@ -2,7 +2,7 @@
 {
     public static class Constraints
     {
-        public const int GuidIdLenght = 36;
+        public const int GuidIdLenght = 450;
 
         public static class ApplicationUser
         {
