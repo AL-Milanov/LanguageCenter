@@ -21,6 +21,9 @@
             public const int LevelLength = 2;
 
             public const int DescriptionLength = 100;
+
+            public const short RangeMinValue = 2;
+            public const short RangeMaxValue = 6;
         }
 
         public static class Language
