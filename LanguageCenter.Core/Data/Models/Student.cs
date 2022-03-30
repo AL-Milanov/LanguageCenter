@@ -8,6 +8,10 @@ namespace LanguageCenter.Core.Data.Models
     {
         [Key]
         [StringLength(Constraints.GuidIdLenght)]
+        public string Id { get; set; }
+
+        [Required]
+        [StringLength(Constraints.GuidIdLenght)]
         public string StudentId { get; set; }
 
         [ForeignKey(nameof(StudentId))]
