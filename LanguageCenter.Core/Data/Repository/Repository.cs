@@ -42,5 +42,10 @@ namespace LanguageCenter.Core.Data.Repository
         {
             await Context.SaveChangesAsync();
         }
+
+        public async Task AddAsync<T>(T entity) where T : class
+        {
+            await DbSet<T>().AddAsync(entity);
+        }
     }
 }

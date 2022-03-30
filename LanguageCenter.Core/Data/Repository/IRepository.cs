@@ -8,6 +8,8 @@
 
         Task<bool> Delete<T>(string id) where T: class;
 
+        Task AddAsync<T>(T entity) where T : class;
+
         Task SaveChangesAsync();
     }
 }
