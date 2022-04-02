@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using LanguageCenter.Infrastructure.Data.Common;
 
 namespace LanguageCenter.WebApplication.Areas.Identity.Pages.Account
 {
@@ -80,6 +81,20 @@ namespace LanguageCenter.WebApplication.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Required]
+            [StringLength(Constraints.ApplicationUser.FirstNameMaxLength,
+                MinimumLength = Constraints.ApplicationUser.FirstNameMinLength,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(Constraints.ApplicationUser.LastNameMaxLength,
+                MinimumLength = Constraints.ApplicationUser.LastNameMinLength,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -117,6 +132,10 @@ namespace LanguageCenter.WebApplication.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -127,7 +146,7 @@ namespace LanguageCenter.WebApplication.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                        "/Account/Login",
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
@@ -137,7 +156,7 @@ namespace LanguageCenter.WebApplication.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("Login", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
