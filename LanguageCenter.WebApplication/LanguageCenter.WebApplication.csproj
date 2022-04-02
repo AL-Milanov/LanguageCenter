@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LanguageCeter.Infrastructure\LanguageCenter.Infrastructure.csproj" />
+    <ProjectReference Include="..\LanguageCeter.Infrastructure\LanguageCenter.Core.csproj" />
   </ItemGroup>
 
 </Project>
