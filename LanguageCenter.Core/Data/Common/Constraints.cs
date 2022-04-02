@@ -1,4 +1,4 @@
-﻿namespace LanguageCenter.Core.Data.Common
+﻿namespace LanguageCenter.Infrastructure.Data.Common
 {
     public static class Constraints
     {

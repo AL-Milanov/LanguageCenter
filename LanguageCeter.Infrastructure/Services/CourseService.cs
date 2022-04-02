@@ -1,5 +1,5 @@
-﻿using LanguageCenter.Core.Data.Models;
-using LanguageCenter.Core.Data.Repository;
+﻿using LanguageCenter.Infrastructure.Data.Models;
+using LanguageCenter.Infrastructure.Data.Repository;
 using LanguageCenter.Infrastructure.Models;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.EntityFrameworkCore;

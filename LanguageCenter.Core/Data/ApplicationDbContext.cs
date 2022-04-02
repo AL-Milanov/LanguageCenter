@@ -1,8 +1,8 @@
-﻿using LanguageCenter.Core.Data.Models;
+﻿using LanguageCenter.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace LanguageCenter.Core.Data
+namespace LanguageCenter.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

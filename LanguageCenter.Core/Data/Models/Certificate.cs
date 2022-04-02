@@ -1,7 +1,7 @@
-﻿using LanguageCenter.Core.Data.Common;
+﻿using LanguageCenter.Infrastructure.Data.Common;
 using System.ComponentModel.DataAnnotations;
 
-namespace LanguageCenter.Core.Data.Models
+namespace LanguageCenter.Infrastructure.Data.Models
 {
     public class Certificate
     {

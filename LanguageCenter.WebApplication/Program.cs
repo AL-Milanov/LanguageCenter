@@ -1,5 +1,5 @@
-using LanguageCenter.Core.Data;
-using LanguageCenter.Core.Data.Models;
+using LanguageCenter.Infrastructure.Data;
+using LanguageCenter.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

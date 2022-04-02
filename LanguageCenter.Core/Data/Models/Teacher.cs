@@ -1,8 +1,8 @@
-﻿using LanguageCenter.Core.Data.Common;
+﻿using LanguageCenter.Infrastructure.Data.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LanguageCenter.Core.Data.Models
+namespace LanguageCenter.Infrastructure.Data.Models
 {
     public class Teacher
     {

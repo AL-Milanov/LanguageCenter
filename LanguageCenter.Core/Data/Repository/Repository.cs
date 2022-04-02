@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace LanguageCenter.Core.Data.Repository
+namespace LanguageCenter.Infrastructure.Data.Repository
 {
     public class Repository : IRepository
     {

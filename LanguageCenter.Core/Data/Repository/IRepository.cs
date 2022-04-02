@@ -1,4 +1,4 @@
-﻿namespace LanguageCenter.Core.Data.Repository
+﻿namespace LanguageCenter.Infrastructure.Data.Repository
 {
     public interface IRepository
     {
