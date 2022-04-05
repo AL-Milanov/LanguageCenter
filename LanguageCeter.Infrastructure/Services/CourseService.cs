@@ -1,21 +1,16 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Infrastructure.Data.Models;
-using LanguageCenter.Infrastructure.Data.Repository;
+using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LanguageCenter.Infrastructure.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly IRepository _repo;
+        private readonly IApplicationRepository _repo;
 
-        public CourseService(IRepository repo)
+        public CourseService(IApplicationRepository repo)
         {
             _repo = repo;
         }
@@ -30,7 +25,11 @@ namespace LanguageCenter.Infrastructure.Services
 
             if (language == null)
             {
-                throw new ArgumentException("Language does not exist!");
+                language = new Language()
+                {
+                    Name = model.LanguageName,
+                };
+                //throw new ArgumentException("Language does not exist!");
             }
 
             var course = new Course
@@ -43,6 +42,8 @@ namespace LanguageCenter.Infrastructure.Services
                 TeacherId = model.TeacherId,
                 StartDate = model.StartDate,
             };
+
+            course.Language = language;
 
             try
             {
