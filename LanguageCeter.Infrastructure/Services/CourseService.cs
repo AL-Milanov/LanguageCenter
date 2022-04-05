@@ -1,6 +1,6 @@
-﻿using LanguageCenter.Infrastructure.Data.Models;
+﻿using LanguageCenter.Core.Models.CourseModels;
+using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository;
-using LanguageCenter.Infrastructure.Models;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -72,6 +72,24 @@ namespace LanguageCenter.Infrastructure.Services
                 .ToListAsync();
 
             return courses;
+        }
+
+        public async Task<GetCourseVM> GetByIdAsync(string id)
+        {
+            var course = await _repo.GetByIdAsync<Course>(id);
+
+            var courseVM = new GetCourseVM()
+            {
+                Description = course.Description,
+                DurationInMonths = course.DurationInMonths,
+                LanguageName = course.Language.Name,
+                Level = course.Level,
+                Title = course.Title,
+                StartDate = course.StartDate.ToString("dd/MM/yyyy"),
+                EndDate = course.EndDate.ToString("dd/MM/yyyy")
+            };
+
+            return courseVM;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using LanguageCenter.Infrastructure.Models;
+﻿using LanguageCenter.Core.Models.CourseModels;
 
 namespace LanguageCenter.Infrastructure.Services.Contracts
 {
@@ -7,5 +7,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
         Task<ICollection<AllCourseVM>> GetAllAsync();
 
         Task AddAsync(AddCourseVM model);
+
+        Task<GetCourseVM> GetByIdAsync(string id);
     }
 }
