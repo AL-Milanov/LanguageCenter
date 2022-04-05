@@ -30,5 +30,10 @@
         {
             public const int LanguageNameLength = 25;
         }
+
+        public static class Role
+        {
+            public const string Admin = "Admin";
+        }
     }
 }
