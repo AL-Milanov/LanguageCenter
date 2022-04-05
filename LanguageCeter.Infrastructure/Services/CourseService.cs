@@ -43,6 +43,8 @@ namespace LanguageCenter.Infrastructure.Services
                 StartDate = model.StartDate,
             };
 
+            course.EndDate = course.StartDate.AddMonths(course.DurationInMonths);
+
             course.Language = language;
 
             try
