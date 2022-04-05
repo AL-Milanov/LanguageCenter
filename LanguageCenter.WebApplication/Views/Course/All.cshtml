@@ -1,0 +1,23 @@
+﻿@using LanguageCenter.Core.Models.CourseModels
+@model List<AllCourseVM>
+
+@if (Model == null)
+{
+    <h2 style="text-align:center">No current courses available.</h2>
+}
+else
+{
+    <div class="row row-cols-2  row-cols-md-3 center">
+        @foreach (var item in Model)
+        { 
+            <div class="card center" style="width: 18rem; margin: 10px">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Level</p>
+                    <a href="/Course/@item.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
