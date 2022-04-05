@@ -1,4 +1,5 @@
 using LanguageCenter.Infrastructure.Data;
+using LanguageCenter.Infrastructure.Data.Common;
 using LanguageCenter.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: Constraints.Role.Admin,
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
