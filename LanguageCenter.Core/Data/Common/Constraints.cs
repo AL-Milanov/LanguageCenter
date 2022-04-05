@@ -16,7 +16,7 @@
         public static class Course
         {
             public const int TitleMinLength = 10;
-            public const int TitleMaxLength = 20;
+            public const int TitleMaxLength = 40;
 
             public const int LevelLength = 2;
 
