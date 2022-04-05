@@ -1,4 +1,4 @@
-﻿namespace LanguageCenter.Infrastructure.Models
+﻿namespace LanguageCenter.Core.Models.CourseModels
 {
     public class AllCourseVM
     {
