@@ -59,6 +59,23 @@ namespace LanguageCenter.Infrastructure.Services
 
         }
 
+        public async Task<bool> DeleteAsync(string id)
+        {
+            var result = false;
+
+            try
+            {
+                result = await _repo.Delete<Course>(id);
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException("Problem occurred try again later!");
+            }
+
+            return result;
+        }
+
         public async Task<ICollection<AllCourseVM>> GetAllAsync()
         {
             var courses = await _repo

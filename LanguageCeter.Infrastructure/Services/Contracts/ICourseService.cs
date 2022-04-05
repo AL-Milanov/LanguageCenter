@@ -9,5 +9,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
         Task AddAsync(AddCourseVM model);
 
         Task<GetCourseVM> GetByIdAsync(string id);
+
+        Task<bool> DeleteAsync(string id);
     }
 }
