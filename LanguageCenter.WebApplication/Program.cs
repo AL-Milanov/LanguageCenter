@@ -1,6 +1,10 @@
 using LanguageCenter.Infrastructure.Data;
 using LanguageCenter.Infrastructure.Data.Common;
 using LanguageCenter.Infrastructure.Data.Models;
+using LanguageCenter.Infrastructure.Data.Repository.ApplicationRepository;
+using LanguageCenter.Infrastructure.Data.Repository.Contracts;
+using LanguageCenter.Infrastructure.Services;
+using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +25,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services
+    .AddScoped<IApplicationRepository, ApplicationRepository>()
+    .AddScoped<ICourseService, CourseService>();
 
 builder.Services.AddControllersWithViews();
 
