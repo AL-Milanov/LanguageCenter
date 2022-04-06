@@ -2,6 +2,7 @@
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LanguageCenter.Core.Services
@@ -50,7 +51,7 @@ namespace LanguageCenter.Core.Services
             return result;
         }
 
-        public async Task<IEnumerable<LanguageVM>> GetAllAsync()
+        public async Task<List<SelectListItem>> GetAllAsync()
         {
             var languages = await _repo
                 .GetAll<Language>()
@@ -60,7 +61,14 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
-            return languages;
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+            foreach (var language in languages)
+            {
+                selectListItems.Add(new SelectListItem() { Text = language.Name, Value = language.Name});
+            }
+
+            return selectListItems;
         }
     }
 }
