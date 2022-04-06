@@ -1,34 +1,14 @@
-using LanguageCenter.Infrastructure.Data;
 using LanguageCenter.Infrastructure.Data.Common;
-using LanguageCenter.Infrastructure.Data.Models;
-using LanguageCenter.Infrastructure.Data.Repository.ApplicationRepository;
-using LanguageCenter.Infrastructure.Data.Repository.Contracts;
-using LanguageCenter.Infrastructure.Services;
-using LanguageCenter.Infrastructure.Services.Contracts;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = false;
-    })
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDbContexts(builder.Configuration);
 
-builder.Services
-    .AddScoped<IApplicationRepository, ApplicationRepository>()
-    .AddScoped<ICourseService, CourseService>();
+builder.Services.AddDefaultIdentities();
+
+builder.Services.AddServices();
 
 builder.Services.AddControllersWithViews();
 
