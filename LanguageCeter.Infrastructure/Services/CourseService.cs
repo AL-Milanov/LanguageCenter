@@ -25,11 +25,7 @@ namespace LanguageCenter.Infrastructure.Services
 
             if (language == null)
             {
-                language = new Language()
-                {
-                    Name = model.LanguageName,
-                };
-                //throw new ArgumentException("Language does not exist!");
+                throw new ArgumentException("Language does not exist!");
             }
 
             var course = new Course
