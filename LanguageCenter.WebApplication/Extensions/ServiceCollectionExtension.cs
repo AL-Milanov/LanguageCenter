@@ -1,4 +1,6 @@
-﻿using LanguageCenter.Infrastructure.Data;
+﻿using LanguageCenter.Core.Services;
+using LanguageCenter.Core.Services.Contracts;
+using LanguageCenter.Infrastructure.Data;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.ApplicationRepository;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
@@ -17,7 +19,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             service
                 .AddScoped<IApplicationRepository, ApplicationRepository>()
-                .AddScoped<ICourseService, CourseService>();
+                .AddScoped<ICourseService, CourseService>()
+                .AddScoped<ILanguageService, LanguageService>();
 
             return service;
         }
