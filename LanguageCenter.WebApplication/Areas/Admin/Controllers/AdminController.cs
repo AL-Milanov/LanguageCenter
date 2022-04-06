@@ -20,6 +20,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public IActionResult AddCourse()
         {
+
             return View();
         }
 
@@ -49,7 +50,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 return View();
             }
 
-            return View(nameof(AllCourses));
+            return RedirectToAction(nameof(AllCourses));
         }
     }
 }
