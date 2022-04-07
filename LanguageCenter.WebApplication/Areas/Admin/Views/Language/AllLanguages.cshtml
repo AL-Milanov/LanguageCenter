@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LanguageCenter.Core.Models.LanguageModels.LanguageVM>
+
+@{
+    ViewData["Title"] = "AllLanguages";
+}
+
+<h1>AllLanguages</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateLanguage">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <form asp-action="DeleteLanguage" asp-route-id="@item.Id">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a class="btn btn-secondary" asp-controller="Admin" asp-action="Index">Back to admin panel</a>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
