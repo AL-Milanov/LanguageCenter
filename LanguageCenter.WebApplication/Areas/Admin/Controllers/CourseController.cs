@@ -21,7 +21,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AddCourse()
         {
-            var languages = await _languageService.GetAllAsync();
+            var languages = await _languageService.GetAllAsSelectListAsync();
 
             ViewBag.Languages = languages;
 

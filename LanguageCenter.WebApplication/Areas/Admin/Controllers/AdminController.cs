@@ -8,11 +8,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
     public class AdminController : BaseController
     {
         
-        public AdminController()
-        {
-
-        }
-
         public IActionResult Index()
         {
             return View();
