@@ -5,9 +5,11 @@ namespace LanguageCenter.Core.Services.Contracts
 {
     public interface ILanguageService
     {
-        Task<List<SelectListItem>> GetAllAsync();
+        Task<List<SelectListItem>> GetAllAsSelectListAsync();
 
-        Task AddAsync(LanguageVM model);
+        Task<List<LanguageVM>> GetAllAsync();
+
+        Task AddAsync(CreateLanguageVM model);
 
         Task<bool> DeleteAsync(string id);
     }

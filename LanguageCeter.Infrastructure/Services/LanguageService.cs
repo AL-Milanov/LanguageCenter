@@ -16,7 +16,7 @@ namespace LanguageCenter.Core.Services
         }
 
 
-        public async Task AddAsync(LanguageVM model)
+        public async Task AddAsync(CreateLanguageVM model)
         {
             var language = new Language()
             {
@@ -51,7 +51,7 @@ namespace LanguageCenter.Core.Services
             return result;
         }
 
-        public async Task<List<SelectListItem>> GetAllAsync()
+        public async Task<List<SelectListItem>> GetAllAsSelectListAsync()
         {
             var languages = await _repo
                 .GetAll<Language>()
@@ -69,6 +69,20 @@ namespace LanguageCenter.Core.Services
             }
 
             return selectListItems;
+        }
+        public async Task<List<LanguageVM>> GetAllAsync()
+        {
+            var languages = await _repo
+                .GetAll<Language>()
+                .Select(l => new LanguageVM
+                {
+                    Id = l.Id,
+                    Name = l.Name
+                })
+                .ToListAsync();
+
+
+            return languages;
         }
     }
 }
