@@ -3,15 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LanguageCenter.Core.Models.LanguageModels
 {
-    public class LanguageVM
+    public class CreateLanguageVM
     {
-        [Required]
-        [StringLength(Constraints.GuidIdLenght)]
-        public string Id { get; set; }
 
         [Required]
         [StringLength(Constraints.Language.LanguageNameLength)]
         public string Name { get; set; }
-
     }
 }
