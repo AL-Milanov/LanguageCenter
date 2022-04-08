@@ -14,12 +14,15 @@ namespace LanguageCenter.Infrastructure.Data.Models
         [StringLength(Constraints.GuidIdLenght)]
         public string TeacherId { get; set; }
 
+        public bool IsActive { get; set; }
+
         [ForeignKey(nameof(TeacherId))]
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
 
         public virtual ICollection<Language> Languages { get; set; }
+
 
         public Teacher()
         {
