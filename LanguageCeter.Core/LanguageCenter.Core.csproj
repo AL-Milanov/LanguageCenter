@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LanguageCenter.Infrastructure\LanguageCenter.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
