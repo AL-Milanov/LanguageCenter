@@ -1,5 +1,7 @@
 ﻿using LanguageCenter.Core.Services.Contracts;
+using LanguageCenter.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
@@ -12,9 +14,13 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             _userService = userService;
         }
 
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllUsers()
         {
-            return View();
+
+            var users = await _userService
+                .GetAll(u => u.Id != User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return View(users);
         }
     }
 }
