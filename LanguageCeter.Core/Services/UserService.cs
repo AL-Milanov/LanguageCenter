@@ -3,6 +3,7 @@ using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LanguageCenter.Core.Services
 {
@@ -14,15 +15,16 @@ namespace LanguageCenter.Core.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<UserVM>> GetAll()
+        public async Task<IEnumerable<UserVM>> GetAll(Expression<Func<ApplicationUser, bool>> search = null)
         {
             var users = await _repo
                 .GetAll<ApplicationUser>()
+                .Where(search)
                 .Select(u => new UserVM
                 {
                     Id = u.Id,
                     Email = u.Email,
-                    FullName = u.FirstName + "" + u.LastName,
+                    FullName = u.FirstName + " " + u.LastName,
                 })
                 .ToListAsync();
 
