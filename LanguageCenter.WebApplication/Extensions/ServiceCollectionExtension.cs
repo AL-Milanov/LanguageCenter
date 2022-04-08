@@ -20,7 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
             service
                 .AddScoped<IApplicationRepository, ApplicationRepository>()
                 .AddScoped<ICourseService, CourseService>()
-                .AddScoped<ILanguageService, LanguageService>();
+                .AddScoped<ILanguageService, LanguageService>()
+                .AddScoped<IUserService, UserService>();
 
             return service;
         }
