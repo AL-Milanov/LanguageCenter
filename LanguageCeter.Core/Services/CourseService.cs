@@ -1,8 +1,5 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
-using LanguageCenter.Infrastructure.Data.Models;
-using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace LanguageCenter.Infrastructure.Services
 {

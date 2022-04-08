@@ -1,15 +1,15 @@
 ﻿using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
-using LanguageCenter.Infrastructure.Data.Repository;
+using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace LanguageCenter.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository _repo;
-        public UserService(IRepository repo)
+        private readonly IApplicationRepository _repo;
+        public UserService(IApplicationRepository repo)
         {
             _repo = repo;
         }
