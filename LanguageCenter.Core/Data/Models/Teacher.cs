@@ -8,7 +8,7 @@ namespace LanguageCenter.Infrastructure.Data.Models
     {
         [Key]
         [StringLength(Constraints.GuidIdLenght)]
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
         [StringLength(Constraints.GuidIdLenght)]
