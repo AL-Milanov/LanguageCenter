@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LanguageCenter.Core\LanguageCenter.Core.csproj" />
     <ProjectReference Include="..\LanguageCeter.Core\LanguageCenter.Core.csproj" />
   </ItemGroup>
 

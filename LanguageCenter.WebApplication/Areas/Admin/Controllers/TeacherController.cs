@@ -7,13 +7,20 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
     public class TeacherController : BaseController
     {
         private readonly ITeacherService _teacherService;
+
         private readonly IUserService _userService;
+
+        private readonly ILanguageService _languageService;
+
         public TeacherController(
             ITeacherService teacherService,
-            IUserService userService)
+            IUserService userService,
+            ILanguageService languageService)
         {
             _teacherService = teacherService;
             _userService = userService;
+            _languageService = languageService;
+
         }
 
         public async Task<IActionResult> AllTeachers()
@@ -50,6 +57,15 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(AllTeachers));
+        }
+
+        public async Task<IActionResult> TeacherLanguages(string id)
+        {
+            var teacher = await _teacherService.GetTeacher(id);
+
+            ViewBag.Languages = await _languageService.GetAllAsSelectListAsync();
+
+            return View(teacher);
         }
     }
 }
