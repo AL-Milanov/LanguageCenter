@@ -38,5 +38,18 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             return View(usersNotTeacher);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MakeTeacher(string id)
+        {
+            var result = await _teacherService.MakeTeacher(id);
+
+            if (!result)
+            {
+                return RedirectToAction(nameof(AddTeacher));
+            }
+
+            return RedirectToAction(nameof(AllTeachers));
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace LanguageCenter.Core.Services
         public async Task<ICollection<string>> GetTeachersId()
         {
             var teachersIds = await _repo.GetAll<Teacher>()
-                .Select(t => t.TeacherId)
+                .Select(t => t.UserId)
                 .ToListAsync();
 
             return teachersIds;
@@ -75,7 +75,7 @@ namespace LanguageCenter.Core.Services
         {
             var teacher = new Teacher()
             {
-                TeacherId = id
+                UserId = id
             };
 
             var result = false;

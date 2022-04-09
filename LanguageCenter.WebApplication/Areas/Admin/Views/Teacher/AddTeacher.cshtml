@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<LanguageCenter.Core.Models.UserModels.UserVM>
 
+<p>
+    <a asp-action="AllTeachers">Back to teachers panel</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -23,9 +26,9 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                   <form method="post">
-                       <a class="btn btn-primary" asp-action="MakeTeacher" asp-route-id="@item.Id"> Make Teacher</a>
-                   </form>
+                    <form asp-action="MakeTeacher" asp-route-id="@item.Id" method="post">
+                        <input type="submit" value="Make teacher" class="btn btn-primary" />
+                    </form>
                 </td>
             </tr>
         }
