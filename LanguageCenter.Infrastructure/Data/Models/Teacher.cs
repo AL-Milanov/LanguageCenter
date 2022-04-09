@@ -12,11 +12,11 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         [Required]
         [StringLength(Constraints.GuidIdLenght)]
-        public string TeacherId { get; set; }
+        public string UserId { get; set; }
 
         public bool IsActive { get; set; }
 
-        [ForeignKey(nameof(TeacherId))]
+        [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }

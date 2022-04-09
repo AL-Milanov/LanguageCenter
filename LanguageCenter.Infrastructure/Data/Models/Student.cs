@@ -12,9 +12,9 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         [Required]
         [StringLength(Constraints.GuidIdLenght)]
-        public string StudentId { get; set; }
+        public string UserId { get; set; }
 
-        [ForeignKey(nameof(StudentId))]
+        [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
