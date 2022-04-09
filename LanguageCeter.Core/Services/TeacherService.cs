@@ -15,6 +15,31 @@ namespace LanguageCenter.Core.Services
             _repo = repo;
         }
 
+        public async Task AddLanguagesToTeacher(string id, ICollection<string> languagesNames)
+        {
+            var languages = await _repo
+                .GetAll<Language>()
+                .Where(language => languagesNames.Contains(language.Name))
+                .ToListAsync();
+
+            var teacher = await _repo.GetByIdAsync<Teacher>(id);
+
+            foreach (var language in languages)
+            {
+                teacher.Languages.Add(language);
+            }
+
+            try
+            {
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<ICollection<GetAllTeachersVM>> GetAllTeachers()
         {
             var teachers = await _repo
@@ -92,6 +117,24 @@ namespace LanguageCenter.Core.Services
             }
 
             return result;
+        }
+
+        public async Task RemoveLanguagesFromTeacher(string id)
+        {
+            var teacher = await _repo
+                .GetAll<Teacher>()
+                .Include(t => t.Languages)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            try
+            {
+                teacher.Languages.Clear();
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+            }
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Services.Contracts;
+﻿using LanguageCenter.Core.Models.TeacherModels;
+using LanguageCenter.Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -66,6 +67,21 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             ViewBag.Languages = await _languageService.GetAllAsSelectListAsync();
 
             return View(teacher);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TeacherLanguages(GetTeacherVM model)
+        {
+            var teacher = await _teacherService.GetTeacher(model.Id);
+
+            await _teacherService.RemoveLanguagesFromTeacher(model.Id);
+
+            if (model.Languages?.Count > 0)
+            {
+                await _teacherService.AddLanguagesToTeacher(teacher.Id, model.Languages);
+            }
+
+            return RedirectToAction(nameof(AllTeachers));
         }
     }
 }

@@ -33,7 +33,7 @@ else
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        <a asp-action="TeacherLanguages" asp-route-id="@item.Id">Add language to teacher</a>
+                        <a class="btn btn-primary" asp-action="TeacherLanguages" asp-route-id="@item.Id">Add language to teacher</a>
                     </td>
                 </tr>
             }
