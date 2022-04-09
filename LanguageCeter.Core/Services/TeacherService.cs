@@ -15,7 +15,7 @@ namespace LanguageCenter.Core.Services
             _repo = repo;
         }
 
-        public async Task<IEnumerable<GetAllTeachersVM>> GetAllTeachers()
+        public async Task<ICollection<GetAllTeachersVM>> GetAllTeachers()
         {
             var teachers = await _repo
                 .GetAll<Teacher>()
@@ -60,6 +60,15 @@ namespace LanguageCenter.Core.Services
                 .FirstOrDefaultAsync();
 
             return teacher;
+        }
+
+        public async Task<ICollection<string>> GetTeachersId()
+        {
+            var teachersIds = await _repo.GetAll<Teacher>()
+                .Select(t => t.TeacherId)
+                .ToListAsync();
+
+            return teachersIds;
         }
 
         public async Task<bool> MakeTeacher(string id)

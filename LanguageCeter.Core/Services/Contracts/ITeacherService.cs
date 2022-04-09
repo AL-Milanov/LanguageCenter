@@ -6,8 +6,10 @@ namespace LanguageCenter.Core.Services.Contracts
     {
         Task<bool> MakeTeacher(string id);
 
-        Task<IEnumerable<GetAllTeachersVM>> GetAllTeachers();
+        Task<ICollection<GetAllTeachersVM>> GetAllTeachers();
 
         Task<GetTeacherVM> GetTeacher(string id);
+
+        Task<ICollection<string>> GetTeachersId();
     }
 }
