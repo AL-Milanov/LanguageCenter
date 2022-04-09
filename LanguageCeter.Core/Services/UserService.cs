@@ -49,27 +49,5 @@ namespace LanguageCenter.Core.Services
             return user;
         }
 
-        public async Task<bool> MakeTeacher(string id)
-        {
-            var teacher = new Teacher()
-            {
-                TeacherId = id
-            };
-
-            var result = false;
-
-            try
-            {
-                await _repo.AddAsync(teacher);
-                await _repo.SaveChangesAsync();
-                result = true;
-            }
-            catch (Exception)
-            {
-                throw new Exception("Something happend try again!");
-            }
-
-            return result;
-        }
     }
 }

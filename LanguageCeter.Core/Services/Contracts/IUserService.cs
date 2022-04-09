@@ -10,7 +10,5 @@ namespace LanguageCenter.Core.Services.Contracts
 
         Task<UserDetailsVM> GetUserDetails(string id);
 
-        Task<bool> MakeTeacher(string id);
-
     }
 }
