@@ -17,7 +17,7 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         public Language()
         {
-            Teachers = new List<Teacher>();
+            Teachers = new HashSet<Teacher>();
         }
     }
 }
