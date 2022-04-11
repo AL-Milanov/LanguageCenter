@@ -68,5 +68,18 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             return View(course);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignTeacher(string courseId, GetCourseVM model)
+        {
+            var isAssign = await _courseService.AddTeacherToCourse(courseId, model.TeacherName);
+
+            if (!isAssign)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(AllCourses));
+        }
     }
 }

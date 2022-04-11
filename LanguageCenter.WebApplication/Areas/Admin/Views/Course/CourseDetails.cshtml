@@ -54,18 +54,27 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LanguageName)
         </dd>
-        @if (Model.TeacherName != null)
+        @if (string.IsNullOrWhiteSpace(Model.TeacherName))
         {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.TeacherName)
             </dt>
             <dd class="col-sm-2">
-                <form method="post" asp-action="AssignTeacher">
+                <form method="post" asp-action="AssignTeacher" asp-route-courseId="@Model.Id">
                     <div class="form-group">
                         <select class="form-control" asp-for="TeacherName" asp-items="@teachers"></select>
                         <input type="submit" value="Assign" class="btn btn-primary" />
                     </div>
                 </form>
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TeacherName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TeacherName)
             </dd>
         }
     </dl>

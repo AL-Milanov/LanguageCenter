@@ -55,6 +55,30 @@ namespace LanguageCenter.Infrastructure.Services
 
         }
 
+        public async Task<bool> AddTeacherToCourse(string courseId, string teacherId)
+        {
+            var course = await _repo.GetAll<Course>()
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            var teacher = await _repo.GetAll<Teacher>()
+                .FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            course.Teacher = teacher;
+
+            var result = true;
+
+            try
+            {
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
         public async Task<bool> DeleteAsync(string id)
         {
             var result = false;
@@ -103,6 +127,7 @@ namespace LanguageCenter.Infrastructure.Services
 
             var courseVM = new GetCourseVM()
             {
+                Id = id,
                 Description = course.Description,
                 DurationInMonths = course.DurationInMonths,
                 LanguageName = course.Language.Name,

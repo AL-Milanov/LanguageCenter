@@ -11,5 +11,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
         Task<GetCourseVM> GetByIdAsync(string id);
 
         Task<bool> DeleteAsync(string id);
+
+        Task<bool> AddTeacherToCourse(string courseId, string teacherId);
     }
 }
