@@ -25,14 +25,15 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
-            foreach (var language in languages)
-            {
-                teacher.Languages.Add(language);
-                language.Teachers.Add(teacher);
-            }
-
             try
             {
+
+                foreach (var language in languages)
+                {
+                    teacher.Languages.Add(language);
+                    language.Teachers.Add(teacher);
+                }
+
                 await _repo.SaveChangesAsync();
             }
             catch (Exception)
