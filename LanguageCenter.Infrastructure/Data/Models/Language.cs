@@ -12,5 +12,12 @@ namespace LanguageCenter.Infrastructure.Data.Models
         [Required]
         [StringLength(Constraints.Language.LanguageNameLength)]
         public string Name { get; set; }
+
+        public virtual ICollection<Teacher> Teachers { get; set; }
+
+        public Language()
+        {
+            Teachers = new List<Teacher>();
+        }
     }
 }
