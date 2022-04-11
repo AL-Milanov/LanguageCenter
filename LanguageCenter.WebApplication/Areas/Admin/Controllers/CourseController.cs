@@ -33,7 +33,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
             await _courseService.AddAsync(model);
 
-            return View(nameof(Index));
+            return RedirectToAction(nameof(AllCourses));
         }
 
         public async Task<IActionResult> AllCourses()
@@ -50,11 +50,23 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             if (!result)
             {
-                ViewBag.Error = "Something happend course is not deleted.";
+                ViewBag.Error = "Something happend, course is not deleted.";
                 return View();
             }
 
             return RedirectToAction(nameof(AllCourses));
+        }
+
+        public async Task<IActionResult> CourseDetails(string id)
+        {
+            var course = await _courseService.GetByIdAsync(id);
+
+            var teachers = await _languageService
+                .GetAllTeachersByLanguage(course.LanguageName);
+
+            ViewBag.Teachers = teachers;
+
+            return View(course);
         }
     }
 }

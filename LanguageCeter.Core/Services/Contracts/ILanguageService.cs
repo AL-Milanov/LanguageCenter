@@ -12,5 +12,7 @@ namespace LanguageCenter.Core.Services.Contracts
         Task AddAsync(CreateLanguageVM model);
 
         Task<bool> DeleteAsync(string id);
+
+        Task<IEnumerable<SelectListItem>> GetAllTeachersByLanguage(string searchedLanguage);
     }
 }

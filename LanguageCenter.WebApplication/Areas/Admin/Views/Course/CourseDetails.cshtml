@@ -1,0 +1,75 @@
+﻿@using LanguageCenter.Core.Models.TeacherModels
+@model LanguageCenter.Core.Models.CourseModels.GetCourseVM
+
+@{
+    ViewData["Title"] = "CourseDetails";
+    var teachers = (IEnumerable<SelectListItem>)ViewBag.Teachers;
+}
+
+<h1>CourseDetails</h1>
+
+<div>
+    <h4>GetCourseVM</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Level)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DurationInMonths)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DurationInMonths)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LanguageName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LanguageName)
+        </dd>
+        @if (Model.TeacherName != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TeacherName)
+            </dt>
+            <dd class="col-sm-2">
+                <form method="post" asp-action="AssignTeacher">
+                    <div class="form-group">
+                        <select class="form-control" asp-for="TeacherName" asp-items="@teachers"></select>
+                        <input type="submit" value="Assign" class="btn btn-primary" />
+                    </div>
+                </form>
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a class="btn btn-secondary" asp-action="AllCourses">Back to All Courses</a>
+</div>

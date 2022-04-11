@@ -92,7 +92,14 @@ namespace LanguageCenter.Infrastructure.Services
 
         public async Task<GetCourseVM> GetByIdAsync(string id)
         {
-            var course = await _repo.GetByIdAsync<Course>(id);
+            var course = await _repo.GetAll<Course>()
+                .Include(c => c.Language)
+                .Include(c => c.Teacher)
+                .ThenInclude(c => c.User)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+
+            var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
 
             var courseVM = new GetCourseVM()
             {
@@ -102,7 +109,8 @@ namespace LanguageCenter.Infrastructure.Services
                 Level = course.Level,
                 Title = course.Title,
                 StartDate = course.StartDate.ToString("dd/MM/yyyy"),
-                EndDate = course.EndDate.ToString("dd/MM/yyyy")
+                EndDate = course.EndDate.ToString("dd/MM/yyyy"),
+                TeacherName = teacherFullName
             };
 
             return courseVM;

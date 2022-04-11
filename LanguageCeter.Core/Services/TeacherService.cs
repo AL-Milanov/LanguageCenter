@@ -22,11 +22,13 @@ namespace LanguageCenter.Core.Services
                 .Where(language => languagesNames.Contains(language.Name))
                 .ToListAsync();
 
-            var teacher = await _repo.GetByIdAsync<Teacher>(id);
+            var teacher = await _repo.GetAll<Teacher>()
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             foreach (var language in languages)
             {
                 teacher.Languages.Add(language);
+                language.Teachers.Add(teacher);
             }
 
             try
@@ -82,7 +84,7 @@ namespace LanguageCenter.Core.Services
                         .Select(c => c.Title)
                         .ToList(),
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             return teacher;
         }

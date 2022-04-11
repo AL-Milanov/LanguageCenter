@@ -15,5 +15,7 @@
         public string EndDate { get; set; }
 
         public string LanguageName { get; set; }
+
+        public string TeacherName { get; set; }
     }
 }

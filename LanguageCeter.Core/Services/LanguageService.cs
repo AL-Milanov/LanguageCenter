@@ -1,9 +1,11 @@
 ﻿using LanguageCenter.Core.Models.LanguageModels;
+using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LanguageCenter.Core.Services
 {
@@ -30,7 +32,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw  new DbUpdateException("Language not saved. Try again later.");
+                throw new DbUpdateException("Language not saved. Try again later.");
             }
         }
 
@@ -65,7 +67,7 @@ namespace LanguageCenter.Core.Services
 
             foreach (var language in languages)
             {
-                selectListItems.Add(new SelectListItem() { Text = language.Name, Value = language.Name});
+                selectListItems.Add(new SelectListItem() { Text = language.Name, Value = language.Name });
             }
 
             return selectListItems;
@@ -83,6 +85,31 @@ namespace LanguageCenter.Core.Services
 
 
             return languages;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetAllTeachersByLanguage(string searchedLanguage)
+        {
+
+            var teachers = await _repo
+                .GetAll<Teacher>()
+                .Include(t => t.User)
+                .Include(t => t.Languages)
+                .Select(l => new GetTeachersByLanguagesVM
+                {
+                    Id = l.Id,
+                    FullName = l.User.FirstName + " " + l.User.LastName,
+                    Languages = l.Languages.Select(l => l.Name)
+                })
+                .Where(t => t.Languages.Contains(searchedLanguage))
+                .ToListAsync();
+
+            var teachersListItems = teachers.Select(t => new SelectListItem
+            {
+                Text = t.FullName,
+                Value = t.Id
+            });
+
+            return teachersListItems;
         }
     }
 }
