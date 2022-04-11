@@ -26,8 +26,8 @@
                 </td>
                 <td>
                     <form asp-action="DeleteLanguage" asp-route-id="@item.Id">
-                        <input type="submit" value="Delete" class="btn btn-danger" /> |
-                        <a class="btn btn-secondary" asp-controller="Admin" asp-action="Index">Back to admin panel</a>
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <partial name="_BackToAdminPanel" />
                     </form>
                 </td>
             </tr>

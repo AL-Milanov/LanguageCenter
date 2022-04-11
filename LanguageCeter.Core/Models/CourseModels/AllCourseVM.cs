@@ -1,4 +1,6 @@
-﻿namespace LanguageCenter.Core.Models.CourseModels
+﻿using System.ComponentModel;
+
+namespace LanguageCenter.Core.Models.CourseModels
 {
     public class AllCourseVM
     {
@@ -8,8 +10,10 @@
 
         public string Level { get; set; }
 
+        [DisplayName("Language Name")]
         public string LanguageName { get; set; }
 
+        [DisplayName("Start date")]
         public string StartDate { get; set; }
     }
 }
