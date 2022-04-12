@@ -79,7 +79,15 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(AllCourses));
+            return RedirectToAction(nameof(CourseDetails), new { id = courseId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTeacherFromCourse(string courseId)
+        {
+            await _courseService.RemoveTeacherFromCourse(courseId);
+
+            return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
     }
 }

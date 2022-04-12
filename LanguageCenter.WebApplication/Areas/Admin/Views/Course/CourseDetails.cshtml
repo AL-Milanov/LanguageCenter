@@ -75,6 +75,11 @@
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.TeacherName)
+                <form method="post" asp-action="RemoveTeacherFromCourse" asp-route-courseId="@Model.Id">
+                    <div class="form-group">
+                        <input type="submit" value="Remove Teacher" class="btn btn-danger" />
+                    </div>
+                </form>
             </dd>
         }
     </dl>

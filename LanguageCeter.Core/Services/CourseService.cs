@@ -140,5 +140,22 @@ namespace LanguageCenter.Infrastructure.Services
 
             return courseVM;
         }
+
+        public async Task RemoveTeacherFromCourse(string courseId)
+        {
+            var course = await _repo.GetAll<Course>()
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            course.TeacherId = null;
+
+            try
+            {
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
     }
 }
