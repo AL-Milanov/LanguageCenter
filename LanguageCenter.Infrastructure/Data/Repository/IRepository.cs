@@ -10,6 +10,10 @@
 
         Task AddAsync<T>(T entity) where T : class;
 
+        void Update<T>(T entity) where T : class;
+
         Task SaveChangesAsync();
+
+        void Dispose();
     }
 }

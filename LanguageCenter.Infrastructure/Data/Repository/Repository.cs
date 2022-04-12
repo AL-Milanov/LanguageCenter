@@ -47,5 +47,15 @@ namespace LanguageCenter.Infrastructure.Data.Repository
         {
             await DbSet<T>().AddAsync(entity);
         }
+
+        public void Update<T>(T entity) where T : class
+        {
+            DbSet<T>().Update(entity);
+        }
+
+        public void Dispose()
+        {
+            Context.Dispose();
+        }
     }
 }
