@@ -48,9 +48,11 @@
 </div>
 
 <div>
-    <a asp-area="Admin" asp-controller="Admin" asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="AllCourses">Back to All Courses</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

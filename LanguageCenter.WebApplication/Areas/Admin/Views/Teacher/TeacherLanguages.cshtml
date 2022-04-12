@@ -2,11 +2,11 @@
 @model GetTeacherVM
 
 @{
-    ViewData["Title"] = "User Roles";
+    ViewData["Title"] = "Teacher Languages";
     var languages = (List<SelectListItem>)ViewBag.Languages;
 }
 
-<partial name="_BackToAdminPanel" />
+<h2>@ViewData["Title"]</h2>
 
 <div class="row">
     <div class="col-4">
@@ -33,4 +33,7 @@
             </div>
         </form>
     </div>
+</div>
+<div>
+    <a class="btn btn-secondary" asp-action="AllTeachers">Back to All Teachers</a>
 </div>

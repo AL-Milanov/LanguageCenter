@@ -2,14 +2,13 @@
 @model LanguageCenter.Core.Models.CourseModels.GetCourseVM
 
 @{
-    ViewData["Title"] = "CourseDetails";
+    ViewData["Title"] = "Course Details";
     var teachers = (IEnumerable<SelectListItem>)ViewBag.Teachers;
 }
 
-<h1>CourseDetails</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>GetCourseVM</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
