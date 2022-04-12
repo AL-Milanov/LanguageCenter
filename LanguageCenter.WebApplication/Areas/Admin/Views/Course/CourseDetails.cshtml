@@ -61,9 +61,9 @@
             </dt>
             <dd class="col-sm-2">
                 <form method="post" asp-action="AssignTeacher" asp-route-courseId="@Model.Id">
-                    <div class="form-group">
+                    <div class="form-group wrap-div">
                         <select class="form-control" asp-for="TeacherName" asp-items="@teachers"></select>
-                        <input type="submit" value="Assign" class="btn btn-primary" />
+                        <input type="submit" value="Assign" class="btn btn-primary btn-margin-left" />
                     </div>
                 </form>
             </dd>
@@ -74,10 +74,10 @@
                 @Html.DisplayNameFor(model => model.TeacherName)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.TeacherName)
                 <form method="post" asp-action="RemoveTeacherFromCourse" asp-route-courseId="@Model.Id">
-                    <div class="form-group">
-                        <input type="submit" value="Remove Teacher" class="btn btn-danger" />
+                    <div class="form-group wrap-div">
+                        @Html.DisplayFor(model => model.TeacherName)
+                        <input type="submit" value="Remove Teacher" class="btn btn-danger btn-margin-left" />
                     </div>
                 </form>
             </dd>

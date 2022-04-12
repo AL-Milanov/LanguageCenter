@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.wrap-div {
+    display: flex;
+}
+
+.btn-margin-left{
+    margin-left: 4px;
+}
