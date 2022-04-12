@@ -5,6 +5,10 @@
     var items = (List<SelectListItem>)ViewBag.RoleItems;
 }
 
+<div>
+    <partial name="_BackToAdminPanel"/>
+</div>
+
 <div class="row">
     <div class="col-4">
         <form id="roles" method="post">
@@ -18,7 +22,6 @@
                 <div class="form-group">
                     <label>User Roles</label>
                     <select asp-for="Roles" asp-items="@items" class="form-control">
-                       
                     </select>
                 </div>
             </div>
