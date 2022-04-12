@@ -19,6 +19,9 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -33,7 +36,18 @@ else
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-action="TeacherLanguages" asp-route-id="@item.Id">Add language to teacher</a>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="TeacherLanguages" asp-route-id="@item.Id">Add language to teacher</a> |
+                        @if (item.IsActive)
+                        {
+                            <a method="post" class="btn btn-danger" asp-action="MakeUnactive" asp-route-id="@item.Id">Make Unactive</a>
+                        }
+                        else
+                        {
+                            <a method="post" class="btn btn-success" asp-action="MakeActive" asp-route-id="@item.Id">Make Active</a>
+                        }
                         <partial name="_BackToAdminPanel" />
                     </td>
                 </tr>

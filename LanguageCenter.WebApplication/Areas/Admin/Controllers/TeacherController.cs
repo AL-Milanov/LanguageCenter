@@ -83,5 +83,19 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(AllTeachers));
         }
+
+        public async Task<IActionResult> MakeUnactive(string id)
+        {
+            await _teacherService.MakeUnactive(id);
+
+            return RedirectToAction(nameof(AllTeachers));
+        }
+
+        public async Task<IActionResult> MakeActive(string id)
+        {
+            await _teacherService.MakeActive(id);
+
+            return RedirectToAction(nameof(AllTeachers));
+        }
     }
 }

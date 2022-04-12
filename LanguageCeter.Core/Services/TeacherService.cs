@@ -55,6 +55,7 @@ namespace LanguageCenter.Core.Services
                     Id = t.Id,
                     FullName = t.User.FirstName + " " + t.User.LastName,
                     Email = t.User.Email,
+                    IsActive = t.IsActive,
                     Languages = t.Languages
                         .Select(l => l.Name)
                         .ToList(),
@@ -99,6 +100,25 @@ namespace LanguageCenter.Core.Services
             return teachersIds;
         }
 
+        public async Task<bool> MakeActive(string id)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            try
+            {
+                teacher.IsActive = true;
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return teacher.IsActive;
+        }
+
         public async Task<bool> MakeTeacher(string id)
         {
             var teacher = new Teacher()
@@ -120,6 +140,25 @@ namespace LanguageCenter.Core.Services
             }
 
             return result;
+        }
+
+        public async Task<bool> MakeUnactive(string id)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            try
+            {
+                teacher.IsActive = false;
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return teacher.IsActive;
         }
 
         public async Task RemoveLanguagesFromTeacher(string id)
