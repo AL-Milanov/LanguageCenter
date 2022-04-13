@@ -89,5 +89,30 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
+
+        public async Task<IActionResult> EditCourse(string id)
+        {
+            var course = await _courseService.GetByIdAsync(id);
+
+            var editCourseVM = new EditCourseInfoVM()
+            {
+                Description = course.Description,
+                DurationInMonths = course.DurationInMonths,
+                Id = id,
+                Level = course.Level,
+                StartDate = DateTime.Parse(course.StartDate),
+                Title = course.Title
+            };
+
+            return View(editCourseVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCourse(EditCourseInfoVM model)
+        {
+            await _courseService.UpdateCourse(model);
+
+            return RedirectToAction(nameof(CourseDetails), new { id = model.Id });
+        }
     }
 }

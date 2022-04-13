@@ -157,5 +157,30 @@ namespace LanguageCenter.Infrastructure.Services
                 
             }
         }
+
+        public async Task UpdateCourse(EditCourseInfoVM model)
+        {
+            var course = await _repo.GetAll<Course>()
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            course.Title = model.Title;
+            course.Description = model.Description;
+            course.DurationInMonths = model.DurationInMonths;
+            course.Level = model.Level;
+            course.StartDate = model.StartDate;
+            course.EndDate = model.StartDate.AddMonths(model.DurationInMonths);
+
+
+            try
+            {
+                _repo.Update(course);
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -15,5 +15,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
         Task<bool> AddTeacherToCourse(string courseId, string teacherId);
 
         Task RemoveTeacherFromCourse(string courseId);
+
+        Task UpdateCourse(EditCourseInfoVM model);
     }
 }
