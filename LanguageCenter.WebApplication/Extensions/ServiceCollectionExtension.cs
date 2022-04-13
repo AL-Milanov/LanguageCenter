@@ -47,10 +47,30 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection service,
             IConfiguration config)
         {
+            var sqlConnectionString = config["ConnectionStrings:SqlConnection"];
+
             var connectionString = config.GetConnectionString("DefaultConnection");
             service.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(sqlConnectionString));
             service.AddDatabaseDeveloperPageExceptionFilter();
+
+            return service;
+        }
+
+        public static IServiceCollection AddExternalAuthentications(
+            this IServiceCollection service,
+            IConfiguration config)
+        {
+            service.AddAuthentication()
+                .AddGoogle(opt =>
+                {
+                    IConfigurationSection googleSection =
+                        config.GetSection("Google");
+
+                    opt.ClientId = googleSection["ClientId"];
+                    opt.ClientSecret = googleSection["clientSecret"];
+                });
+
 
             return service;
         }
