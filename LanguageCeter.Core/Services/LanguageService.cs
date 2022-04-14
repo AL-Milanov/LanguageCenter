@@ -42,7 +42,12 @@ namespace LanguageCenter.Core.Services
             try
             {
                 result = await _repo.Delete<Language>(id);
+
                 await _repo.SaveChangesAsync();
+            }
+            catch(ArgumentException)
+            {
+                throw new ArgumentException("Language is not found!");
             }
             catch (Exception)
             {
@@ -71,6 +76,7 @@ namespace LanguageCenter.Core.Services
 
             return selectListItems;
         }
+
         public async Task<List<LanguageVM>> GetAllAsync()
         {
             var languages = await _repo
