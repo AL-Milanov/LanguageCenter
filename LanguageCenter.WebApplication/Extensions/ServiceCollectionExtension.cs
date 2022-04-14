@@ -7,7 +7,6 @@ using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -39,20 +38,6 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            return service;
-        }
-
-        public static IServiceCollection AddDbContexts(
-            this IServiceCollection service,
-            IConfiguration config)
-        {
-            var sqlConnectionString = config["ConnectionStrings:SqlConnection"];
-
-            var connectionString = config.GetConnectionString("DefaultConnection");
-            service.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(sqlConnectionString));
-            service.AddDatabaseDeveloperPageExceptionFilter();
 
             return service;
         }
