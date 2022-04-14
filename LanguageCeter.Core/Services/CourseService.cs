@@ -4,7 +4,7 @@ using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace LanguageCenter.Infrastructure.Services
+namespace LanguageCenter.Core.Services
 {
     public class CourseService : ICourseService
     {
