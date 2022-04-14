@@ -1,5 +1,6 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Infrastructure.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,9 +39,9 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _courseService.AddAsync(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
             return Created("/addcourse", model);
@@ -54,14 +55,14 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _courseService.AddTeacherToCourse(courseId, teacherId);
             }
-            catch (ArgumentException)
+            catch (ArgumentException arEx)
             {
-                return NotFound();
+                return NotFound(arEx.Message);
                 
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dbEx)
             {
-                return BadRequest();
+                return BadRequest(dbEx.Message);
             }
 
             return Ok();
@@ -75,9 +76,9 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _courseService.DeleteAsync(id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
             return Ok();
@@ -105,13 +106,13 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _courseService.RemoveTeacherFromCourse(id);
             }
-            catch (ArgumentException)
+            catch (ArgumentException arEx)
             {
-                return NotFound();
+                return NotFound(arEx.Message);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dbEx)
             {
-                return BadRequest();
+                return BadRequest(dbEx.Message);
             }
 
             return Ok();
@@ -125,13 +126,13 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _courseService.UpdateCourse(model);
             }
-            catch (ArgumentException)
+            catch (ArgumentException arEx)
             {
-                return NotFound();
+                return NotFound(arEx.Message);
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dbEx)
             {
-                return BadRequest();
+                return BadRequest(dbEx.Message);
             }
 
             return Ok();
