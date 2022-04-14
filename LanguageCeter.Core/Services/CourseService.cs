@@ -63,9 +63,15 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == teacherId);
 
+            var result = true;
+
+            if (course == null || teacher == null)
+            {
+                throw new ArgumentException("Problem occurred try again later!");
+            }
+
             course.Teacher = teacher;
 
-            var result = true;
 
             try
             {
@@ -73,7 +79,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                result = false;
+                throw new DbUpdateException("Cannot update db.");
             }
 
             return result;
@@ -124,6 +130,11 @@ namespace LanguageCenter.Core.Services
                 .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
 
+            if (course == null)
+            {
+                return null;
+            }
+
             var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
 
             var courseVM = new GetCourseVM()
@@ -147,6 +158,11 @@ namespace LanguageCenter.Core.Services
             var course = await _repo.GetAll<Course>()
                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
+            if (course == null)
+            {
+                throw new ArgumentException("Course not found");
+            }
+
             course.TeacherId = null;
 
             try
@@ -155,7 +171,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-
+                throw new DbUpdateException("Problem occurred try again later!");
             }
         }
 
@@ -163,6 +179,11 @@ namespace LanguageCenter.Core.Services
         {
             var course = await _repo.GetAll<Course>()
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+            if (course == null)
+            {
+                throw new ArgumentException("Course not found");
+            }
 
             course.Title = model.Title;
             course.Description = model.Description;
@@ -179,8 +200,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-
-                throw;
+                throw new DbUpdateException("Problem occurred try again later!");
             }
         }
     }
