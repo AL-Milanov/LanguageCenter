@@ -2,6 +2,7 @@
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
@@ -38,7 +39,17 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCourses()
         {
-            var courses = await _courseService.GetAllAsync();
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("https://localhost:7188/all-courses");
+
+            var courses = new List<AllCourseVM>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                courses = JsonConvert.DeserializeObject<List<AllCourseVM>>(result);
+
+            }
 
             return View(courses);
         }
