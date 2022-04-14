@@ -13,5 +13,14 @@ namespace LanguageCenter.WebApi.Controllers
         {
             _courseService = courseService;
         }
+
+        [HttpGet]
+        [Route("/allcourses")]
+        public async Task<IActionResult> GetAllCoursesAsync()
+        {
+            var courses = await _courseService.GetAllAsync();
+
+            return Ok(courses);
+        }
     }
 }

@@ -12,7 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var sqlConnectionString = config["ConnectionStrings:SqlConnection"];
 
-            var connectionString = config.GetConnectionString("DefaultConnection");
             service.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(sqlConnectionString));
             service.AddDatabaseDeveloperPageExceptionFilter();

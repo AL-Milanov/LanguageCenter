@@ -111,6 +111,7 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
+
             return courses;
         }
 
@@ -154,7 +155,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                
+
             }
         }
 
