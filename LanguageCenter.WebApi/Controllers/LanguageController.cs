@@ -38,7 +38,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/delete-language")]
+        [Route("/delete-language/{id}")]
         public async Task<IActionResult> DeleteLanguageAsync(string id)
         {
             bool result;
