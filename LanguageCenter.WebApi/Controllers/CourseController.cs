@@ -1,6 +1,5 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Infrastructure.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,7 +47,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/add-teacher-to-course")]
+        [Route("/add-teacher-to-course/{courseId}/{teacherId}")]
         public async Task<IActionResult> AddTeacherToCourseAsync(string courseId, string teacherId)
         {
             try
@@ -58,7 +57,7 @@ namespace LanguageCenter.WebApi.Controllers
             catch (ArgumentException arEx)
             {
                 return NotFound(arEx.Message);
-                
+
             }
             catch (DbUpdateException dbEx)
             {
@@ -68,8 +67,8 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Route("/delete-course")]
+        [HttpPost()]
+        [Route("/delete-course/{id}")]
         public async Task<IActionResult> DeleteCourseAsync(string id)
         {
             try
@@ -85,7 +84,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-course")]
+        [Route("/get-course/{id}")]
         public async Task<IActionResult> GetCourseAsync(string id)
         {
             var course = await _courseService.GetByIdAsync(id);
@@ -99,7 +98,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/remove-teacher-from-course")]
+        [Route("/remove-teacher-from-course/{id}")]
         public async Task<IActionResult> RemoveTeacherFromCourseAsync(string id)
         {
             try

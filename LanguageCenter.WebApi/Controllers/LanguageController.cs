@@ -92,7 +92,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-teachers-by-language")]
+        [Route("/all-teachers-by-language/{language}")]
         public async Task<IActionResult> GetAllTeachersByLanguage(string language)
         {
             try

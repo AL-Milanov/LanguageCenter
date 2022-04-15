@@ -1,30 +1,33 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
-using LanguageCenter.Core.Services.Contracts;
-using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
     public class CourseController : BaseController
     {
-        private readonly ICourseService _courseService;
-        private readonly ILanguageService _languageService;
-
-        public CourseController(
-            ICourseService courseService,
-            ILanguageService languageService)
+        
+        public CourseController()
         {
-            _courseService = courseService;
-            _languageService = languageService;
+
         }
 
 
         public async Task<IActionResult> AddCourse()
         {
-            var languages = await _languageService.GetAllAsSelectListAsync();
 
-            ViewBag.Languages = languages;
+            using HttpClient client = new HttpClient();
+            using HttpResponseMessage response = await client.GetAsync("https://localhost:7188/all-languages-as-selected-list");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var languagesSelect = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+                ViewBag.Languages = languagesSelect;
+            }
+
 
             return View();
         }
@@ -32,9 +35,17 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCourse(AddCourseVM model)
         {
-            await _courseService.AddAsync(model);
 
-            return RedirectToAction(nameof(AllCourses));
+            using HttpClient client = new HttpClient();
+            using HttpResponseMessage response = await client
+                .PostAsJsonAsync("https://localhost:7188/add-course", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllCourses));
+            }
+
+            return RedirectToAction(nameof(AddCourse));
         }
 
         public async Task<IActionResult> AllCourses()
@@ -57,23 +68,47 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCourse(string id)
         {
-            var result = await _courseService.DeleteAsync(id);
 
-            if (!result)
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.PostAsync(
+                $"https://localhost:7188/delete-course/{id}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Course deleted successfully";
+                return RedirectToAction(nameof(AllCourses));
+            }
+            else
             {
                 ViewBag.Error = "Something happend, course is not deleted.";
-                return View();
+                return RedirectToAction(nameof(AllCourses));
             }
 
-            return RedirectToAction(nameof(AllCourses));
         }
 
         public async Task<IActionResult> CourseDetails(string id)
         {
-            var course = await _courseService.GetByIdAsync(id);
+            HttpClient client = new HttpClient();
 
-            var teachers = await _languageService
-                .GetAllTeachersByLanguage(course.LanguageName);
+            var courseResponse = await client.GetAsync($"https://localhost:7188/get-course/{id}");
+
+            var course = new GetCourseVM();
+
+            if (courseResponse.IsSuccessStatusCode)
+            {
+                var result = await courseResponse.Content.ReadAsStringAsync();
+                course = JsonConvert.DeserializeObject<GetCourseVM>(result);
+            }
+
+            var teacherResponse = await client.GetAsync($"https://localhost:7188/all-teachers-by-language/{course?.LanguageName}");
+
+            var teachers = new List<SelectListItem>();
+
+            if (teacherResponse.IsSuccessStatusCode)
+            {
+                var result = await teacherResponse.Content.ReadAsStringAsync();
+                teachers = JsonConvert.DeserializeObject<List<SelectListItem>>(result);
+            }
 
             ViewBag.Teachers = teachers;
 
@@ -83,11 +118,16 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AssignTeacher(string courseId, GetCourseVM model)
         {
-            var isAssign = await _courseService.AddTeacherToCourse(courseId, model.TeacherName);
+            var teacherId = model.TeacherName;
 
-            if (!isAssign)
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = await client
+                .PostAsync($"https://localhost:7188/add-teacher-to-course/{courseId}/{teacherId}", null);
+
+            if (response.IsSuccessStatusCode)
             {
-                return View(model);
+                return RedirectToAction(nameof(CourseDetails), new { id = courseId });
             }
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
@@ -96,34 +136,58 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTeacherFromCourse(string courseId)
         {
-            await _courseService.RemoveTeacherFromCourse(courseId);
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = await client
+                .PostAsync($"https://localhost:7188/remove-teacher-from-course/{courseId}", null);
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
 
         public async Task<IActionResult> EditCourse(string id)
         {
-            var course = await _courseService.GetByIdAsync(id);
+            HttpClient client = new HttpClient();
 
-            var editCourseVM = new EditCourseInfoVM()
+            HttpResponseMessage response = await client
+                .GetAsync($"https://localhost:7188/get-course/{id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                Description = course.Description,
-                DurationInMonths = course.DurationInMonths,
-                Id = id,
-                Level = course.Level,
-                StartDate = DateTime.Parse(course.StartDate),
-                Title = course.Title
-            };
+                var result = await response.Content.ReadAsStringAsync();
+                var course = JsonConvert.DeserializeObject<GetCourseVM>(result);
 
-            return View(editCourseVM);
+                var editCourseVM = new EditCourseInfoVM()
+                {
+                    Description = course.Description,
+                    DurationInMonths = course.DurationInMonths,
+                    Id = id,
+                    Level = course.Level,
+                    StartDate = DateTime.ParseExact(
+                        course.StartDate, "dd/MM/yyyy" ,CultureInfo.InvariantCulture),
+                    Title = course.Title
+                };
+
+                return View(editCourseVM);
+            }
+
+            return RedirectToAction(nameof(AllCourses));
         }
 
         [HttpPost]
         public async Task<IActionResult> EditCourse(EditCourseInfoVM model)
         {
-            await _courseService.UpdateCourse(model);
 
-            return RedirectToAction(nameof(CourseDetails), new { id = model.Id });
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = await client
+                .PostAsJsonAsync($"https://localhost:7188/update-course", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(CourseDetails), new { id = model.Id });
+            }
+
+            return RedirectToAction(nameof(EditCourse), new { id = model.Id });
         }
     }
 }
