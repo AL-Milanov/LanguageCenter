@@ -10,6 +10,7 @@ builder.Services.AddDefaultIdentities();
 builder.Services.AddExternalAuthentications(builder.Configuration);
 
 builder.Services.AddServices();
+builder.Services.AddScoped<HttpClient>();
 
 builder.Services.AddControllersWithViews();
 
