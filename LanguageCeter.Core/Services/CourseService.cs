@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Models.CourseModels;
+﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
@@ -20,13 +21,7 @@ namespace LanguageCenter.Core.Services
             var language = await _repo.GetAll<Language>()
                 .FirstOrDefaultAsync(l => l.Name == model.LanguageName);
 
-            var teacher = await _repo.GetAll<Teacher>()
-                .FirstOrDefaultAsync(t => t.Id == model.TeacherId);
-
-            if (language == null)
-            {
-                throw new ArgumentException("Language does not exist!");
-            }
+            Guard.AgainstNull(language, nameof(language));
 
             var course = new Course
             {
@@ -64,14 +59,11 @@ namespace LanguageCenter.Core.Services
                 .FirstOrDefaultAsync(t => t.Id == teacherId);
 
             var result = true;
-
-            if (course == null || teacher == null)
-            {
-                throw new ArgumentException("Problem occurred try again later!");
-            }
+            
+            Guard.AgainstNull(course, nameof(course));
+            Guard.AgainstNull(teacher, nameof(teacher));
 
             course.Teacher = teacher;
-
 
             try
             {
@@ -130,11 +122,8 @@ namespace LanguageCenter.Core.Services
                 .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
 
-            if (course == null)
-            {
-                return null;
-            }
-
+            Guard.AgainstNull(course, nameof(course));
+           
             var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
 
             var courseVM = new GetCourseVM()
@@ -158,10 +147,7 @@ namespace LanguageCenter.Core.Services
             var course = await _repo.GetAll<Course>()
                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
-            if (course == null)
-            {
-                throw new ArgumentException("Course not found");
-            }
+            Guard.AgainstNull(course, nameof(course));
 
             course.TeacherId = null;
 
@@ -180,10 +166,7 @@ namespace LanguageCenter.Core.Services
             var course = await _repo.GetAll<Course>()
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
 
-            if (course == null)
-            {
-                throw new ArgumentException("Course not found");
-            }
+            Guard.AgainstNull(course, nameof(course));
 
             course.Title = model.Title;
             course.Description = model.Description;

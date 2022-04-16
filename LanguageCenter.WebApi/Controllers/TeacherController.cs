@@ -32,9 +32,9 @@ namespace LanguageCenter.WebApi.Controllers
                 var teacher = await _teacherService.GetTeacher(id);
                 return Ok(teacher);
             }
-            catch (InvalidOperationException ioEx)
+            catch (ArgumentException arEx)
             {
-                return NotFound(ioEx.Message);
+                return NotFound(arEx.Message);
             }
         }
 
@@ -56,9 +56,9 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _teacherService.AddLanguagesToTeacher(teacherId, langaugeNames);
             }
-            catch (InvalidOperationException ioEx)
+            catch (ArgumentException arEx)
             {
-                return NotFound(ioEx.Message);
+                return NotFound(arEx.Message);
             }
             catch (Exception ex)
             {
@@ -76,9 +76,9 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _teacherService.MakeActive(id);
             }
-            catch (InvalidOperationException ioEx)
+            catch (ArgumentException arEx)
             {
-                return NotFound(ioEx.Message);
+                return NotFound(arEx.Message);
             }
             catch (Exception ex)
             {
@@ -112,9 +112,9 @@ namespace LanguageCenter.WebApi.Controllers
             {
                 await _teacherService.MakeUnactive(id);
             }
-            catch (InvalidOperationException ioEx)
+            catch (ArgumentException arEx)
             {
-                return NotFound(ioEx.Message);
+                return NotFound(arEx.Message);
             }
             catch(Exception ex)
             {

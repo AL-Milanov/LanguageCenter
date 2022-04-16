@@ -87,14 +87,17 @@ namespace LanguageCenter.WebApi.Controllers
         [Route("/get-course/{id}")]
         public async Task<IActionResult> GetCourseAsync(string id)
         {
-            var course = await _courseService.GetByIdAsync(id);
-
-            if (course == null)
+            try
             {
-                return NotFound();
-            }
+                var course = await _courseService.GetByIdAsync(id);
 
-            return Ok(course);
+                return Ok(course);
+            }
+            catch (ArgumentException arEx)
+            {
+                return NotFound(arEx.Message);
+
+            }
         }
 
         [HttpPost]

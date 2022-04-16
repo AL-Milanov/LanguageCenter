@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Models.TeacherModels;
+﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
@@ -25,10 +26,7 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
-            if (teacher == null)
-            {
-                throw new InvalidOperationException("Teacher not found");
-            }
+            Guard.AgainstNull(teacher, nameof(teacher));
 
             try
             {
@@ -93,10 +91,7 @@ namespace LanguageCenter.Core.Services
                 })
                 .FirstOrDefaultAsync(t => t.Id == id);
 
-            if (teacher == null)
-            {
-                throw new InvalidOperationException("Teacher not found!");
-            }
+            Guard.AgainstNull(teacher, nameof(teacher));
 
             return teacher;
         }
@@ -115,10 +110,7 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
-            if (teacher == null)
-            {
-                throw new InvalidOperationException("Teacher not found");
-            }
+            Guard.AgainstNull(teacher, nameof(teacher));
 
             try
             {
@@ -161,10 +153,7 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
-            if (teacher == null)
-            {
-                throw new InvalidOperationException("Teacher not found.");
-            }
+            Guard.AgainstNull(teacher, nameof(teacher));
 
             try
             {
