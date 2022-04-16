@@ -12,8 +12,6 @@ namespace LanguageCenter.Core.Services.Contracts
 
         Task<ICollection<string>> GetTeachersId();
 
-        Task RemoveLanguagesFromTeacher(string id);
-
         Task AddLanguagesToTeacher(string id, ICollection<string> languagesNames);
 
         Task<bool> MakeUnactive(string id);

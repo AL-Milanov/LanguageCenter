@@ -25,8 +25,14 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
+            if (teacher == null)
+            {
+                throw new InvalidOperationException("Teacher not found");
+            }
+
             try
             {
+                await RemoveLanguagesFromTeacher(teacher);
 
                 foreach (var language in languages)
                 {
@@ -38,8 +44,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-
-                throw;
+                throw new DbUpdateException("Cannot add languages to teacher try again!");
             }
         }
 
@@ -88,6 +93,11 @@ namespace LanguageCenter.Core.Services
                 })
                 .FirstOrDefaultAsync(t => t.Id == id);
 
+            if (teacher == null)
+            {
+                throw new InvalidOperationException("Teacher not found!");
+            }
+
             return teacher;
         }
 
@@ -105,6 +115,11 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
+            if (teacher == null)
+            {
+                throw new InvalidOperationException("Teacher not found");
+            }
+
             try
             {
                 teacher.IsActive = true;
@@ -112,8 +127,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-
-                throw;
+                throw new DbUpdateException("Teacher status is not updated try again!");
             }
 
             return teacher.IsActive;
@@ -136,7 +150,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new Exception("Something happend try again!");
+                throw new DbUpdateException("Something happend try again!");
             }
 
             return result;
@@ -147,6 +161,11 @@ namespace LanguageCenter.Core.Services
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
+            if (teacher == null)
+            {
+                throw new InvalidOperationException("Teacher not found.");
+            }
+
             try
             {
                 teacher.IsActive = false;
@@ -154,19 +173,14 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-
-                throw;
+                throw new DbUpdateException("Problem occured try again!");
             }
 
             return teacher.IsActive;
         }
 
-        public async Task RemoveLanguagesFromTeacher(string id)
+        private async Task RemoveLanguagesFromTeacher(Teacher teacher)
         {
-            var teacher = await _repo
-                .GetAll<Teacher>()
-                .Include(t => t.Languages)
-                .FirstOrDefaultAsync(t => t.Id == id);
 
             try
             {
@@ -175,6 +189,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
+                throw new DbUpdateException("Problem occured try again!");
             }
 
         }

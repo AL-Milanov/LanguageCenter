@@ -74,8 +74,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
             var teacher = await _teacherService.GetTeacher(model.Id);
 
-            await _teacherService.RemoveLanguagesFromTeacher(model.Id);
-
             if (model.Languages?.Count > 0)
             {
                 await _teacherService.AddLanguagesToTeacher(teacher.Id, model.Languages);
