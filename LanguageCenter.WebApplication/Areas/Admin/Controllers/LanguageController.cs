@@ -54,7 +54,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteLanguage(string id)
         {
             var response = await _client
-                .PostAsync($"/delete-language/{id}", null);
+                .PostAsync($"/delete-language?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {

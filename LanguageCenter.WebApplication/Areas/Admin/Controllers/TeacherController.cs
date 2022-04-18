@@ -57,7 +57,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MakeTeacher(string id)
         {
-            var response = await _client.PostAsync($"/make-teacher/{id}", null);
+            var response = await _client.PostAsync($"/make-teacher?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {

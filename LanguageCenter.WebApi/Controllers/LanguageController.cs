@@ -38,8 +38,8 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/delete-language/{id}")]
-        public async Task<IActionResult> DeleteLanguageAsync(string id)
+        [Route("/delete-language")]
+        public async Task<IActionResult> DeleteLanguageAsync([FromQuery] string id)
         {
             bool result;
 
@@ -92,8 +92,8 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-teachers-by-language/{language}")]
-        public async Task<IActionResult> GetAllTeachersByLanguage(string language)
+        [Route("/all-teachers-by-language")]
+        public async Task<IActionResult> GetAllTeachersByLanguage([FromQuery] string language)
         {
             try
             {

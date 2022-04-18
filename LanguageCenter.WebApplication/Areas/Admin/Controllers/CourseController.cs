@@ -71,7 +71,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client.PostAsync(
-                $"/delete-course/{id}", null);
+                $"/delete-course?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -89,7 +89,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> CourseDetails(string id)
         {
 
-            var courseResponse = await _client.GetAsync($"/get-course/{id}");
+            var courseResponse = await _client.GetAsync($"/get-course?id={id}");
 
             var course = new GetCourseVM();
 
@@ -100,7 +100,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             var teacherResponse = await _client
-                .GetAsync($"/all-teachers-by-language/{course?.LanguageName}");
+                .GetAsync($"/all-teachers-by-language?language={course?.LanguageName}");
 
             var teachers = new List<SelectListItem>();
 
@@ -120,7 +120,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"/add-teacher-to-course/{courseId}/{model.TeacherName}", null);
+                .PostAsync($"/add-teacher-to-course?courseId={courseId}&teacherId={model.TeacherName}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -135,7 +135,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"/remove-teacher-from-course/{courseId}", null);
+                .PostAsync($"/remove-teacher-from-course?id={courseId}", null);
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
@@ -144,7 +144,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .GetAsync($"/get-course/{id}");
+                .GetAsync($"/get-course?id={id}");
 
             if (response.IsSuccessStatusCode)
             {
