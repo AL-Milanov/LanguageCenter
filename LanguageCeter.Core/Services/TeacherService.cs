@@ -24,18 +24,17 @@ namespace LanguageCenter.Core.Services
                 .ToListAsync();
 
             var teacher = await _repo.GetAll<Teacher>()
+                .Include(t => t.Languages)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             Guard.AgainstNull(teacher, nameof(teacher));
 
             try
             {
-                await RemoveLanguagesFromTeacher(teacher);
-
+                
                 foreach (var language in languages)
                 {
                     teacher.Languages.Add(language);
-                    language.Teachers.Add(teacher);
                 }
 
                 await _repo.SaveChangesAsync();
@@ -44,6 +43,27 @@ namespace LanguageCenter.Core.Services
             {
                 throw new DbUpdateException("Cannot add languages to teacher try again!");
             }
+        }
+
+        public async Task RemoveLanguagesFromTeacher(string id)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .Include(t => t.Languages)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            Guard.AgainstNull(teacher, nameof(teacher));
+
+            try
+            {
+                teacher.Languages.Clear();
+
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException("Cannot remove languages from teacher, try again.");
+            }
+
         }
 
         public async Task<ICollection<GetAllTeachersVM>> GetAllTeachers()
@@ -148,7 +168,7 @@ namespace LanguageCenter.Core.Services
             return result;
         }
 
-        public async Task<bool> MakeUnactive(string id)
+        public async Task<bool> MakeInactive(string id)
         {
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == id);
@@ -166,21 +186,6 @@ namespace LanguageCenter.Core.Services
             }
 
             return teacher.IsActive;
-        }
-
-        private async Task RemoveLanguagesFromTeacher(Teacher teacher)
-        {
-
-            try
-            {
-                teacher.Languages.Clear();
-                await _repo.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new DbUpdateException("Problem occured try again!");
-            }
-
         }
     }
 }

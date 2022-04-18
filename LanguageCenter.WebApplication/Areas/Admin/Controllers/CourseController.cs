@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
+using LanguageCenter.WebApplication.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public CourseController(HttpClient client)
         {
             _client = client;
+            _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
 
@@ -20,7 +22,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             using HttpResponseMessage response = await _client
-                .GetAsync("https://localhost:7188/all-languages-as-selected-list");
+                .GetAsync("/all-languages-as-selected-list");
 
             if (response.IsSuccessStatusCode)
             {
@@ -38,7 +40,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             using HttpResponseMessage response = await _client
-                .PostAsJsonAsync("https://localhost:7188/add-course", model);
+                .PostAsJsonAsync("/add-course", model);
 
             if (response.IsSuccessStatusCode)
             {
@@ -50,7 +52,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCourses()
         {
-            HttpResponseMessage response = await _client.GetAsync("https://localhost:7188/all-courses");
+            HttpResponseMessage response = await _client.GetAsync("/all-courses");
 
             var courses = new List<AllCourseVM>();
 
@@ -69,7 +71,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client.PostAsync(
-                $"https://localhost:7188/delete-course/{id}", null);
+                $"/delete-course/{id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -87,7 +89,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> CourseDetails(string id)
         {
 
-            var courseResponse = await _client.GetAsync($"https://localhost:7188/get-course/{id}");
+            var courseResponse = await _client.GetAsync($"/get-course/{id}");
 
             var course = new GetCourseVM();
 
@@ -98,7 +100,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             var teacherResponse = await _client
-                .GetAsync($"https://localhost:7188/all-teachers-by-language/{course?.LanguageName}");
+                .GetAsync($"/all-teachers-by-language/{course?.LanguageName}");
 
             var teachers = new List<SelectListItem>();
 
@@ -118,7 +120,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"https://localhost:7188/add-teacher-to-course/{courseId}/{model.TeacherName}", null);
+                .PostAsync($"/add-teacher-to-course/{courseId}/{model.TeacherName}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -133,7 +135,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"https://localhost:7188/remove-teacher-from-course/{courseId}", null);
+                .PostAsync($"/remove-teacher-from-course/{courseId}", null);
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
@@ -142,7 +144,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .GetAsync($"https://localhost:7188/get-course/{id}");
+                .GetAsync($"/get-course/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -171,7 +173,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsJsonAsync($"https://localhost:7188/update-course", model);
+                .PostAsJsonAsync($"/update-course", model);
 
             if (response.IsSuccessStatusCode)
             {

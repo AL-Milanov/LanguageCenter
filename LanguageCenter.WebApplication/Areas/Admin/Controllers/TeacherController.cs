@@ -1,32 +1,37 @@
-﻿using LanguageCenter.Core.Models.TeacherModels;
+﻿using LanguageCenter.Core.Models.LanguageModels;
+using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
+using LanguageCenter.WebApplication.Helper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
     public class TeacherController : BaseController
     {
-        private readonly ITeacherService _teacherService;
-
         private readonly IUserService _userService;
 
-        private readonly ILanguageService _languageService;
+        private HttpClient _client;
 
         public TeacherController(
-            ITeacherService teacherService,
             IUserService userService,
-            ILanguageService languageService)
+            HttpClient client)
         {
-            _teacherService = teacherService;
             _userService = userService;
-            _languageService = languageService;
 
+            _client = client;
+            _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
         public async Task<IActionResult> AllTeachers()
         {
-            var teachers = await _teacherService.GetAllTeachers();
+            var response = await _client.GetAsync("get-all-teachers");
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            var teachers = JsonConvert.DeserializeObject<IEnumerable<GetAllTeachersVM>>(result);
 
             return View(teachers);
         }
@@ -36,9 +41,11 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             var users = await _userService
                 .GetAll(u => u.Id != User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var teachers = await _teacherService
-                .GetTeachersId();
+            var response = await _client.GetAsync("/get-teacher-ids");
 
+            var result = await response.Content.ReadAsStringAsync();
+
+            var teachers = JsonConvert.DeserializeObject<ICollection<string>>(result);
 
             var usersNotTeacher = users
                 .Where(u => !teachers.Contains(u.Id))
@@ -50,49 +57,112 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MakeTeacher(string id)
         {
-            var result = await _teacherService.MakeTeacher(id);
+            var response = await _client.PostAsync($"/make-teacher/{id}", null);
 
-            if (!result)
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllTeachers));
+
+            }
+            else
             {
                 return RedirectToAction(nameof(AddTeacher));
             }
 
-            return RedirectToAction(nameof(AllTeachers));
         }
 
         public async Task<IActionResult> TeacherLanguages(string id)
         {
-            var teacher = await _teacherService.GetTeacher(id);
+            var teacherResponse = await _client.GetAsync($"/get-teacher?id={id}");
 
-            ViewBag.Languages = await _languageService.GetAllAsSelectListAsync();
+            var languagesResponse = await _client.GetAsync("/all-languages-as-selected-list");
 
-            return View(teacher);
+            if (teacherResponse.IsSuccessStatusCode && languagesResponse.IsSuccessStatusCode)
+            {
+                var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
+
+                var teacher = JsonConvert.DeserializeObject<GetTeacherVM>(teacherResult); 
+
+                var languagesResult = await languagesResponse.Content.ReadAsStringAsync();
+
+                var languages = JsonConvert.DeserializeObject<List<SelectListItem>>(languagesResult);
+
+                ViewBag.Languages = languages;
+
+                return View(teacher);
+            }
+
+            return RedirectToAction(nameof(AllTeachers));
         }
 
         [HttpPost]
         public async Task<IActionResult> TeacherLanguages(GetTeacherVM model)
         {
-            var teacher = await _teacherService.GetTeacher(model.Id);
+            var response = await _client.GetAsync($"/get-teacher?id={model.Id}");
 
-            if (model.Languages?.Count > 0)
+            if (response.IsSuccessStatusCode)
             {
-                await _teacherService.AddLanguagesToTeacher(teacher.Id, model.Languages);
+                var result = await response.Content.ReadAsStringAsync();
+
+                var teacher = JsonConvert.DeserializeObject<GetTeacherVM>(result);
+
+                var removeLanguagesResponse = await _client
+                    .PostAsync($"/remove-all-languages-from-teacher?id={model.Id}", null);
+
+                if (removeLanguagesResponse.IsSuccessStatusCode)
+                {
+                    var languageJsonModel = new List<LanguageName>();
+
+                    if (model.Languages != null)
+                    {
+
+                        languageJsonModel = model.Languages?
+                            .Select(l => new LanguageName
+                            {
+                                Name = l
+                            })
+                            .ToList();
+                    }
+
+                    var languagesResponse = await _client
+                        .PostAsJsonAsync($"/add-languages-to-teacher?teacherId={teacher?.Id}", languageJsonModel);
+
+                    if (languagesResponse.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(AllTeachers));
+                    }
+                }
+
             }
 
-            return RedirectToAction(nameof(AllTeachers));
+            return RedirectToAction(nameof(TeacherLanguages), new { id = model.Id });
         }
 
-        public async Task<IActionResult> MakeUnactive(string id)
+        public async Task<IActionResult> MakeInactive(string id)
         {
-            await _teacherService.MakeUnactive(id);
 
+            var response = await _client.PostAsync($"/make-teacher-inactive?id={id}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllTeachers));
+            }
+
+            //need modifications
             return RedirectToAction(nameof(AllTeachers));
+
         }
 
         public async Task<IActionResult> MakeActive(string id)
         {
-            await _teacherService.MakeActive(id);
+            var response = await _client.PostAsync($"/make-teacher-active?id={id}", null);
 
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllTeachers));
+            }
+
+            //need modifications
             return RedirectToAction(nameof(AllTeachers));
         }
     }

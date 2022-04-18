@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Services.Contracts;
+﻿using LanguageCenter.Core.Models.LanguageModels;
+using LanguageCenter.Core.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LanguageCenter.WebApi.Controllers
@@ -24,8 +25,8 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-teacher/id")]
-        public async Task<IActionResult> GetTeacherAsync(string id)
+        [Route("/get-teacher")]
+        public async Task<IActionResult> GetTeacherAsync([FromQuery] string id)
         {
             try
             {
@@ -49,11 +50,15 @@ namespace LanguageCenter.WebApi.Controllers
 
 
         [HttpPost]
-        [Route("/add-languages-to-teacher/teacherId")]
-        public async Task<IActionResult> AddLanguagesToTeacherAsync(string teacherId, ICollection<string> langaugeNames)
+        [Route("/add-languages-to-teacher")]
+        public async Task<IActionResult> AddLanguagesToTeacherAsync(string teacherId, ICollection<LanguageName> langauges)
         {
             try
             {
+                var langaugeNames = langauges?
+                    .Select(l => l.Name)
+                    .ToList();
+
                 await _teacherService.AddLanguagesToTeacher(teacherId, langaugeNames);
             }
             catch (ArgumentException arEx)
@@ -69,7 +74,30 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/make-teacher-active/id")]
+        [Route("/remove-all-languages-from-teacher")]
+        public async Task<IActionResult> RemoveLanguagesFromTeacherAsync(string id)
+        {
+            try
+            {
+
+                await _teacherService.RemoveLanguagesFromTeacher(id);
+            }
+            catch (ArgumentException arEx)
+            {
+
+                return NotFound(arEx.Message);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("/make-teacher-active")]
         public async Task<IActionResult> MakeActive(string id)
         {
             try
@@ -105,18 +133,18 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/make-teacher-unactive/id")]
-        public async Task<IActionResult> MakeUnactive(string id)
+        [Route("/make-teacher-inactive")]
+        public async Task<IActionResult> MakeInactive(string id)
         {
             try
             {
-                await _teacherService.MakeUnactive(id);
+                await _teacherService.MakeInactive(id);
             }
             catch (ArgumentException arEx)
             {
                 return NotFound(arEx.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

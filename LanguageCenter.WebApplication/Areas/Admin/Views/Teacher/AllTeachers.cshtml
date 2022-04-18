@@ -42,7 +42,7 @@ else
                         <a class="btn btn-primary" asp-action="TeacherLanguages" asp-route-id="@item.Id">Add language to teacher</a> |
                         @if (item.IsActive)
                         {
-                            <a method="post" class="btn btn-danger" asp-action="MakeUnactive" asp-route-id="@item.Id">Make Unactive</a>
+                            <a method="post" class="btn btn-danger" asp-action="MakeInactive" asp-route-id="@item.Id">Make Inactive</a>
                         }
                         else
                         {

@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection service)
         {
             service
+                .AddScoped<HttpClient>()
                 .AddScoped<IApplicationRepository, ApplicationRepository>()
                 .AddScoped<ICourseService, CourseService>()
                 .AddScoped<ILanguageService, LanguageService>()
