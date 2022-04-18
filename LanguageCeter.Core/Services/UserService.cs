@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Models.UserModels;
+﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
@@ -45,6 +46,7 @@ namespace LanguageCenter.Core.Services
                 })
                 .FirstOrDefaultAsync();
 
+            Guard.AgainstNull(user, nameof(ApplicationUser));
 
             return user;
         }
