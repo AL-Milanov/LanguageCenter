@@ -1,6 +1,6 @@
 ﻿using LanguageCenter.Core.Models.LanguageModels;
 using LanguageCenter.Core.Models.TeacherModels;
-using LanguageCenter.Core.Services.Contracts;
+using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.WebApplication.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,15 +11,10 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
     public class TeacherController : BaseController
     {
-        private readonly IUserService _userService;
-
         private HttpClient _client;
 
-        public TeacherController(
-            IUserService userService,
-            HttpClient client)
+        public TeacherController(HttpClient client)
         {
-            _userService = userService;
 
             _client = client;
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
@@ -38,16 +33,17 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AddTeacher()
         {
-            var users = await _userService
-                .GetAll(u => u.Id != User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userResponse = await _client.GetAsync($"/get-all-users?id={User.GetId()}");
+            var userResult = await userResponse.Content.ReadAsStringAsync();
 
-            var response = await _client.GetAsync("/get-teacher-ids");
+            var users = JsonConvert.DeserializeObject<IEnumerable<UserVM>>(userResult);
 
-            var result = await response.Content.ReadAsStringAsync();
+            var teacherResponse = await _client.GetAsync("/get-teacher-ids");
+            var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
 
-            var teachers = JsonConvert.DeserializeObject<ICollection<string>>(result);
+            var teachers = JsonConvert.DeserializeObject<ICollection<string>>(teacherResult);
 
-            var usersNotTeacher = users
+            var usersNotTeacher = users?
                 .Where(u => !teachers.Contains(u.Id))
                 .ToList();
 
