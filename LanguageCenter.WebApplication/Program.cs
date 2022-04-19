@@ -9,6 +9,12 @@ builder.Services.AddDefaultIdentities();
 
 builder.Services.AddExternalAuthentications(builder.Configuration);
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
 builder.Services.AddServices();
 
 builder.Services.AddControllersWithViews();
@@ -29,6 +35,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseRouting();
 
