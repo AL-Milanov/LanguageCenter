@@ -22,7 +22,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             using HttpResponseMessage response = await _client
-                .GetAsync("/all-languages-as-selected-list");
+                .GetAsync("/Language/all-languages-as-selected-list");
 
             if (response.IsSuccessStatusCode)
             {
@@ -40,7 +40,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             using HttpResponseMessage response = await _client
-                .PostAsJsonAsync("/add-course", model);
+                .PostAsJsonAsync("/Course/add-course", model);
 
             if (response.IsSuccessStatusCode)
             {
@@ -52,7 +52,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCourses()
         {
-            HttpResponseMessage response = await _client.GetAsync("/all-courses");
+            HttpResponseMessage response = await _client.GetAsync("/Course/all-courses");
 
             var courses = new List<AllCourseVM>();
 
@@ -71,7 +71,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client.PostAsync(
-                $"/delete-course?id={id}", null);
+                $"/Course/delete-course?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -89,7 +89,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> CourseDetails(string id)
         {
 
-            var courseResponse = await _client.GetAsync($"/get-course?id={id}");
+            var courseResponse = await _client.GetAsync($"/Course/get-course?id={id}");
 
             var course = new GetCourseVM();
 
@@ -100,7 +100,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             var teacherResponse = await _client
-                .GetAsync($"/all-teachers-by-language?language={course?.LanguageName}");
+                .GetAsync($"/Language/all-teachers-by-language?language={course?.LanguageName}");
 
             var teachers = new List<SelectListItem>();
 
@@ -120,7 +120,8 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"/add-teacher-to-course?courseId={courseId}&teacherId={model.TeacherName}", null);
+                .PostAsync($"/Course/add-teacher-to-course?courseId={courseId}&teacherId={model.TeacherName}",
+                null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -135,7 +136,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsync($"/remove-teacher-from-course?id={courseId}", null);
+                .PostAsync($"/Course/remove-teacher-from-course?id={courseId}", null);
 
             return RedirectToAction(nameof(CourseDetails), new { id = courseId });
         }
@@ -144,7 +145,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .GetAsync($"/get-course?id={id}");
+                .GetAsync($"/Course/get-course?id={id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -173,7 +174,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
 
             HttpResponseMessage response = await _client
-                .PostAsJsonAsync($"/update-course", model);
+                .PostAsJsonAsync($"/Course/update-course", model);
 
             if (response.IsSuccessStatusCode)
             {

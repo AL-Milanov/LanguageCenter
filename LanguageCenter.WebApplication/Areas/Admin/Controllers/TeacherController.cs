@@ -22,7 +22,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllTeachers()
         {
-            var response = await _client.GetAsync("get-all-teachers");
+            var response = await _client.GetAsync("/Teacher/get-all-teachers");
 
             var result = await response.Content.ReadAsStringAsync();
 
@@ -33,12 +33,12 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AddTeacher()
         {
-            var userResponse = await _client.GetAsync($"/get-all-users?id={User.GetId()}");
+            var userResponse = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}");
             var userResult = await userResponse.Content.ReadAsStringAsync();
 
             var users = JsonConvert.DeserializeObject<IEnumerable<UserVM>>(userResult);
 
-            var teacherResponse = await _client.GetAsync("/get-teacher-ids");
+            var teacherResponse = await _client.GetAsync("/Teacher/get-teacher-ids");
             var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
 
             var teachers = JsonConvert.DeserializeObject<ICollection<string>>(teacherResult);
@@ -53,7 +53,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MakeTeacher(string id)
         {
-            var response = await _client.PostAsync($"/make-teacher?id={id}", null);
+            var response = await _client.PostAsync($"/Teacher/make-teacher?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -69,18 +69,16 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> TeacherLanguages(string id)
         {
-            var teacherResponse = await _client.GetAsync($"/get-teacher?id={id}");
+            var teacherResponse = await _client.GetAsync($"/Teacher/get-teacher?id={id}");
 
-            var languagesResponse = await _client.GetAsync("/all-languages-as-selected-list");
+            var languagesResponse = await _client.GetAsync("/Language/all-languages-as-selected-list");
 
             if (teacherResponse.IsSuccessStatusCode && languagesResponse.IsSuccessStatusCode)
             {
                 var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
-
                 var teacher = JsonConvert.DeserializeObject<GetTeacherVM>(teacherResult); 
 
                 var languagesResult = await languagesResponse.Content.ReadAsStringAsync();
-
                 var languages = JsonConvert.DeserializeObject<List<SelectListItem>>(languagesResult);
 
                 ViewBag.Languages = languages;
@@ -94,7 +92,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> TeacherLanguages(GetTeacherVM model)
         {
-            var response = await _client.GetAsync($"/get-teacher?id={model.Id}");
+            var response = await _client.GetAsync($"/Teacher/get-teacher?id={model.Id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -103,7 +101,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 var teacher = JsonConvert.DeserializeObject<GetTeacherVM>(result);
 
                 var removeLanguagesResponse = await _client
-                    .PostAsync($"/remove-all-languages-from-teacher?id={model.Id}", null);
+                    .PostAsync($"/Teacher/remove-all-languages-from-teacher?id={model.Id}", null);
 
                 if (removeLanguagesResponse.IsSuccessStatusCode)
                 {
@@ -121,7 +119,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                     }
 
                     var languagesResponse = await _client
-                        .PostAsJsonAsync($"/add-languages-to-teacher?teacherId={teacher?.Id}", languageJsonModel);
+                        .PostAsJsonAsync($"/Teacher/add-languages-to-teacher?teacherId={teacher?.Id}", languageJsonModel);
 
                     if (languagesResponse.IsSuccessStatusCode)
                     {
@@ -137,7 +135,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> MakeInactive(string id)
         {
 
-            var response = await _client.PostAsync($"/make-teacher-inactive?id={id}", null);
+            var response = await _client.PostAsync($"/Teacher/make-teacher-inactive?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {
@@ -151,7 +149,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> MakeActive(string id)
         {
-            var response = await _client.PostAsync($"/make-teacher-active?id={id}", null);
+            var response = await _client.PostAsync($"/Teacher/make-teacher-active?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {

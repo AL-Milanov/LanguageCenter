@@ -17,7 +17,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllLanguages()
         {
-            var response = await _client.GetAsync("/all-languages");
+            var response = await _client.GetAsync("/Language/all-languages");
 
             var languages = new List<LanguageVM>();
 
@@ -40,7 +40,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> CreateLanguage(CreateLanguageVM model)
         {
 
-            var response = await _client.PostAsJsonAsync("/add-language", model);
+            var response = await _client.PostAsJsonAsync("/Language/add-language", model);
 
             if (response.IsSuccessStatusCode)
             {
@@ -54,7 +54,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteLanguage(string id)
         {
             var response = await _client
-                .PostAsync($"/delete-language?id={id}", null);
+                .PostAsync($"/Language/delete-language?id={id}", null);
 
             if (response.IsSuccessStatusCode)
             {
