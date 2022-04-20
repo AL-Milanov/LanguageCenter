@@ -16,7 +16,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-all-teachers")]
+        [Route("get-all-teachers")]
         public async Task<IActionResult> GetAllTeachersAsync()
         {
             var teachers = await _teacherService.GetAllTeachers();
@@ -25,7 +25,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-teacher")]
+        [Route("get-teacher")]
         public async Task<IActionResult> GetTeacherAsync([FromQuery] string id)
         {
             try
@@ -40,7 +40,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-teacher-ids")]
+        [Route("get-teacher-ids")]
         public async Task<IActionResult> GetTeachersIdsAsync()
         {
             var teacherIds = await _teacherService.GetTeachersId();
@@ -50,7 +50,7 @@ namespace LanguageCenter.WebApi.Controllers
 
 
         [HttpPost]
-        [Route("/add-languages-to-teacher")]
+        [Route("add-languages-to-teacher")]
         public async Task<IActionResult> AddLanguagesToTeacherAsync(string teacherId, ICollection<LanguageName> langauges)
         {
             try
@@ -74,7 +74,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/remove-all-languages-from-teacher")]
+        [Route("remove-all-languages-from-teacher")]
         public async Task<IActionResult> RemoveLanguagesFromTeacherAsync(string id)
         {
             try
@@ -97,7 +97,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/make-teacher-active")]
+        [Route("make-teacher-active")]
         public async Task<IActionResult> MakeActive(string id)
         {
             try
@@ -117,7 +117,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/make-teacher/userId")]
+        [Route("make-teacher/userId")]
         public async Task<IActionResult> MakeTeacher(string userId)
         {
             try
@@ -133,7 +133,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/make-teacher-inactive")]
+        [Route("make-teacher-inactive")]
         public async Task<IActionResult> MakeInactive(string id)
         {
             try

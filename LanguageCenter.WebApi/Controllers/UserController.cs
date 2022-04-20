@@ -17,7 +17,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-user-details")]
+        [Route("get-user-details")]
         public async Task<IActionResult> GetUserDetails([FromQuery] string id = null)
         {
             try
@@ -33,7 +33,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-all-users")]
+        [Route("get-all-users")]
         public async Task<IActionResult> GetAll([FromQuery]string id)
         {
             Expression<Func<ApplicationUser, bool>> search = u => u.Id != id;

@@ -17,7 +17,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-courses")]
+        [Route("all-courses")]
         public async Task<IActionResult> GetAllCoursesAsync()
         {
             var courses = await _courseService.GetAllAsync();
@@ -26,7 +26,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/add-course")]
+        [Route("add-course")]
         public async Task<IActionResult> AddCourseAsync(AddCourseVM model)
         {
             if (!ModelState.IsValid)
@@ -47,7 +47,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/add-teacher-to-course")]
+        [Route("add-teacher-to-course")]
         public async Task<IActionResult> AddTeacherToCourseAsync(
             [FromQuery] string courseId,
             [FromQuery] string teacherId)
@@ -70,7 +70,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost()]
-        [Route("/delete-course")]
+        [Route("delete-course")]
         public async Task<IActionResult> DeleteCourseAsync([FromQuery] string id)
         {
             try
@@ -86,7 +86,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/get-course")]
+        [Route("get-course")]
         public async Task<IActionResult> GetCourseAsync([FromQuery] string id)
         {
             try
@@ -103,7 +103,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/remove-teacher-from-course")]
+        [Route("remove-teacher-from-course")]
         public async Task<IActionResult> RemoveTeacherFromCourseAsync([FromQuery] string id)
         {
             try
@@ -123,7 +123,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/update-course")]
+        [Route("update-course")]
         public async Task<IActionResult> UpdateCourseAsync(EditCourseInfoVM model)
         {
             try

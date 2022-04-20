@@ -2,7 +2,6 @@
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Repository.ApplicationRepository;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
-using LanguageCenter.Infrastructure.Services;
 using LanguageCenter.Infrastructure.Services.Contracts;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -13,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection service)
         {
             service
+                .AddTransient<IEmailService, EmailService>()
                 .AddScoped<IApplicationRepository, ApplicationRepository>()
                 .AddScoped<ICourseService, CourseService>()
                 .AddScoped<ILanguageService, LanguageService>()

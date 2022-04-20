@@ -17,7 +17,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/add-language")]
+        [Route("add-language")]
         public async Task<IActionResult> AddLanguageAsync(CreateLanguageVM model)
         {
             if (!ModelState.IsValid)
@@ -38,7 +38,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("/delete-language")]
+        [Route("delete-language")]
         public async Task<IActionResult> DeleteLanguageAsync([FromQuery] string id)
         {
             bool result;
@@ -61,7 +61,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-languages")]
+        [Route("all-languages")]
         public async Task<IActionResult> AllLanguagesAsync()
         {
             try
@@ -76,7 +76,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-languages-as-selected-list")]
+        [Route("all-languages-as-selected-list")]
         public async Task<IActionResult> GetAllAsSelectListAsync()
         {
             try
@@ -92,7 +92,7 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/all-teachers-by-language")]
+        [Route("all-teachers-by-language")]
         public async Task<IActionResult> GetAllTeachersByLanguage([FromQuery] string language)
         {
             try

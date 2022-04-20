@@ -1,0 +1,64 @@
+﻿@using LanguageCenter.Core.Models.Email
+@model Contact
+
+<h1 class="header-in-center">About Us</h1>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">Ok</span>
+        </button>
+    </div>
+}
+
+<div class="about-us-container">
+    <div class="about-us-left">
+        <section>
+            <h4>Contacts:</h4>
+        </section>
+    </div>
+    <div class="about-us-center">
+    </div>
+    <div class="about-us-right">
+        <h4>Ask us anything</h4>
+        <form asp-action="SendEmail" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label contact-name">Your Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label contact-email">Your Email Address</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label contact-phonenumber">Your Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject" class="control-label contact-subject">Subject</label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label contact-content">Content</label>
+                <span>
+                    <textarea asp-for="Content" class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

@@ -1,26 +1,69 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .wrap-div {
     display: flex;
 }
 
-.btn-margin-left{
+.btn-margin-left {
     margin-left: 4px;
+}
+
+.about-us-left {
+    float: left;
+    width: 33.33%;
+    text-align: left;
+}
+
+.about-us-right {
+    float: right;
+    width: 33.33%;
+    text-align: right;
+}
+
+.header-in-center {
+    text-align: center;
+}
+
+.about-us-container {
+    width: 100%;
+}
+.about-us-center {
+    display: inline-block;
+    margin: 0 auto;
+    width: 33.33%;
+    text-align: center;
+}
+
+.contact-name{
+    padding-right:388px;
+}
+
+.contact-email {
+    padding-right: 330px;
+}
+.contact-phonenumber {
+    padding-right: 326px;
+}
+.contact-subject {
+    padding-right: 411px;
+}
+.contact-content {
+    padding-right: 409px;
 }
