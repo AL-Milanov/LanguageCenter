@@ -46,7 +46,7 @@ namespace LanguageCenter.WebApplication.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult AboutUs(string? message)
+        public IActionResult Contact(string? message)
         {
             ViewBag.Message = message;
             return View();
@@ -59,11 +59,11 @@ namespace LanguageCenter.WebApplication.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(AboutUs),
+                return RedirectToAction(nameof(Contact),
                     new { message = "Message is send successfully! :)" });
             }
 
-            return View(nameof(AboutUs),
+            return View(nameof(Contact),
                 new { message = "Message was not send.Problem occured, please try again. :("});
         }
 

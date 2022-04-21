@@ -1,7 +1,7 @@
 ﻿@using LanguageCenter.Core.Models.Email
 @model Contact
 
-<h1 class="header-in-center">About Us</h1>
+<h1 class="header-in-center">За нас</h1>
 @if (ViewBag.Message != null)
 {
     <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -14,44 +14,64 @@
 
 <div class="about-us-container">
     <div class="about-us-left">
+        <h4>Contacts:</h4>
         <section>
-            <h4>Contacts:</h4>
+            <ul>
+                <li>
+                    <p>
+                        Работно време: 10:00 - 19:00
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Работни дни: Понеделник - Петък
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        Адрес: гр.Перник кв.Рено
+                    </p>
+                </li>
+                <li>
+                    <p>Телефон за контакти: 0879523432</p>
+                </li>
+            </ul>
         </section>
     </div>
     <div class="about-us-center">
     </div>
     <div class="about-us-right">
-        <h4>Ask us anything</h4>
+        <h4>Ако имате запитвания:</h4>
         <form asp-action="SendEmail" method="post">
             <div class="form-group">
-                <label asp-for="Name" class="control-label contact-name">Your Name</label>
+                <label asp-for="Name" class="control-label contact-name">Вашето име:</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label contact-email">Your Email Address</label>
+                <label asp-for="Email" class="control-label contact-email">Вашият имейл адрес:</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label contact-phonenumber">Your Phone Number</label>
+                <label asp-for="PhoneNumber" class="control-label contact-phonenumber">Вашият телефонен номер:</label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Subject" class="control-label contact-subject">Subject</label>
+                <label asp-for="Subject" class="control-label contact-subject">Тема:</label>
                 <input asp-for="Subject" class="form-control" />
                 <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label contact-content">Content</label>
+                <label asp-for="Content" class="control-label contact-content">Вашето съобщение:</label>
                 <span>
                     <textarea asp-for="Content" class="form-control"></textarea>
                     <span asp-validation-for="Content" class="text-danger"></span>
                 </span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Send" class="btn btn-success" />
+                <input type="submit" value="Изпрати" class="btn btn-success" />
             </div>
         </form>
     </div>
