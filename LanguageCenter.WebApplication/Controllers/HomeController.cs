@@ -74,7 +74,7 @@ namespace LanguageCenter.WebApplication.Controllers
             var response = await _client.GetAsync("/Teacher/active-teachers");
             var result = await response.Content.ReadAsStringAsync();
 
-            var teachers = JsonConvert.DeserializeObject<List<GetAllTeachersVM>>(result);
+            var teachers = JsonConvert.DeserializeObject<List<MeetTeachersVM>>(result);
 
             return View(teachers);
         }

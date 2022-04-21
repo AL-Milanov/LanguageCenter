@@ -188,7 +188,7 @@ namespace LanguageCenter.Core.Services
             return teacher.IsActive;
         }
 
-        public async Task<ICollection<GetAllTeachersVM>> GetAllActiveTeachers()
+        public async Task<ICollection<MeetTeachersVM>> GetAllActiveTeachers()
         {
             var activeTeachers = await _repo
                 .GetAll<Teacher>()
@@ -196,18 +196,10 @@ namespace LanguageCenter.Core.Services
                 .Include(t => t.Courses)
                 .Include(t => t.User)
                 .Where(t => t.IsActive)
-                .Select(t => new GetAllTeachersVM
+                .Select(t => new MeetTeachersVM
                 {
-                    Id = t.Id,
                     FullName = t.User.FirstName + " " + t.User.LastName,
-                    Email = t.User.Email,
-                    IsActive = t.IsActive,
-                    Languages = t.Languages
-                        .Select(l => l.Name)
-                        .ToList(),
-                    CoursesTitles = t.Courses
-                        .Select(c => c.Title)
-                        .ToList(),
+                    Description = t.Description
                 })
                 .ToListAsync();
 

@@ -31,6 +31,11 @@
             public const int LanguageNameLength = 25;
         }
 
+        public static class Teacher
+        {
+            public const int DescriptionLength = 400;
+        }
+
         public static class Role
         {
             public const string Admin = "Admin";

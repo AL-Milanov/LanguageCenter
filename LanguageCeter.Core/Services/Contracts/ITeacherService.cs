@@ -7,7 +7,7 @@ namespace LanguageCenter.Core.Services.Contracts
         Task<bool> MakeTeacher(string id);
 
         Task<ICollection<GetAllTeachersVM>> GetAllTeachers();
-        Task<ICollection<GetAllTeachersVM>> GetAllActiveTeachers();
+        Task<ICollection<MeetTeachersVM>> GetAllActiveTeachers();
 
         Task<GetTeacherVM> GetTeacher(string id);
 

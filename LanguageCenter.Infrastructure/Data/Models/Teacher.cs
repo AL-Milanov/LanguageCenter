@@ -16,6 +16,9 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         public bool IsActive { get; set; }
 
+        [StringLength(Constraints.Teacher.DescriptionLength)]
+        public string Description { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 
