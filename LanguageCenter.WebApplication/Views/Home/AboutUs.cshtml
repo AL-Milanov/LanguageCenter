@@ -1,0 +1,25 @@
+﻿@using LanguageCenter.Core.Models.TeacherModels
+@model IEnumerable<GetAllTeachersVM>
+
+<div class="outer">
+    @foreach (var teacher in Model)
+    {
+        <div class="card inner" style="width: 18rem;">
+            <img src="~/img/avatar.png" class="card-img-top" alt="~/img/AdminLTELogo.png">
+            <div class="card-body">
+                <h5 class="card-title">@teacher.FullName</h5>
+                <ul style="display: unset">
+                    @foreach (var language in teacher.Languages)
+                    {
+                        <li>
+                            <strong>@language</strong>
+                        </li>
+                    }
+                </ul>
+                <section>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </section>
+            </div>
+        </div>
+    }
+</div>

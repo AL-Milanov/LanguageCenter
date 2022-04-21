@@ -151,5 +151,14 @@ namespace LanguageCenter.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("active-teachers")]
+        public async Task<IActionResult> GetAllActiveTeachers()
+        {
+            var activeTeachers = await _teacherService.GetAllActiveTeachers();
+
+            return Ok(activeTeachers);
+        }
     }
 }

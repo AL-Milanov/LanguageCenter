@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Models.Email;
+using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Infrastructure.Data.Common;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.WebApplication.Helper;
@@ -6,6 +7,7 @@ using LanguageCenter.WebApplication.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace LanguageCenter.WebApplication.Controllers
@@ -60,11 +62,21 @@ namespace LanguageCenter.WebApplication.Controllers
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(Contact),
-                    new { message = "Message is send successfully! :)" });
+                    new { message = "Съобщението бе изпратено успешно! :)" });
             }
 
             return View(nameof(Contact),
-                new { message = "Message was not send.Problem occured, please try again. :("});
+                new { message = "Възникна проблем и съобщението не беше изпратено. Опитайте пак. :(" });
+        }
+
+        public async Task<IActionResult> AboutUs()
+        {
+            var response = await _client.GetAsync("/Teacher/active-teachers");
+            var result = await response.Content.ReadAsStringAsync();
+
+            var teachers = JsonConvert.DeserializeObject<List<GetAllTeachersVM>>(result);
+
+            return View(teachers);
         }
 
         //[Authorize(Roles = Constraints.Role.Admin)]
