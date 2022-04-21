@@ -7,11 +7,11 @@
 }
 else
 {
-    <div class="row row-cols-2  row-cols-md-3 center">
+    <div class="row row-cols-2  row-cols-md-3 center" style="display:table">
         @foreach (var item in Model)
         { 
-            <div class="card center" style="width: 18rem; margin: 10px">
-                <img src="..." class="card-img-top" alt="...">
+            <div class="card center" style="width: 18rem; margin: 10px; display: table-cell; float:left; width:25%;">
+                <img src="~/img/@item.LanguageName" class="card-img-top" width="150" height="200">
                 <div class="card-body">
                     <h5 class="card-title">@item.Title</h5>
                     <p class="card-text">@item.Level</p>

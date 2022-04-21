@@ -102,7 +102,7 @@ namespace LanguageCenter.Core.Services
                 .Select(c => new AllCourseVM
                 {
                     Id = c.Id,
-                    LanguageName = c.Language.Name,
+                    LanguageName = c.Language.Name + ".png",
                     Level = c.Level,
                     Title = c.Title,
                     StartDate = c.StartDate.ToString("dd/MM/yyyy")

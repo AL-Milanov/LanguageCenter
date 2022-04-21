@@ -16,7 +16,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="~/css/adminlte.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css//custom.css"/>
+    <link rel="stylesheet" href="~/css//custom.css" />
+    <partial name="_Favicons" />
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
     <div class="wrapper">
@@ -104,11 +105,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.control-sidebar -->
             <!-- Main Footer -->
         </div>
-        <footer class="main-footer">
-            <!-- Default to the left -->
-            <strong>Copyright &copy; @DateTime.UtcNow.Year</strong> All rights reserved.
-        </footer>
+
     </div>
+    <footer class="main-footer" style="margin-top:auto">
+        <!-- Default to the left -->
+        <strong>Copyright &copy; @DateTime.UtcNow.Year</strong> All rights reserved.
+    </footer>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
