@@ -31,10 +31,10 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Created("/add-language", model);
+            return Created("/add-language", new { message = "Language added successfully." });
         }
 
         [HttpPost]
@@ -49,15 +49,15 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return BadRequest(arEx.Message);
+                return BadRequest(new { message = arEx.Message });
 
             }
             catch (DbUpdateException dbEx)
             {
-                return BadRequest(dbEx.Message);
+                return BadRequest(new { message = dbEx.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Language deleted successfully." });
         }
 
         [HttpGet]
@@ -71,7 +71,7 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -86,7 +86,7 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
         }
@@ -102,7 +102,7 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
         }

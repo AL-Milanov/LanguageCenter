@@ -28,7 +28,7 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
         }
 

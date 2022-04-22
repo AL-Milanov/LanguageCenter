@@ -13,8 +13,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 {
     public class UserController : BaseController
     {
-        private readonly IUserService _userService;
-
         private readonly RoleManager<IdentityRole> _roleManager;
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,12 +20,10 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         private readonly HttpClient _client;
 
         public UserController(
-            IUserService userService,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             HttpClient client)
         {
-            _userService = userService;
             _roleManager = roleManager;
             _userManager = userManager;
 
@@ -37,8 +33,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllUsers()
         {
-            //var users = await _userService
-            //    .GetAll(u => u.Id != User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var response = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}");
 
@@ -51,7 +45,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AddRole(string id)
         {
-            //var userVM = await _userService.GetUserDetails(id);
 
             var response = await _client.GetAsync($"/User/get-user-details?id={id}");
 

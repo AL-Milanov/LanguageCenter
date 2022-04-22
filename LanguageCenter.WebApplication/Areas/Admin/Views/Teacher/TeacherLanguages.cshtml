@@ -1,6 +1,8 @@
 ﻿@using LanguageCenter.Core.Models.TeacherModels
 @model GetTeacherVM
 
+<partial name="_MessagePartial" />
+
 @{
     ViewData["Title"] = "Teacher Languages";
     var languages = (List<SelectListItem>)ViewBag.Languages;

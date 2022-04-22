@@ -35,7 +35,7 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
         }
 
@@ -60,17 +60,17 @@ namespace LanguageCenter.WebApi.Controllers
                     .ToList();
 
                 await _teacherService.AddLanguagesToTeacher(teacherId, langaugeNames);
+                return Ok(new { message = $"Successfully added {string.Join(",", langaugeNames)} to teacher." });
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Ok();
         }
 
         [HttpPost]
@@ -85,7 +85,7 @@ namespace LanguageCenter.WebApi.Controllers
             catch (ArgumentException arEx)
             {
 
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
             catch (Exception)
             {
@@ -93,7 +93,7 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return Ok(new { message = "Successfully removed languages from teacher" });
         }
 
         [HttpPost]
@@ -106,14 +106,14 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Successfully made teacher active." });
         }
 
         [HttpPost]
@@ -126,10 +126,10 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "New teacher added." });
         }
 
         [HttpPost]
@@ -142,14 +142,14 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Teacher successfully made inactive." });
         }
 
         [HttpGet]

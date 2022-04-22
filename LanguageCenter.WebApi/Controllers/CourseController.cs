@@ -40,10 +40,10 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Created("/addcourse", model);
+            return Created("/addcourse", new { message = "Course successfully added!" });
         }
 
         [HttpPost]
@@ -58,15 +58,15 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
 
             }
             catch (DbUpdateException dbEx)
             {
-                return BadRequest(dbEx.Message);
+                return BadRequest(new { message = dbEx.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Teacher added to course successfully"});
         }
 
         [HttpPost()]
@@ -79,10 +79,10 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Course deleted successfully" });
         }
 
         [HttpGet]
@@ -112,14 +112,14 @@ namespace LanguageCenter.WebApi.Controllers
             }
             catch (ArgumentException arEx)
             {
-                return NotFound(arEx.Message);
+                return NotFound(new { message = arEx.Message });
             }
             catch (DbUpdateException dbEx)
             {
-                return BadRequest(dbEx.Message);
+                return BadRequest(new { message = dbEx.Message });
             }
 
-            return Ok();
+            return Ok(new { message = "Teacher removed from course successfully" });
         }
 
         [HttpPost]
@@ -139,7 +139,7 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest(dbEx.Message);
             }
 
-            return Ok();
+            return Ok(new {message = "Course updated successfully."});
         }
     }
 }

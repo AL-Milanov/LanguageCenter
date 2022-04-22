@@ -1,5 +1,6 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.WebApplication.Helper;
+using LanguageCenter.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
     public class CourseController : BaseController
     {
         private HttpClient _client;
-        
+
         public CourseController(HttpClient client)
         {
             _client = client;
@@ -18,7 +19,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> AddCourse()
+        public async Task<IActionResult> AddCourse(string? message)
         {
 
             using HttpResponseMessage response = await _client
@@ -31,6 +32,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 ViewBag.Languages = languagesSelect;
             }
 
+            ViewBag.Message = message;
 
             return View();
         }
@@ -42,15 +44,19 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             using HttpResponseMessage response = await _client
                 .PostAsJsonAsync("/Course/add-course", model);
 
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(AllCourses));
+                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
             }
 
-            return RedirectToAction(nameof(AddCourse));
+            return RedirectToAction(nameof(AddCourse), new { message = message?.Message });
         }
 
-        public async Task<IActionResult> AllCourses()
+        public async Task<IActionResult> AllCourses(string? message)
         {
             HttpResponseMessage response = await _client.GetAsync("/Course/all-courses");
 
@@ -63,6 +69,8 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             }
 
+            ViewBag.Message = message;
+
             return View(courses);
         }
 
@@ -73,21 +81,24 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             HttpResponseMessage response = await _client.PostAsync(
                 $"/Course/delete-course?id={id}", null);
 
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Error = "Course deleted successfully";
-                return RedirectToAction(nameof(AllCourses));
+                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
             }
             else
             {
-                ViewBag.Error = "Something happend, course is not deleted.";
-                return RedirectToAction(nameof(AllCourses));
+                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
             }
 
         }
 
-        public async Task<IActionResult> CourseDetails(string id)
+        public async Task<IActionResult> CourseDetails(string id, string? message)
         {
+            ViewBag.Message = message;
 
             var courseResponse = await _client.GetAsync($"/Course/get-course?id={id}");
 
@@ -123,12 +134,16 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 .PostAsync($"/Course/add-teacher-to-course?courseId={courseId}&teacherId={model.TeacherName}",
                 null);
 
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(CourseDetails), new { id = courseId });
+                return RedirectToAction(nameof(CourseDetails), new { id = courseId, message = message?.Message });
             }
 
-            return RedirectToAction(nameof(CourseDetails), new { id = courseId });
+            return RedirectToAction(nameof(CourseDetails), new { id = courseId, message = message?.Message });
         }
 
         [HttpPost]
@@ -138,11 +153,21 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             HttpResponseMessage response = await _client
                 .PostAsync($"/Course/remove-teacher-from-course?id={courseId}", null);
 
-            return RedirectToAction(nameof(CourseDetails), new { id = courseId });
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(CourseDetails), new { id = courseId, message = message?.Message });
+            }
+
+            return RedirectToAction(nameof(CourseDetails), new { id = courseId, message = message?.Message });
         }
 
-        public async Task<IActionResult> EditCourse(string id)
+        public async Task<IActionResult> EditCourse(string id, string? message)
         {
+            ViewBag.Message = message;
 
             HttpResponseMessage response = await _client
                 .GetAsync($"/Course/get-course?id={id}");
@@ -159,7 +184,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                     Id = id,
                     Level = course.Level,
                     StartDate = DateTime.ParseExact(
-                        course.StartDate, "dd/MM/yyyy" ,CultureInfo.InvariantCulture),
+                        course.StartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     Title = course.Title
                 };
 
@@ -176,12 +201,16 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             HttpResponseMessage response = await _client
                 .PostAsJsonAsync($"/Course/update-course", model);
 
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(CourseDetails), new { id = model.Id });
+                return RedirectToAction(nameof(CourseDetails), new { id = model.Id, message = message?.Message });
             }
 
-            return RedirectToAction(nameof(EditCourse), new { id = model.Id });
+            return RedirectToAction(nameof(EditCourse), new { id = model.Id, message = message?.Message });
         }
     }
 }

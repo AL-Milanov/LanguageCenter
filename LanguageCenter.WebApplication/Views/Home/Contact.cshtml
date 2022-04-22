@@ -2,15 +2,8 @@
 @model Contact
 
 <h1 class="header-in-center">За нас</h1>
-@if (ViewBag.Message != null)
-{
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        @ViewBag.Message
-        <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">Ok</span>
-        </button>
-    </div>
-}
+
+<partial name="_MessagePartial" />
 
 <div class="about-us-container">
     <div class="about-us-left">

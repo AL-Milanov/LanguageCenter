@@ -1,5 +1,6 @@
 ﻿using LanguageCenter.Core.Models.LanguageModels;
 using LanguageCenter.WebApplication.Helper;
+using LanguageCenter.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,8 +16,10 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
-        public async Task<IActionResult> AllLanguages()
+        public async Task<IActionResult> AllLanguages(string? message)
         {
+            ViewBag.Message = message;
+
             var response = await _client.GetAsync("/Language/all-languages");
 
             var languages = new List<LanguageVM>();
@@ -25,14 +28,15 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             {
                 var result = await response.Content.ReadAsStringAsync();
                 languages = JsonConvert.DeserializeObject<List<LanguageVM>>(result);
-
             }
 
             return View(languages);
         }
 
-        public IActionResult CreateLanguage()
+        public IActionResult CreateLanguage(string? message)
         {
+            ViewBag.Message = message;
+
             return View();
         }
 
@@ -42,12 +46,15 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             var response = await _client.PostAsJsonAsync("/Language/add-language", model);
 
+            var result = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(AllLanguages));
+                return RedirectToAction(nameof(AllLanguages), new { message = message?.Message });
             }
 
-            return View();
+            return View(new { message = message?.Message });
         }
 
         [HttpPost]
@@ -56,12 +63,15 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             var response = await _client
                 .PostAsync($"/Language/delete-language?id={id}", null);
 
+            var result = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(AllLanguages));
+                return RedirectToAction(nameof(AllLanguages), new { message = message?.Message });
             }
 
-            return RedirectToAction(nameof(AllLanguages));
+            return RedirectToAction(nameof(AllLanguages), new { message = message?.Message });
         }
     }
 }
