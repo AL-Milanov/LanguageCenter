@@ -34,5 +34,11 @@ namespace LanguageCenter.WebApplication.Controllers
 
             return View(courses);
         }
+
+        public async Task<IActionResult> GetCourse(string id)
+        {
+
+            return View();
+        }
     }
 }
