@@ -58,7 +58,9 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllCourses(string? message)
         {
-            HttpResponseMessage response = await _client.GetAsync("/Course/all-courses");
+            ViewBag.Message = message;
+
+            HttpResponseMessage response = await _client.GetAsync("/Course/all-active-courses");
 
             var courses = new List<AllCourseVM>();
 
@@ -68,8 +70,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
                 courses = JsonConvert.DeserializeObject<List<AllCourseVM>>(result);
 
             }
-
-            ViewBag.Message = message;
 
             return View(courses);
         }

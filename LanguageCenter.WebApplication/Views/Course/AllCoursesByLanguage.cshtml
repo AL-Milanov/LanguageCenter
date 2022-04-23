@@ -8,14 +8,14 @@
 else
 {
     <div class="row row-cols-2  row-cols-md-3 language-section">
-        <ul class="list-unstyled"  style="align-items:inherit">
+        <ul class="list-unstyled" style="align-items:inherit">
             @foreach (var item in Model)
             {
-                <li class="media language-card" >
+                <li class="media language-card">
                     <img src="~/img/@item.LanguageName" class="mr-3" alt="..." width="256" height="171">
                     <div class="media-body">
                         <h5 class="mt-0 mb-1">@item.Title</h5>
-                        <p class="card-text">@item.Level</p>
+                        <p class="card-text">Ниво: @item.Level</p>
                         <p class="card-text">Започва на : @item.StartDate</p>
                         <a href="/Course/@item.Id" class="btn btn-primary">Повече информация</a>
                     </div>

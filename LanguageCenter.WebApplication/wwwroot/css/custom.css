@@ -80,6 +80,7 @@
 .team-boxed .item {
     display: table-cell;
 }
+
     .team-boxed .item .group {
         text-align: center;
     }
@@ -131,3 +132,13 @@
         .team-boxed .social a:hover {
             opacity: 1;
         }
+
+.language-card {
+    padding:10px;
+    border: groove;
+}
+
+.language-section {
+    padding: 10px;
+    margin-left: 15px;
+}

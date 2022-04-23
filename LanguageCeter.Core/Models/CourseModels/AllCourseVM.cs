@@ -10,7 +10,7 @@ namespace LanguageCenter.Core.Models.CourseModels
 
         public string Level { get; set; }
 
-        [DisplayName("Language Name")]
+        [DisplayName("Language")]
         public string LanguageName { get; set; }
 
         [DisplayName("Start date")]

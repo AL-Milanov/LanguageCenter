@@ -25,6 +25,24 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(courses);
         }
 
+        [HttpGet]
+        [Route("all-active-courses")]
+        public async Task<IActionResult> GetActiveCoursesAsync()
+        {
+            var courses = await _courseService.GetAllActiveAsync();
+
+            return Ok(courses);
+        }
+
+        [HttpGet]
+        [Route("all-courses-by-language")]
+        public async Task<IActionResult> GetCoursesByLanguageAsync([FromQuery] string languageName)
+        {
+            var courses = await _courseService.GetCoursesByLanguageAsync(languageName);
+
+            return Ok(courses);
+        }
+
         [HttpPost]
         [Route("add-course")]
         public async Task<IActionResult> AddCourseAsync(AddCourseVM model)
@@ -66,7 +84,7 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest(new { message = dbEx.Message });
             }
 
-            return Ok(new { message = "Teacher added to course successfully"});
+            return Ok(new { message = "Teacher added to course successfully" });
         }
 
         [HttpPost()]
@@ -82,7 +100,7 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
 
-            return Ok(new { message = "Course deleted successfully" });
+            return Ok(new { message = "Course deleted successfully." });
         }
 
         [HttpGet]
@@ -139,7 +157,7 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest(dbEx.Message);
             }
 
-            return Ok(new {message = "Course updated successfully."});
+            return Ok(new { message = "Course updated successfully." });
         }
     }
 }

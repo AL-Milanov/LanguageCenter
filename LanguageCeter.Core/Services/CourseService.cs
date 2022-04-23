@@ -99,6 +99,7 @@ namespace LanguageCenter.Core.Services
             var courses = await _repo
                 .GetAll<Course>()
                 .Include(c => c.Language)
+                .OrderByDescending(c => c.StartDate)
                 .Select(c => new AllCourseVM
                 {
                     Id = c.Id,
@@ -109,6 +110,46 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
+            return courses;
+        }
+
+        public async Task<ICollection<AllCourseVM>> GetAllActiveAsync()
+        {
+            var courses = await _repo
+                .GetAll<Course>()
+                .Include(c => c.Language)
+                .Where(c => c.EndDate > DateTime.UtcNow)
+                .OrderByDescending(c => c.StartDate)
+                .Select(c => new AllCourseVM
+                {
+                    Id = c.Id,
+                    LanguageName = c.Language.Name + ".png",
+                    Level = c.Level,
+                    Title = c.Title,
+                    StartDate = c.StartDate.ToString("dd/MM/yyyy")
+                })
+                .ToListAsync();
+
+            return courses;
+        }
+
+        public async Task<ICollection<AllCourseVM>> GetCoursesByLanguageAsync(string language)
+        {
+            var courses = await _repo
+                .GetAll<Course>()
+                .Include(c => c.Language)
+                .Where(c => c.EndDate > DateTime.UtcNow)
+                .Where(c => c.Language.Name == language)
+                .OrderByDescending(c => c.StartDate)
+                .Select(c => new AllCourseVM
+                {
+                    Id = c.Id,
+                    LanguageName = c.Language.Name + ".png",
+                    Level = c.Level,
+                    Title = c.Title,
+                    StartDate = c.StartDate.ToString("dd/MM/yyyy")
+                })
+                .ToListAsync();
 
             return courses;
         }
