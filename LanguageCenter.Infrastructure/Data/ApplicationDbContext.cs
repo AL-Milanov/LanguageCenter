@@ -12,8 +12,6 @@ namespace LanguageCenter.Infrastructure.Data
 
         public DbSet<Language> Languages { get; set; }
 
-        public DbSet<Student> Students { get; set; }
-
         public DbSet<Teacher> Teachers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

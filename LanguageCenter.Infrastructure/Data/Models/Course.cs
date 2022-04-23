@@ -39,12 +39,12 @@ namespace LanguageCenter.Infrastructure.Data.Models
         [ForeignKey(nameof(LanguageId))]
         public virtual Language Language { get; set; }
 
-        public ICollection<Student> Students { get; set; }
+        public ICollection<ApplicationUser> Students { get; set; }
 
         public Course()
         {
 
-            Students = new HashSet<Student>();
+            Students = new HashSet<ApplicationUser>();
         }
 
     }

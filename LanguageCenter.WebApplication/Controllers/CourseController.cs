@@ -1,5 +1,6 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.WebApplication.Helper;
+using LanguageCenter.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,8 +16,10 @@ namespace LanguageCenter.WebApplication.Controllers
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string? message)
         {
+            ViewBag.Message = message;
+
             var response = await _client.GetAsync("/Course/all-active-courses");
 
             var result = await response.Content.ReadAsStringAsync();
@@ -37,8 +40,20 @@ namespace LanguageCenter.WebApplication.Controllers
 
         public async Task<IActionResult> GetCourse(string id)
         {
+            var response = await _client.GetAsync($"/Course/get-course?id={id}");
 
-            return View();
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var course = JsonConvert.DeserializeObject<GetCourseVM>(result);
+
+                return View(course);
+            }
+
+            var failed = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(failed);
+
+            return RedirectToAction(nameof(All), new { message = message?.Message});
         }
     }
 }

@@ -20,6 +20,6 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         public DateTime IssueDate { get; set; }
 
-        public double Grage { get; set; }
+        public double Grade { get; set; }
     }
 }

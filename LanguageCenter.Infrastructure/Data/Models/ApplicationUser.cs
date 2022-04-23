@@ -13,5 +13,15 @@ namespace LanguageCenter.Infrastructure.Data.Models
         [Required]
         [StringLength(Constraints.ApplicationUser.LastNameMaxLength)]
         public string LastName { get; set; }
+
+        public virtual ICollection<Course> Courses { get; set; }
+
+        public virtual ICollection<Certificate> Certificates { get; set; }
+
+        public ApplicationUser()
+        {
+            Courses = new List<Course>();
+            Certificates = new List<Certificate>();
+        }
     }
 }

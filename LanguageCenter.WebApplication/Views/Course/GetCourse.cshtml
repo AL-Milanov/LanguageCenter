@@ -1,59 +1,70 @@
 ﻿@model LanguageCenter.Core.Models.CourseModels.GetCourseVM
 
+@{
+    ViewData["language-center"] = "Просвета";
+}
+
 <div>
     <h4>Информация за курс</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            Заглавие на курса:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Level)
+            Ниво на курса
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Level)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DurationInMonths)
+            Продължителност на курса:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DurationInMonths)
+            @Html.DisplayFor(model => model.DurationInMonths) месеца
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Описание на курса:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
+            Начало на курса:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
+            Край на курса:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LanguageName)
+            Език:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LanguageName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TeacherName)
+            Преподавател:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TeacherName)
         </dd>
+        <dt class = "col-sm-2">
+            Сертификат:
+        </dt>
+        <dd class = "col-sm-10">
+            Завършилите успешно курса получават сертификат, издаден от @ViewData["language-center"], който е официален документ, доказващ съответното езиково ниво според изискванията на Общата европейска езикова рамка. За повече информация
+            <a asp-controller="Certificate" asp-action="Index">натиснете тук.</a>
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Запиши се за курса сега.</a>
 </div>

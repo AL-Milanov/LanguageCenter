@@ -1,7 +1,9 @@
 ﻿@using LanguageCenter.Core.Models.CourseModels
 @model List<AllCourseVM>
 
-@if (Model == null)
+<partial name="_MessagePartial"></partial>
+
+@if (Model.Count == 0)
 {
     <h2 style="text-align:center">No current courses available.</h2>
 }
@@ -17,7 +19,7 @@ else
                         <h5 class="mt-0 mb-1">@item.Title</h5><hr />
                         <p class="card-text">@item.Level</p><hr />
                         <p class="card-text">Започва на : @item.StartDate</p><hr />
-                        <a href="/Course/@item.Id" class="btn btn-primary">Повече информация</a>
+                        <a asp-action="GetCourse" asp-route-id="@item.Id" class="btn btn-primary">Повече информация</a>
                     </div>
                 </li>
             }
