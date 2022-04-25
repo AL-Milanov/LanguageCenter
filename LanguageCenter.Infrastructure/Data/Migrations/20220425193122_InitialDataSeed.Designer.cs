@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LanguageCenter.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220425191538_InitialDataSeed")]
+    [Migration("20220425193122_InitialDataSeed")]
     partial class InitialDataSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,10 +204,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "ab32b9ec-6e77-465f-86ff-e9c4a7a296ea",
                             Level = "A1",
-                            StartDate = new DateTime(2022, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 4, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Английски за начинаещи"
                         },
                         new
@@ -216,7 +216,7 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви помогне да развиете вашите езикови познания. Курса се фокусира върху пресъздаване естествената среда на общуване и поставят акцент върху практическата употреба на езика.",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "ab32b9ec-6e77-465f-86ff-e9c4a7a296ea",
                             Level = "B1",
                             StartDate = new DateTime(2022, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -228,7 +228,7 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, се фокусира върху усъвършенстване на вашите езикови уменя, пресъздава естествената среда на общуване и поставят акцент върху практическата употреба на езика.Основната цел на курса е активирането и развиването на четирите основни езикови умения (четене, писане, слушане и говорене).",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "ab32b9ec-6e77-465f-86ff-e9c4a7a296ea",
                             Level = "C1",
                             StartDate = new DateTime(2022, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -240,10 +240,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "8ead3f2d-c261-4aa0-b0cd-ab0b8f4c599a",
                             Level = "A1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 5, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Немски за начинаещи"
                         },
                         new
@@ -252,10 +252,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви помогне да развиете вашите езикови познания. Курса се фокусира върху пресъздаване естествената среда на общуване и поставят акцент върху практическата употреба на езика.",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "8ead3f2d-c261-4aa0-b0cd-ab0b8f4c599a",
                             Level = "B1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 5, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Немски за напреднали"
                         },
                         new
@@ -264,10 +264,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, се фокусира върху усъвършенстване на вашите езикови уменя, пресъздава естествената среда на общуване и поставят акцент върху практическата употреба на езика.Основната цел на курса е активирането и развиването на четирите основни езикови умения (четене, писане, слушане и говорене).",
                             DurationInMonths = (short)5,
-                            EndDate = new DateTime(2022, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "8ead3f2d-c261-4aa0-b0cd-ab0b8f4c599a",
                             Level = "C1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 5, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Професионален немски"
                         },
                         new
@@ -276,10 +276,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "7062a927-849c-4145-8d60-463ca44d72c9",
                             Level = "A1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Италиански за начинаещи"
                         },
                         new
@@ -288,10 +288,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви помогне да развиете вашите езикови познания. Курса се фокусира върху пресъздаване естествената среда на общуване и поставят акцент върху практическата употреба на езика",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "7062a927-849c-4145-8d60-463ca44d72c9",
                             Level = "B1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Италиански за напреднали"
                         },
                         new
@@ -300,10 +300,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, се фокусира върху усъвършенстване на вашите езикови уменя, пресъздава естествената среда на общуване и поставят акцент върху практическата употреба на езика.Основната цел на курса е активирането и развиването на четирите основни езикови умения (четене, писане, слушане и говорене).",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "7062a927-849c-4145-8d60-463ca44d72c9",
                             Level = "C1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Професионален италиански"
                         },
                         new
@@ -312,10 +312,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 11, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "d920c0a9-f0a1-4174-92bd-f2310f65d989",
                             Level = "A1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Испански за начинаещи"
                         },
                         new
@@ -324,10 +324,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви помогне да развиете вашите езикови познания. Курса се фокусира върху пресъздаване естествената среда на общуване и поставят акцент върху практическата употреба на езика.",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "d920c0a9-f0a1-4174-92bd-f2310f65d989",
                             Level = "B1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 6, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Испански за напреднали"
                         },
                         new
@@ -336,10 +336,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, се фокусира върху усъвършенстване на вашите езикови уменя, пресъздава естествената среда на общуване и поставят акцент върху практическата употреба на езика.Основната цел на курса е активирането и развиването на четирите основни езикови умения (четене, писане, слушане и говорене).",
                             DurationInMonths = (short)4,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "d920c0a9-f0a1-4174-92bd-f2310f65d989",
                             Level = "C1",
-                            StartDate = new DateTime(2022, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 6, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Професионален испански"
                         },
                         new
@@ -348,10 +348,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "906c70c9-ba85-45a2-a21e-9e3b1500fb16",
                             Level = "A1",
-                            StartDate = new DateTime(2022, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Френски за начинаещи"
                         },
                         new
@@ -360,10 +360,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, се фокусира върху усъвършенстване на вашите езикови уменя, пресъздава естествената среда на общуване и поставят акцент върху практическата употреба на езика.Основната цел на курса е активирането и развиването на четирите основни езикови умения (четене, писане, слушане и говорене).",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 12, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "906c70c9-ba85-45a2-a21e-9e3b1500fb16",
                             Level = "B1",
-                            StartDate = new DateTime(2022, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Френски за напреднали"
                         },
                         new
@@ -372,7 +372,7 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "906c70c9-ba85-45a2-a21e-9e3b1500fb16",
                             Level = "C1",
                             StartDate = new DateTime(2022, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -384,10 +384,10 @@ namespace LanguageCenter.Infrastructure.Data.Migrations
                             Capacity = (short)12,
                             Description = "Настоящия курс, ще ви даде базови езикови познания. Започвайки с изучаване на азбуката, трите основки групи езикови времена и други базови езикови познания.",
                             DurationInMonths = (short)3,
-                            EndDate = new DateTime(2022, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2022, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LanguageId = "906c70c9-ba85-45a2-a21e-9e3b1500fb16",
                             Level = "C1",
-                            StartDate = new DateTime(2022, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2022, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Професионален френски"
                         });
                 });
