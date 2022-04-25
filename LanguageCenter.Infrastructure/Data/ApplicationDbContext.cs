@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Infrastructure.Data.Models;
+using LanguageCenter.Infrastructure.InitialSeed;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,14 @@ namespace LanguageCenter.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new InitialDbConfiguration<Language>(@"Seed\languages.json"));
+            builder.ApplyConfiguration(new InitialDbConfiguration<Course>(@"Seed\courses.json"));
+
+            base.OnModelCreating(builder);
         }
     }
 }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCenter.Infrastructu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCenter.Core", "LanguageCeter.Core\LanguageCenter.Core.csproj", "{5990734A-9735-4E83-86B1-B950C8BFB641}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCenter.WebApi", "LanguageCenter.WebApi\LanguageCenter.WebApi.csproj", "{B7AC7D3E-879A-4CC7-A23C-5E5083DE4B3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCenter.WebApi", "LanguageCenter.WebApi\LanguageCenter.WebApi.csproj", "{B7AC7D3E-879A-4CC7-A23C-5E5083DE4B3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -27,6 +27,8 @@ namespace LanguageCenter.Infrastructure.Data.Models
 
         public DateTime EndDate { get; set; }
 
+        public short Capacity { get; set; } = Constraints.Course.Capacity;
+
         [StringLength(Constraints.GuidIdLenght)]
         public string TeacherId { get; set; }
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ab32b9ec-6e77-465f-86ff-e9c4a7a296ea",
+    "name": "English",
+    "normalizedName": "ENGLISH"
+  },
+  {
+    "id": "8ead3f2d-c261-4aa0-b0cd-ab0b8f4c599a",
+    "name": "German",
+    "normalizedName": "GERMAN"
+  },
+  {
+    "id": "7062a927-849c-4145-8d60-463ca44d72c9",
+    "name": "Italian",
+    "normalizedName": "ITALIAN"
+  },
+  {
+    "id": "04507fe5-8edf-4348-b7f2-4b78a2136cf8",
+    "name": "Greek",
+    "normalizedName": "GREEK"
+  },
+  {
+    "id": "d920c0a9-f0a1-4174-92bd-f2310f65d989",
+    "name": "Spanish",
+    "normalizedName": "SPANISH"
+  },
+  {
+    "id": "906c70c9-ba85-45a2-a21e-9e3b1500fb16",
+    "name": "French",
+    "normalizedName": "FRENCH"
+  }
+]
