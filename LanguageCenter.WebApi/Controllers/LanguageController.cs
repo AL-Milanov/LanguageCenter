@@ -25,6 +25,11 @@ namespace LanguageCenter.WebApi.Controllers
                 return BadRequest();
             }
 
+            if (await _languageService.Exists(model.Name))
+            {
+                return BadRequest(new { message = "Language already exists." });
+            }
+
             try
             {
                 await _languageService.AddAsync(model);

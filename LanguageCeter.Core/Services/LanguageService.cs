@@ -21,7 +21,8 @@ namespace LanguageCenter.Core.Services
         {
             var language = new Language()
             {
-                Name = model.Name
+                Name = model.Name,
+                NormalizedName = model.Name.ToUpper().Trim(),
             };
 
             try
@@ -45,7 +46,7 @@ namespace LanguageCenter.Core.Services
 
                 await _repo.SaveChangesAsync();
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 throw new ArgumentException("Language is not found!");
             }
@@ -55,6 +56,23 @@ namespace LanguageCenter.Core.Services
             }
 
             return result;
+        }
+
+        public async Task<bool> Exists(string languageName)
+        {
+            var normalizedName = languageName.ToUpper().Trim();
+
+            var exists = false;
+
+            var language = await _repo.GetAll<Language>()
+                .FirstOrDefaultAsync(l => l.NormalizedName == normalizedName);
+
+            if (language != null)
+            {
+                exists = true;
+            }
+
+            return exists;
         }
 
         public async Task<List<SelectListItem>> GetAllAsSelectListAsync()

@@ -14,5 +14,7 @@ namespace LanguageCenter.Core.Services.Contracts
         Task<bool> DeleteAsync(string id);
 
         Task<IEnumerable<SelectListItem>> GetAllTeachersByLanguage(string searchedLanguage);
+
+        Task<bool> Exists(string languageName);
     }
 }

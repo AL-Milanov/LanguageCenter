@@ -13,6 +13,10 @@ namespace LanguageCenter.Infrastructure.Data.Models
         [StringLength(Constraints.Language.LanguageNameLength)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(Constraints.Language.LanguageNameLength)]
+        public string NormalizedName { get; set; }
+
         public virtual ICollection<Teacher> Teachers { get; set; }
 
         public Language()
