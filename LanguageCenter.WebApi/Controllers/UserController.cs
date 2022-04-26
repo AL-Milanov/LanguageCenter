@@ -22,6 +22,7 @@ namespace LanguageCenter.WebApi.Controllers
         {
             try
             {
+
                 var user = await _userService.GetUserDetails(id);
 
                 return Ok(user);
@@ -49,14 +50,39 @@ namespace LanguageCenter.WebApi.Controllers
         {
             try
             {
+
                 var user = await _userService.GetAllUserCourses(id);
 
                 return Ok(user);
             }
             catch (Exception ex)
             {
+
                 return NotFound(new { message = ex.Message });
             }
+        }
+
+        [HttpPost]
+        [Route("join-course")]
+        public async Task<IActionResult> JoinCourseAsync([FromQuery] string userId, [FromQuery] string courseId)
+        {
+            try
+            {
+
+                await _userService.JoinCourse(userId, courseId);
+            }
+            catch (ArgumentNullException arEx)
+            {
+
+                return NotFound(new { message = arEx.Message });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return Ok(new { message = "Успешно се записахте за курса." });
         }
     }
 }

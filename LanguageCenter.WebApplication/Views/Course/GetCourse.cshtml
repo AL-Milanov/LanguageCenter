@@ -1,70 +1,108 @@
-﻿@model LanguageCenter.Core.Models.CourseModels.GetCourseVM
+﻿@using LanguageCenter.Core.Models.CourseModels
+@model JoinCourseVM
 
 @{
     ViewData["language-center"] = "Просвета";
 }
 
+<partial name="_MessagePartial"></partial>
+
 <div>
     <h4>Информация за курс</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Заглавие на курса:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Ниво на курса
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Level)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Продължителност на курса:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DurationInMonths) месеца
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Описание на курса:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Начало на курса:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Край на курса:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Език:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LanguageName)
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Преподавател:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TeacherName)
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrWhiteSpace(Model.TeacherName)) 
+            {
+                @Html.DisplayFor(model => model.TeacherName)
+            }
+            else
+            {
+                <p>Все още няма учител за този курс.</p>
+            }
+            <hr />
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Сертификат:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             Завършилите успешно курса получават сертификат, издаден от @ViewData["language-center"], който е официален документ, доказващ съответното езиково ниво според изискванията на Общата европейска езикова рамка. За повече информация
             <a asp-controller="Certificate" asp-action="Index">натиснете тук.</a>
+            <hr />
+        </dd>
+        <dt class="col-sm-2">
+            Свободни места:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Students / @Model.Capacity
         </dd>
     </dl>
 </div>
-<div>
-    <a class="btn btn-primary" asp-action="Index">Запиши се за курса сега.</a>
-</div>
+<hr />
+@if (Model.IsInCourse)
+{
+    <div class="bottom-margin">
+        <p class="bottom-margin">
+            <strong class="bottom-margin">Вече сте записан за този курс.</strong>
+        </p>
+    </div>
+}
+else
+{
+    <div>
+        <a class="btn btn-primary bottom-margin" asp-controller="Course" asp-action="JoinCourse" asp-route-id="@Model.Id">Запиши се за курса сега.</a>
+    </div>
+}
+

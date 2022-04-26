@@ -61,7 +61,7 @@ namespace LanguageCenter.Core.Services
                 })
                 .FirstOrDefaultAsync();
 
-            Guard.AgainstNull(user);
+            Guard.AgainstNull(user, nameof(user));
 
             return user;
         }
@@ -79,10 +79,39 @@ namespace LanguageCenter.Core.Services
                 })
                 .FirstOrDefaultAsync();
 
-            Guard.AgainstNull(user, nameof(ApplicationUser));
+            Guard.AgainstNull(user, nameof(user));
 
             return user;
         }
 
+        public async Task JoinCourse(string userId, string courseId)
+        {
+            var course = await _repo
+                .GetAll<Course>()
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            var user = await _repo
+                .GetAll<ApplicationUser>()
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            Guard.AgainstNull(course, nameof(course));
+            Guard.AgainstNull(user, nameof(user));
+
+            if (course.Students.Count > course.Capacity)
+            {
+                throw new InvalidOperationException("Няма повече свободни места в курса.");
+            }
+
+            try
+            {
+                course.Students.Add(user);
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new DbUpdateException(ex.Message);
+            }
+        }
     }
 }

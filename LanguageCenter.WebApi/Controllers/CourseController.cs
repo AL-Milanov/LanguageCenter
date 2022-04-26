@@ -105,11 +105,11 @@ namespace LanguageCenter.WebApi.Controllers
 
         [HttpGet]
         [Route("get-course")]
-        public async Task<IActionResult> GetCourseAsync([FromQuery] string id)
+        public async Task<IActionResult> GetCourseAsync([FromQuery] string id, [FromQuery] string userId)
         {
             try
             {
-                var course = await _courseService.GetByIdAsync(id);
+                var course = await _courseService.GetByIdAsync(id, userId);
 
                 return Ok(course);
             }

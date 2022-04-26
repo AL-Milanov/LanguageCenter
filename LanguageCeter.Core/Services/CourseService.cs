@@ -154,22 +154,27 @@ namespace LanguageCenter.Core.Services
             return courses;
         }
 
-        public async Task<GetCourseVM> GetByIdAsync(string id)
+        public async Task<JoinCourseVM> GetByIdAsync(string courseId, string userId)
         {
             var course = await _repo.GetAll<Course>()
                 .Include(c => c.Language)
+                .Include(c => c.Students)
                 .Include(c => c.Teacher)
                 .ThenInclude(c => c.User)
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == courseId)
                 .FirstOrDefaultAsync();
 
+            var user = await _repo.GetAll<ApplicationUser>()
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
             Guard.AgainstNull(course, nameof(course));
+            Guard.AgainstNull(user, nameof(user));
            
             var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
 
-            var courseVM = new GetCourseVM()
+            var courseVM = new JoinCourseVM()
             {
-                Id = id,
+                Id = course.Id,
                 Description = course.Description,
                 DurationInMonths = course.DurationInMonths,
                 LanguageName = course.Language.Name,
@@ -177,7 +182,10 @@ namespace LanguageCenter.Core.Services
                 Title = course.Title,
                 StartDate = course.StartDate.ToString("dd/MM/yyyy"),
                 EndDate = course.EndDate.ToString("dd/MM/yyyy"),
-                TeacherName = teacherFullName
+                TeacherName = teacherFullName,
+                Capacity = course.Capacity,
+                Students = course.Students.Count(),
+                IsInCourse = course.Students.Contains(user)
             };
 
             return courseVM;

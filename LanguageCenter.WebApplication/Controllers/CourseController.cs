@@ -1,8 +1,10 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.WebApplication.Helper;
 using LanguageCenter.WebApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace LanguageCenter.WebApplication.Controllers
 {
@@ -38,22 +40,35 @@ namespace LanguageCenter.WebApplication.Controllers
             return View(courses);
         }
 
-        public async Task<IActionResult> GetCourse(string id)
+        public async Task<IActionResult> GetCourse(string id, string? message)
         {
-            var response = await _client.GetAsync($"/Course/get-course?id={id}");
+            ViewBag.Message = message;
+
+            var response = await _client.GetAsync($"/Course/get-course?id={id}&userId={User.GetId()}");
 
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                var course = JsonConvert.DeserializeObject<GetCourseVM>(result);
+                var course = JsonConvert.DeserializeObject<JoinCourseVM>(result);
 
                 return View(course);
             }
 
             var failed = await response.Content.ReadAsStringAsync();
-            var message = JsonConvert.DeserializeObject<ResponseMessage>(failed);
+            var responseMessage = JsonConvert.DeserializeObject<ResponseMessage>(failed);
 
-            return RedirectToAction(nameof(All), new { message = message?.Message});
+            return RedirectToAction(nameof(All), new { message = responseMessage?.Message });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> JoinCourse(string id)
+        {
+            var response = await _client.PostAsync($"/User/join-course?userId={User?.GetId()}&courseId={id}", null);
+
+            var result = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            return RedirectToAction(nameof(GetCourse), new { id = id, message = message?.Message });
         }
     }
 }

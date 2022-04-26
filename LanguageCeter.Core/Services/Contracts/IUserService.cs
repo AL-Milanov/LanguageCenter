@@ -11,5 +11,7 @@ namespace LanguageCenter.Core.Services.Contracts
         Task<UserDetailsVM> GetUserDetails(string id);
 
         Task<UserCoursesVM> GetAllUserCourses(string id);
+
+        Task JoinCourse(string userId, string courseId);
     }
 }
