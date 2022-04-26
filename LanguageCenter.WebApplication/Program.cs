@@ -1,6 +1,7 @@
 using LanguageCenter.Infrastructure.Data.Common;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add services to the container.
 
 builder.Services.AddDbContexts(builder.Configuration);

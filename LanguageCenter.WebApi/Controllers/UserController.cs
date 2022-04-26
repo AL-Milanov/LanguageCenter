@@ -34,13 +34,29 @@ namespace LanguageCenter.WebApi.Controllers
 
         [HttpGet]
         [Route("get-all-users")]
-        public async Task<IActionResult> GetAll([FromQuery]string id)
+        public async Task<IActionResult> GetAll([FromQuery] string id)
         {
             Expression<Func<ApplicationUser, bool>> search = u => u.Id != id;
 
             var users = await _userService.GetAll(search);
 
             return Ok(users);
+        }
+
+        [HttpGet]
+        [Route("get-user-courses")]
+        public async Task<IActionResult> GetUserCoursesAsync([FromQuery] string id)
+        {
+            try
+            {
+                var user = await _userService.GetAllUserCourses(id);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
     }
 }

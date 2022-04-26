@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
@@ -31,6 +32,38 @@ namespace LanguageCenter.Core.Services
 
             return users;
 
+        }
+
+        public async Task<UserCoursesVM> GetAllUserCourses(string id)
+        {
+            var user = await _repo.GetAll<ApplicationUser>()
+                .Where(u => u.Id == id)
+                .Select(u => new UserCoursesVM
+                {
+                    Id = u.Id,
+                    ActiveCourses = u.Courses
+                        .Where(c => c.EndDate > DateTime.UtcNow)
+                        .Select(c => new CourseName
+                        {
+                            Id=c.Id,
+                            Name = c.Title
+                        })
+                        .ToList(),
+                    PastCourses = u.Courses
+                        .Where(c => c.EndDate < DateTime.UtcNow)
+                        .Select(c => new CourseName
+                        {
+                            Id = c.Id,
+                            Name = c.Title
+                        })
+                        .ToList(),
+
+                })
+                .FirstOrDefaultAsync();
+
+            Guard.AgainstNull(user);
+
+            return user;
         }
 
         public async Task<UserDetailsVM> GetUserDetails(string id)

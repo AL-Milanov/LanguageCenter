@@ -1,0 +1,58 @@
+﻿@page
+@model CourseModel
+@{
+    ViewData["Title"] = "Вашите Курсове";
+    ViewData["ActivePage"] = ManageNavPages.Courses;
+}
+
+<h3>@ViewData["Title"]</h3>
+<div class="container-fluid h-100">
+    <div class="card card-row card-default">
+        <div class="card-header bg-info">
+            <h3 class="card-title">
+                Активни курсове
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="card card-light card-outline">
+                <div class="card-header">
+                    @foreach (var activeCourse in Model.ActiveCourses)
+                    {
+                        @*<h5 class="card-title"></h5>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-tool btn-link">#1</a>
+                            <a href="#" class="btn btn-tool">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </div>*@
+                        <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@activeCourse.Id">@activeCourse.Name</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-row card-success">
+        <div class="card-header">
+            <h3 class="card-title">
+                Завършени курсове
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    @foreach (var pastCourse in Model.PastCourses)
+                    {
+                        @*<h5 class="card-title"></h5>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-tool btn-link">#1</a>
+                            <a href="#" class="btn btn-tool">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </div>*@
+                        <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@pastCourse.Id">@pastCourse.Name</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
