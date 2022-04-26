@@ -1,0 +1,33 @@
+﻿@model LanguageCenter.Core.Models.TeacherModels.TeacherDescriptionVM
+
+@{
+    ViewData["Title"] = "EditDescription";
+}
+
+<h1>EditDescription</h1>
+
+<h4>TeacherDescriptionVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditDescription">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-route-id="@Model.TeacherId" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<a asp-action="AllTeachers">Back to All Teachers</a>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

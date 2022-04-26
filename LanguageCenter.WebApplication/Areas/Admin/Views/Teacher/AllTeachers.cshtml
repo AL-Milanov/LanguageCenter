@@ -50,10 +50,11 @@ else
                         {
                             <a method="post" class="btn btn-success" asp-action="MakeActive" asp-route-id="@item.Id">Make Active</a>
                         }
-                        <partial name="_BackToAdminPanel" />
+                       | <a class="btn btn-warning" asp-action="EditDescription" asp-route-id="@item.Id">Edit Description</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <partial name="_BackToAdminPanel" />
 }

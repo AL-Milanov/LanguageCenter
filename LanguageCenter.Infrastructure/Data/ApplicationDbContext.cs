@@ -22,8 +22,8 @@ namespace LanguageCenter.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new InitialDbConfiguration<Language>(@"C:\Users\Alex95\Desktop\LanguageCenter\LanguageCenter\LanguageCenter.Infrastructure\Seed\languages.json"));
-            builder.ApplyConfiguration(new InitialDbConfiguration<Course>(@"C:\Users\Alex95\Desktop\LanguageCenter\LanguageCenter\LanguageCenter.Infrastructure\Seed\courses.json"));
+            builder.ApplyConfiguration(new InitialDbConfiguration<Language>(@"Seed\languages.json"));
+            builder.ApplyConfiguration(new InitialDbConfiguration<Course>(@"Seed\courses.json"));
 
             base.OnModelCreating(builder);
         }

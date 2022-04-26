@@ -25,6 +25,15 @@ namespace LanguageCenter.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("active-teachers")]
+        public async Task<IActionResult> GetAllActiveTeachers()
+        {
+            var activeTeachers = await _teacherService.GetAllActiveTeachers();
+
+            return Ok(activeTeachers);
+        }
+
+        [HttpGet]
         [Route("get-teacher")]
         public async Task<IActionResult> GetTeacherAsync([FromQuery] string id)
         {
@@ -48,6 +57,20 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(teacherIds);
         }
 
+        [HttpGet]
+        [Route("get-teacher-description")]
+        public async Task<IActionResult> GetTeacherDescription(string id)
+        {
+            try
+            {
+                var teacher = await _teacherService.GetTeacherDescription(id);
+                return Ok(teacher);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
 
         [HttpPost]
         [Route("add-languages-to-teacher")]
@@ -152,13 +175,48 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Teacher successfully made inactive." });
         }
 
-        [HttpGet]
-        [Route("active-teachers")]
-        public async Task<IActionResult> GetAllActiveTeachers()
+        [HttpPost]
+        [Route("admin-edit-description")]
+        public async Task<IActionResult> EditDescriptionAsync(string teacherId, string description)
         {
-            var activeTeachers = await _teacherService.GetAllActiveTeachers();
+            try
+            {
+                await _teacherService.EditDescription(teacherId, description);
+            }
+            catch (ArgumentException arEx)
+            {
+                return NotFound(new { message = arEx.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
 
-            return Ok(activeTeachers);
+            return Ok(new { message = "Description edited successfully" });
+        }
+
+        [HttpPost]
+        [Route("edit-description")]
+        public async Task<IActionResult> EditDescriptionAsync(string teacherId, string userId, string description)
+        {
+            try
+            {
+                await _teacherService.EditDescription(teacherId, userId, description);
+            }
+            catch (ArgumentException arEx)
+            {
+                return NotFound(new { message = arEx.Message });
+            }
+            catch (UnauthorizedAccessException uaEx)
+            {
+                return Unauthorized(new { message = uaEx.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return Ok(new { message = "Description edited successfully" });
         }
     }
 }

@@ -206,5 +206,65 @@ namespace LanguageCenter.Core.Services
 
             return activeTeachers;
         }
+
+        public async Task EditDescription(string teacherId, string userId, string description)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .Where(t => t.IsActive)
+                .FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            Guard.AgainstNull(teacher, nameof(teacher));
+
+            if (teacher.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to edit this description.");
+            }
+
+            try
+            {
+                teacher.Description = description;
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException("Something happend try again!");
+            }
+        }
+
+        public async Task EditDescription(string teacherId, string description)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .Where(t => t.IsActive)
+                .FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            Guard.AgainstNull(teacher, nameof(teacher));
+
+            try
+            {
+                teacher.Description = description;
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException("Something happend try again!");
+            }
+        }
+
+        public async Task<TeacherDescriptionVM> GetTeacherDescription(string teacherId)
+        {
+            var teacher = await _repo.GetAll<Teacher>()
+                .Where(t => t.Id == teacherId)
+                .Select(t => new TeacherDescriptionVM
+                {
+                    Description = t.Description,
+                    TeacherId = t.Id,
+                    UserId = t.UserId
+                })
+                .FirstOrDefaultAsync();
+
+            Guard.AgainstNull(teacher, nameof(Teacher));
+
+            return teacher;
+        }
     }
 }

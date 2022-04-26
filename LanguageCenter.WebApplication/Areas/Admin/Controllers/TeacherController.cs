@@ -150,6 +150,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             return RedirectToAction(nameof(TeacherLanguages), new { id = model.Id, message = message?.Message });
         }
 
+        [HttpPost]
         public async Task<IActionResult> MakeInactive(string id)
         {
 
@@ -167,6 +168,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
         public async Task<IActionResult> MakeActive(string id)
         {
             var response = await _client.PostAsync($"/Teacher/make-teacher-active?id={id}", null);
@@ -180,6 +182,40 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(AllTeachers), new { message = message?.Message });
+        }
+
+        public async Task<IActionResult> EditDescription(string id)
+        {
+            var response = await _client.GetAsync($"Teacher/get-teacher-description?id={id}");
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var teacher = JsonConvert.DeserializeObject<TeacherDescriptionVM>(result);
+
+                return View(teacher);
+            }
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            return RedirectToAction(nameof(AllTeachers), new { message = message?.Message });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditDescription(string id, string description)
+        {
+            var response = await _client.PostAsync($"/Teacher/admin-edit-description?teacherId={id}&description={description}", null);
+
+            var result = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllTeachers), new { message = message?.Message });
+            }
+
+            return View(new { message = message?.Message });
         }
     }
 }

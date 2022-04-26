@@ -20,5 +20,12 @@ namespace LanguageCenter.Core.Services.Contracts
         Task<bool> MakeActive(string id);
 
         Task RemoveLanguagesFromTeacher(string id);
+
+        Task EditDescription(string teacherId, string description);
+
+        Task EditDescription(string teacherId, string userId, string description);
+
+        Task<TeacherDescriptionVM> GetTeacherDescription(string teacherId);
+
     }
 }
