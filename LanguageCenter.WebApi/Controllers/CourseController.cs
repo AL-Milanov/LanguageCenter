@@ -120,6 +120,23 @@ namespace LanguageCenter.WebApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-course-details")]
+        public async Task<IActionResult> GetCourseDetailsAsync([FromQuery] string id)
+        {
+            try
+            {
+                var course = await _courseService.GetDetailsAsync(id);
+
+                return Ok(course);
+            }
+            catch (ArgumentException arEx)
+            {
+                return NotFound(arEx.Message);
+
+            }
+        }
+
         [HttpPost]
         [Route("remove-teacher-from-course")]
         public async Task<IActionResult> RemoveTeacherFromCourseAsync([FromQuery] string id)

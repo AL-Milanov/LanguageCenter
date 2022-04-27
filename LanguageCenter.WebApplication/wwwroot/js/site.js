@@ -29,7 +29,7 @@ function createElement(name) {
     i.classList.add('nav-icon');
 
     let p = document.createElement('p');
-    p.textContent = `Курсове на ${name}`
+    p.textContent = `Курсове по ${name}`
 
     a.appendChild(i);
     a.appendChild(p);

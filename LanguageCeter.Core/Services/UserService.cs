@@ -42,7 +42,7 @@ namespace LanguageCenter.Core.Services
             {
                 Users = users,
                 CurrentPage = page,
-                Page = (int)pageCount
+                Pages = (int)pageCount
             };
 
             return response;

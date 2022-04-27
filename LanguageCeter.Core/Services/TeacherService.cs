@@ -9,6 +9,8 @@ namespace LanguageCenter.Core.Services
 {
     public class TeacherService : ITeacherService
     {
+        private const int _pageResults = 8;
+
         private readonly IApplicationRepository _repo;
 
         public TeacherService(IApplicationRepository repo)
@@ -66,13 +68,17 @@ namespace LanguageCenter.Core.Services
 
         }
 
-        public async Task<ICollection<GetAllTeachersVM>> GetAllTeachers()
+        public async Task<TeacherResponse> GetAllTeachers(int page)
         {
+            var pageCount = Math.Ceiling(await _repo.GetAll<Teacher>().CountAsync() / (double)_pageResults);
+
             var teachers = await _repo
                 .GetAll<Teacher>()
                 .Include(t => t.Languages)
                 .Include(t => t.Courses)
                 .Include(t => t.User)
+                .Skip((page - 1) * _pageResults)
+                .Take(_pageResults)
                 .Select(t => new GetAllTeachersVM
                 {
                     Id = t.Id,
@@ -88,7 +94,14 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
-            return teachers;
+            var response = new TeacherResponse
+            {
+                Teachers = teachers,
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return response;
         }
 
         public async Task<GetTeacherVM> GetTeacher(string id)

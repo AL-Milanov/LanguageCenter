@@ -17,9 +17,9 @@ namespace LanguageCenter.WebApi.Controllers
 
         [HttpGet]
         [Route("get-all-teachers")]
-        public async Task<IActionResult> GetAllTeachersAsync()
+        public async Task<IActionResult> GetAllTeachersAsync(int page)
         {
-            var teachers = await _teacherService.GetAllTeachers();
+            var teachers = await _teacherService.GetAllTeachers(page);
 
             return Ok(teachers);
         }

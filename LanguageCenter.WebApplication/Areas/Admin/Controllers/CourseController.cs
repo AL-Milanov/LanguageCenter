@@ -56,18 +56,18 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             return RedirectToAction(nameof(AddCourse), new { message = message?.Message });
         }
 
-        public async Task<IActionResult> AllCourses(string? message)
+        public async Task<IActionResult> AllCourses(string? message, int page = 1)
         {
             ViewBag.Message = message;
 
-            HttpResponseMessage response = await _client.GetAsync("/Course/all-active-courses");
+            HttpResponseMessage response = await _client.GetAsync($"/Course/all-active-courses?page={page}");
 
-            var courses = new List<AllCourseVM>();
+            var courses = new CourseResponse();
 
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
-                courses = JsonConvert.DeserializeObject<List<AllCourseVM>>(result);
+                courses = JsonConvert.DeserializeObject<CourseResponse>(result);
 
             }
 
@@ -100,7 +100,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
         {
             ViewBag.Message = message;
 
-            var courseResponse = await _client.GetAsync($"/Course/get-course?id={id}");
+            var courseResponse = await _client.GetAsync($"/Course/get-course-details?id={id}");
 
             var course = new GetCourseVM();
 
@@ -170,7 +170,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             ViewBag.Message = message;
 
             HttpResponseMessage response = await _client
-                .GetAsync($"/Course/get-course?id={id}");
+                .GetAsync($"/Course/get-course-details?id={id}");
 
             if (response.IsSuccessStatusCode)
             {

@@ -249,5 +249,35 @@ namespace LanguageCenter.Core.Services
                 throw new DbUpdateException("Problem occurred try again later!");
             }
         }
+
+        public async Task<GetCourseVM> GetDetailsAsync(string courseId)
+        {
+            var course = await _repo.GetAll<Course>()
+                 .Include(c => c.Language)
+                 .Include(c => c.Students)
+                 .Include(c => c.Teacher)
+                 .ThenInclude(c => c.User)
+                 .Where(c => c.Id == courseId)
+                 .FirstOrDefaultAsync();
+
+            Guard.AgainstNull(course, nameof(course));
+
+            var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
+
+            var courseVM = new GetCourseVM()
+            {
+                Id = course.Id,
+                Description = course.Description,
+                DurationInMonths = course.DurationInMonths,
+                LanguageName = course.Language.Name,
+                Level = course.Level,
+                Title = course.Title,
+                StartDate = course.StartDate.ToString("dd/MM/yyyy"),
+                EndDate = course.EndDate.ToString("dd/MM/yyyy"),
+                TeacherName = teacherFullName
+            };
+
+            return courseVM;
+        }
     }
 }

@@ -31,14 +31,14 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
-        public async Task<IActionResult> AllUsers()
+        public async Task<IActionResult> AllUsers(int page = 1)
         {
 
-            var response = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}");
+            var response = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}&page={page}");
 
             var result = await response.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<List<UserVM>>(result);
+            var users = JsonConvert.DeserializeObject<UserResponse>(result);
 
             return View(users);
         }

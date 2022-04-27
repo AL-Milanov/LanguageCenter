@@ -26,7 +26,7 @@ else
         </ul>
     </div>
     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-        <ul class="pagination bottom-margin">
+        <ul class="pagination">
             <li class="paginate_button page-item previous @(Model.CurrentPage == 1 ? "disabled" : "enabled")" id="example2_previous">
                 <a asp-action="All" asp-route-page="@(Model.CurrentPage - 1)" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Предишна страница</a>
             </li>

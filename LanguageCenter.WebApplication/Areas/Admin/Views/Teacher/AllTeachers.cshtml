@@ -1,4 +1,5 @@
-﻿@model IEnumerable<LanguageCenter.Core.Models.TeacherModels.GetAllTeachersVM>
+﻿@using LanguageCenter.Core.Models.TeacherModels
+@model TeacherResponse
 
 <partial name="_MessagePartial" />
 
@@ -6,7 +7,7 @@
     <a asp-action="AddTeacher">Add teacher</a>
 </p>
 
-@if (Model.Count() == 0)
+@if (Model.Teachers.Count() == 0)
 {
     <h2>No teachers yet.</h2>
 }
@@ -16,19 +17,19 @@ else
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FullName)
+                    FullName
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Email)
+                    Email
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
+                    Is Active
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Teachers)
             {
                 <tr>
                     <td>
@@ -50,11 +51,30 @@ else
                         {
                             <a method="post" class="btn btn-success" asp-action="MakeActive" asp-route-id="@item.Id">Make Active</a>
                         }
-                       | <a class="btn btn-warning" asp-action="EditDescription" asp-route-id="@item.Id">Edit Description</a>
+                        | <a class="btn btn-warning" asp-action="EditDescription" asp-route-id="@item.Id">Edit Description</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <partial name="_BackToAdminPanel" />
+
+    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+        <ul class="pagination bottom-margin">
+            <li class="paginate_button page-item previous @(Model.CurrentPage == 1 ? "disabled" : "enabled")" id="example2_previous">
+                <a asp-action="All" asp-route-page="@(Model.CurrentPage - 1)" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Предишна страница</a>
+            </li>
+            @for (var i = 1; i <= Model.Pages; i++)
+            {
+                <li class="paginate_button page-item @(Model.CurrentPage == i ? "active" : "inactive")">
+                    <a asp-action="All" asp-route-page="@i" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+                        @i
+                    </a>
+                </li>
+            }
+            <li class="paginate_button page-item next @(Model.CurrentPage == Model.Pages ? "disabled" : "enabled")" id="example2_next">
+                <a asp-action="All" asp-route-page="@(Model.CurrentPage + 1)" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Следваща страница</a>
+            </li>
+        </ul>
+    </div>
 }
+<partial name="_BackToAdminPanel" />

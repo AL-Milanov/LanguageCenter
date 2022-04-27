@@ -14,6 +14,8 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
 
         Task<JoinCourseVM> GetByIdAsync(string courseId, string userId);
 
+        Task<GetCourseVM> GetDetailsAsync(string courseId);
+
         Task<bool> DeleteAsync(string id);
 
         Task<bool> AddTeacherToCourse(string courseId, string teacherId);

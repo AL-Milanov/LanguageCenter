@@ -21,36 +21,36 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
-        public async Task<IActionResult> AllTeachers(string? message)
+        public async Task<IActionResult> AllTeachers(string? message, int page = 1)
         {
             ViewBag.Message = message;
 
-            var response = await _client.GetAsync("/Teacher/get-all-teachers");
+            var response = await _client.GetAsync($"/Teacher/get-all-teachers?page={page}");
 
             var result = await response.Content.ReadAsStringAsync();
 
-            var teachers = JsonConvert.DeserializeObject<IEnumerable<GetAllTeachersVM>>(result);
+            var teachers = JsonConvert.DeserializeObject<TeacherResponse>(result);
 
             return View(teachers);
         }
 
-        public async Task<IActionResult> AddTeacher()
+        public async Task<IActionResult> AddTeacher(int page = 1)
         {
-            var userResponse = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}");
+            var userResponse = await _client.GetAsync($"/User/get-all-users?id={User.GetId()}&page={page}");
             var userResult = await userResponse.Content.ReadAsStringAsync();
 
-            var users = JsonConvert.DeserializeObject<IEnumerable<UserVM>>(userResult);
+            var users = JsonConvert.DeserializeObject<UserResponse>(userResult);
 
             var teacherResponse = await _client.GetAsync("/Teacher/get-teacher-ids");
             var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
 
             var teachers = JsonConvert.DeserializeObject<ICollection<string>>(teacherResult);
 
-            var usersNotTeacher = users?
+            users?.Users?
                 .Where(u => !teachers.Contains(u.Id))
                 .ToList();
 
-            return View(usersNotTeacher);
+            return View(users);
         }
 
         [HttpPost]
@@ -150,7 +150,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             return RedirectToAction(nameof(TeacherLanguages), new { id = model.Id, message = message?.Message });
         }
 
-        [HttpPost]
         public async Task<IActionResult> MakeInactive(string id)
         {
 
@@ -168,7 +167,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
         }
 
-        [HttpPost]
         public async Task<IActionResult> MakeActive(string id)
         {
             var response = await _client.PostAsync($"/Teacher/make-teacher-active?id={id}", null);
