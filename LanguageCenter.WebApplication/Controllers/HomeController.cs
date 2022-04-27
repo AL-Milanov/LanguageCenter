@@ -42,6 +42,12 @@ namespace LanguageCenter.WebApplication.Controllers
             return View();
         }
 
+        public IActionResult Certificate()
+        {
+            return View();
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

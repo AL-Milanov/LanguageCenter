@@ -1,0 +1,45 @@
+﻿@using LanguageCenter.Core.Models.CourseModels
+@model CourseStudentsVM
+
+@{
+    int number = 1;
+}
+
+<partial name="_MessagePartial"></partial>
+
+<h1>Course title : @Model.Title</h1>
+<hr />
+
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Students</h1>
+    </div>
+
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Student Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@(number + 1)</td>
+                        <td>@student.FullName</td>
+                        <td>@student.Email</td>
+                        <td>
+                            <a class="btn btn-outline-danger" asp-action="RemoveStudentFromCourse" asp-route-courseId="@Model.Id" asp-route-userId="@student.Id">
+                                Remove from course
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

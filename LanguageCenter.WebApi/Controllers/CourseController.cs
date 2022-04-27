@@ -137,6 +137,21 @@ namespace LanguageCenter.WebApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-students-from-course")]
+        public async Task<IActionResult> GetStudentsFromCourseAsync([FromQuery] string id)
+        {
+            try
+            {
+                var course = await _courseService.GetStudentsFromCourseAsync(id);
+                return Ok(course);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound(new { message = "Course is not found!"});
+            }
+        }
+
         [HttpPost]
         [Route("remove-teacher-from-course")]
         public async Task<IActionResult> RemoveTeacherFromCourseAsync([FromQuery] string id)
@@ -175,6 +190,26 @@ namespace LanguageCenter.WebApi.Controllers
             }
 
             return Ok(new { message = "Course updated successfully." });
+        }
+
+        [HttpPost]
+        [Route("remove-student-from-course")]
+        public async Task<IActionResult> RemoveStudentFromCourse(string courseId, string userId)
+        {
+            try
+            {
+                await _courseService.RemoveStudentFromCourseAsync(courseId, userId);
+            }
+            catch (ArgumentException arEx)
+            {
+                return NotFound(new { message = arEx.Message });
+            }
+            catch(DbUpdateException dbEx)
+            {
+                return BadRequest(new { message = dbEx.Message});
+            }
+
+            return Ok(new { message = "User is removed from the course." });
         }
     }
 }

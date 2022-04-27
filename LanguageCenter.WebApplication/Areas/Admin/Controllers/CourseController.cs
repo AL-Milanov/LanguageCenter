@@ -74,28 +74,6 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             return View(courses);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteCourse(string id)
-        {
-
-            HttpResponseMessage response = await _client.PostAsync(
-                $"/Course/delete-course?id={id}", null);
-
-            var result = await response.Content.ReadAsStringAsync();
-
-            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
-            }
-            else
-            {
-                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
-            }
-
-        }
-
         public async Task<IActionResult> CourseDetails(string id, string? message)
         {
             ViewBag.Message = message;
@@ -124,6 +102,47 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             ViewBag.Teachers = teachers;
 
             return View(course);
+        }
+
+        public async Task<IActionResult> CourseStudents(string id, string? message)
+        {
+            ViewBag.Message = message;
+
+            var response = await _client.GetAsync($"/Course/get-students-from-course?id={id}");
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var course = JsonConvert.DeserializeObject<CourseStudentsVM>(result);
+
+                return View(course);
+            }
+
+            var responseMessage = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            return RedirectToAction(nameof(AllCourses), new { message = responseMessage?.Message });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(string id)
+        {
+
+            HttpResponseMessage response = await _client.PostAsync(
+                $"/Course/delete-course?id={id}", null);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
+            }
+            else
+            {
+                return RedirectToAction(nameof(AllCourses), new { message = message?.Message });
+            }
+
         }
 
         [HttpPost]
@@ -211,6 +230,16 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(EditCourse), new { id = model.Id, message = message?.Message });
+        }
+
+        public async Task<IActionResult> RemoveStudentFromCourse(string courseId, string userId)
+        {
+            var response = await _client.PostAsync($"/Course/remove-student-from-course?courseId={courseId}&userId={userId}", null);
+
+            var result = await response.Content.ReadAsStringAsync();
+            var message = JsonConvert.DeserializeObject<ResponseMessage>(result);
+
+            return RedirectToAction(nameof(CourseStudents), new { id = courseId, message = message?.Message });
         }
     }
 }

@@ -282,7 +282,7 @@ namespace LanguageCenter.Core.Services
             return courseVM;
         }
 
-        public Task<CourseStudentsVM> GetStudentsByCourseAsync(string id)
+        public Task<CourseStudentsVM> GetStudentsFromCourseAsync(string id)
         {
             var course = _repo.GetAll<Course>()
                 .Where(c => c.Id == id)

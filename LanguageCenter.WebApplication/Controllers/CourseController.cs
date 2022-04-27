@@ -21,6 +21,7 @@ namespace LanguageCenter.WebApplication.Controllers
         public async Task<IActionResult> All(string? message, int page = 1)
         {
             ViewBag.Message = message;
+            ViewBag.Error = "Трябва да сте логнат потребител за да видите информация за курсовете.";
 
             var response = await _client.GetAsync($"/Course/all-active-courses?page={page}");
 
@@ -44,7 +45,7 @@ namespace LanguageCenter.WebApplication.Controllers
         {
             ViewBag.Message = message;
 
-            var response = await _client.GetAsync($"/Course/get-course?id={id}&userId={User.GetId()}");
+            var response = await _client.GetAsync($"/Course/get-course?id={id}&userId={User?.GetId()}");
 
             if (response.IsSuccessStatusCode)
             {
