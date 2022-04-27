@@ -23,5 +23,9 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
         Task RemoveTeacherFromCourse(string courseId);
 
         Task UpdateCourse(EditCourseInfoVM model);
+
+        Task<CourseStudentsVM> GetStudentsByCourseAsync(string id);
+
+        Task RemoveStudentFromCourseAsync(string courseId, string userId);
     }
 }
