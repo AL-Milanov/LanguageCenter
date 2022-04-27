@@ -10702,6 +10702,7 @@ body,
 
 .layout-boxed .wrapper .main-sidebar {
   left: inherit;
+  position:fixed;
 }
 
 @supports not (-webkit-touch-callout: none) {

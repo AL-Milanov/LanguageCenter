@@ -80,3 +80,8 @@ body {
     display: inline-block;
     margin: 20px;
 }
+
+.custom-text {
+    font-size: 25px;
+    text-align: center;
+}
