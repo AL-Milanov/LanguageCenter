@@ -29,10 +29,10 @@
                 <td>
                     <form asp-action="DeleteLanguage" asp-route-id="@item.Id">
                         <input type="submit" value="Delete" class="btn btn-danger" />
-                        <partial name="_BackToAdminPanel" />
                     </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<partial name="_BackToAdminPanel" />
