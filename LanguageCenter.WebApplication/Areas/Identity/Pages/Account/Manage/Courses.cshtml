@@ -18,7 +18,11 @@
                 <div class="card-header">
                     @foreach (var activeCourse in Model.ActiveCourses)
                     {
-                        <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@activeCourse.Id">@activeCourse.Name</a>
+                        <ul>
+                            <li>
+                                <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@activeCourse.Id">@activeCourse.Name</a>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div>
@@ -35,7 +39,11 @@
                 <div class="card-header">
                     @foreach (var pastCourse in Model.PastCourses)
                     {
-                        <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@pastCourse.Id">@pastCourse.Name</a>
+                        <ul>
+                            <li>
+                                <a asp-area="" asp-controller="Course" asp-action="GetCourse" asp-route-id="@pastCourse.Id">@pastCourse.Name</a>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div>
