@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Common.ExceptionMessages;
 using LanguageCenter.Core.Models.CourseModels;
 using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Core.Services.Contracts;
@@ -123,9 +124,9 @@ namespace LanguageCenter.Core.Services
                 course.Students.Add(user);
                 await _repo.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new DbUpdateException(ex.Message);
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
     }

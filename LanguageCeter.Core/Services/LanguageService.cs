@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Models.LanguageModels;
+﻿using LanguageCenter.Core.Common.ExceptionMessages;
+using LanguageCenter.Core.Models.LanguageModels;
 using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
@@ -32,7 +33,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Language not saved. Try again later.");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
@@ -52,7 +53,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Language not deleted try again later.");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return result;

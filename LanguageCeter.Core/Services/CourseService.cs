@@ -1,5 +1,7 @@
 ﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Common.ExceptionMessages;
 using LanguageCenter.Core.Models.CourseModels;
+using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
 using LanguageCenter.Infrastructure.Services.Contracts;
@@ -47,7 +49,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Something wrong happend! Please try again.");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
         }
@@ -61,7 +63,7 @@ namespace LanguageCenter.Core.Services
                 .FirstOrDefaultAsync(t => t.Id == teacherId);
 
             var result = true;
-            
+
             Guard.AgainstNull(course, nameof(course));
             Guard.AgainstNull(teacher, nameof(teacher));
 
@@ -73,7 +75,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Cannot update db.");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return result;
@@ -90,7 +92,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Problem occurred try again later!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return result;
@@ -183,7 +185,7 @@ namespace LanguageCenter.Core.Services
 
             Guard.AgainstNull(course, nameof(course));
             Guard.AgainstNull(user, nameof(user));
-           
+
             var teacherFullName = course.Teacher?.User?.FirstName + " " + course.Teacher?.User?.LastName ?? null;
 
             var courseVM = new JoinCourseVM()
@@ -220,7 +222,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Problem occurred try again later!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
@@ -246,7 +248,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Problem occurred try again later!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
@@ -278,6 +280,59 @@ namespace LanguageCenter.Core.Services
             };
 
             return courseVM;
+        }
+
+        public Task<CourseStudentsVM> GetStudentsByCourseAsync(string id)
+        {
+            var course = _repo.GetAll<Course>()
+                .Where(c => c.Id == id)
+                .Select(c => new CourseStudentsVM
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Students = c.Students
+                        .Select(s => new UserVM
+                        {
+                            Id = s.Id,
+                            Email = s.Email,
+                            FullName = s.FirstName + " " + s.LastName
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            Guard.AgainstNull(course);
+
+            return course;
+        }
+
+        public async Task RemoveStudentFromCourseAsync(string courseId, string userId)
+        {
+            var course = await _repo.GetAll<Course>()
+                .Include(c => c.Students)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            Guard.AgainstNull(course, nameof(course));
+
+            if (!course.Students.Any(s => s.Id == userId))
+            {
+                throw new ArgumentException("This student is not signed for this course.");
+            }
+            
+            var user = await _repo.GetAll<ApplicationUser>()
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            Guard.AgainstNull(user, nameof(user));
+
+            try
+            {
+                course.Students.Remove(user);
+                await _repo.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException(ExceptionMessage.DbException);
+            }
         }
     }
 }

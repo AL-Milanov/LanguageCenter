@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Common.ExceptionMessages;
 using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
@@ -43,7 +44,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Cannot add languages to teacher try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
@@ -63,7 +64,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Cannot remove languages from teacher, try again.");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
         }
@@ -152,7 +153,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Teacher status is not updated try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return teacher.IsActive;
@@ -175,7 +176,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Something happend try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return result;
@@ -195,7 +196,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Problem occured try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
             return teacher.IsActive;
@@ -240,7 +241,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Something happend try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
@@ -259,7 +260,7 @@ namespace LanguageCenter.Core.Services
             }
             catch (Exception)
             {
-                throw new DbUpdateException("Something happend try again!");
+                throw new DbUpdateException(ExceptionMessage.DbException);
             }
         }
 
