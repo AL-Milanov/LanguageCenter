@@ -3,6 +3,15 @@
 
 <partial name="_MessagePartial"></partial>
 
+@if (!User.Identity.IsAuthenticated)
+{
+    <p>
+        <strong>@ViewBag.Error</strong>
+        <a asp-area="Identity" asp-controller="Account" asp-action="Login">Натиснете тук за да се логнете.</a>
+    </p>
+    <hr />
+}
+
 @if (Model.Courses.Count == 0)
 {
     <h2 style="text-align:center">No current courses available.</h2>
