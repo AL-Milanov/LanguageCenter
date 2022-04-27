@@ -6,7 +6,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
     {
         Task<ICollection<AllCourseVM>> GetAllAsync();
 
-        Task<ICollection<AllCourseVM>> GetAllActiveAsync();
+        Task<CourseResponse> GetAllActiveAsync(int page);
 
         Task<ICollection<AllCourseVM>> GetCoursesByLanguageAsync(string language);
 

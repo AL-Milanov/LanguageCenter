@@ -12,16 +12,24 @@ namespace LanguageCenter.Core.Services
     public class UserService : IUserService
     {
         private readonly IApplicationRepository _repo;
+
+        private const int _pageResults = 8;
+
         public UserService(IApplicationRepository repo)
         {
             _repo = repo;
         }
 
-        public async Task<IEnumerable<UserVM>> GetAll(Expression<Func<ApplicationUser, bool>> search = null)
+        public async Task<UserResponse> GetAll(int page, Expression<Func<ApplicationUser, bool>> search = null)
         {
+
+            var pageCount = Math.Ceiling(await _repo.GetAll<ApplicationUser>().CountAsync() / (double)_pageResults);
+
             var users = await _repo
                 .GetAll<ApplicationUser>()
                 .Where(search)
+                .Skip((page - 1) * _pageResults)
+                .Take(_pageResults)
                 .Select(u => new UserVM
                 {
                     Id = u.Id,
@@ -30,7 +38,14 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
-            return users;
+            var response = new UserResponse
+            {
+                Users = users,
+                CurrentPage = page,
+                Page = (int)pageCount
+            };
+
+            return response;
 
         }
 
@@ -45,7 +60,7 @@ namespace LanguageCenter.Core.Services
                         .Where(c => c.EndDate > DateTime.UtcNow)
                         .Select(c => new CourseName
                         {
-                            Id=c.Id,
+                            Id = c.Id,
                             Name = c.Title
                         })
                         .ToList(),

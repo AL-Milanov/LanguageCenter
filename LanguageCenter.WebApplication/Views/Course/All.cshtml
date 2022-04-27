@@ -1,19 +1,19 @@
 ﻿@using LanguageCenter.Core.Models.CourseModels
-@model List<AllCourseVM>
+@model CourseResponse
 
 <partial name="_MessagePartial"></partial>
 
-@if (Model.Count == 0)
+@if (Model.Courses.Count == 0)
 {
     <h2 style="text-align:center">No current courses available.</h2>
 }
 else
 {
     <div class="row row-cols-2  row-cols-md-3 language-section">
-        <ul class="list-unstyled"  style="align-items:inherit">
-            @foreach (var item in Model)
+        <ul class="list-unstyled" style="align-items:inherit">
+            @foreach (var item in Model.Courses)
             {
-                <li class="media language-card" >
+                <li class="media language-card">
                     <img src="~/img/@item.LanguageName" class="mr-3" alt="..." width="256" height="171">
                     <div class="media-body">
                         <h5 class="mt-0 mb-1">@item.Title</h5><hr />
@@ -23,6 +23,23 @@ else
                     </div>
                 </li>
             }
+        </ul>
+    </div>
+    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+        <ul class="pagination bottom-margin">
+            <li class="paginate_button page-item previous @(Model.CurrentPage == 1 ? "disabled" : "enabled")" id="example2_previous">
+                <a asp-action="All" asp-route-page="@(Model.CurrentPage - 1)" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Предишна страница</a>
+            </li>
+            @for (var i = 1; i <= Model.Pages; i++)
+            {
+                <li class="paginate_button page-item @(Model.CurrentPage == i ? "active" : "inactive")">
+                    <a asp-action="All" asp-route-page="@i" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">
+                        @i
+                    </a>
+                </li>
+            }
+            <li class="paginate_button page-item next @(Model.CurrentPage == Model.Pages ? "disabled" : "enabled")" id="example2_next">
+                <a asp-action="All" asp-route-page="@(Model.CurrentPage + 1)" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Следваща страница</a></li>
         </ul>
     </div>
 }

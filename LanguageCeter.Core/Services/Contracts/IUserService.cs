@@ -6,7 +6,7 @@ namespace LanguageCenter.Core.Services.Contracts
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserVM>> GetAll(Expression<Func<ApplicationUser, bool>> search = null);
+        Task<UserResponse> GetAll(int page, Expression<Func<ApplicationUser, bool>> search = null);
 
         Task<UserDetailsVM> GetUserDetails(string id);
 

@@ -11,6 +11,8 @@ namespace LanguageCenter.Core.Services
     {
         private readonly IApplicationRepository _repo;
 
+        private const int _pageResults = 6;
+
         public CourseService(IApplicationRepository repo)
         {
             _repo = repo;
@@ -113,13 +115,18 @@ namespace LanguageCenter.Core.Services
             return courses;
         }
 
-        public async Task<ICollection<AllCourseVM>> GetAllActiveAsync()
+        public async Task<CourseResponse> GetAllActiveAsync(int page)
         {
+
+            var pageCount = Math.Ceiling(await _repo.GetAll<Course>().CountAsync() / (double)_pageResults);
+
             var courses = await _repo
                 .GetAll<Course>()
                 .Include(c => c.Language)
                 .Where(c => c.EndDate > DateTime.UtcNow)
                 .OrderByDescending(c => c.StartDate)
+                .Skip((page - 1) * _pageResults)
+                .Take(_pageResults)
                 .Select(c => new AllCourseVM
                 {
                     Id = c.Id,
@@ -130,7 +137,14 @@ namespace LanguageCenter.Core.Services
                 })
                 .ToListAsync();
 
-            return courses;
+            var response = new CourseResponse
+            {
+                Courses = courses,
+                CurrentPage = page,
+                Pages = (int)pageCount
+            };
+
+            return response;
         }
 
         public async Task<ICollection<AllCourseVM>> GetCoursesByLanguageAsync(string language)

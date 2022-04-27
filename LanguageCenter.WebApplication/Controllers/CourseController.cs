@@ -18,14 +18,14 @@ namespace LanguageCenter.WebApplication.Controllers
             _client.BaseAddress = new Uri(LanguageCenterApi.uri);
         }
 
-        public async Task<IActionResult> All(string? message)
+        public async Task<IActionResult> All(string? message, int page = 1)
         {
             ViewBag.Message = message;
 
-            var response = await _client.GetAsync("/Course/all-active-courses");
+            var response = await _client.GetAsync($"/Course/all-active-courses?page={page}");
 
             var result = await response.Content.ReadAsStringAsync();
-            var courses = JsonConvert.DeserializeObject<List<AllCourseVM>>(result);
+            var courses = JsonConvert.DeserializeObject<CourseResponse>(result);
 
             return View(courses);
         }

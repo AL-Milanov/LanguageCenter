@@ -27,9 +27,9 @@ namespace LanguageCenter.WebApi.Controllers
 
         [HttpGet]
         [Route("all-active-courses")]
-        public async Task<IActionResult> GetActiveCoursesAsync()
+        public async Task<IActionResult> GetActiveCoursesAsync([FromQuery]int page)
         {
-            var courses = await _courseService.GetAllActiveAsync();
+            var courses = await _courseService.GetAllActiveAsync(page);
 
             return Ok(courses);
         }
