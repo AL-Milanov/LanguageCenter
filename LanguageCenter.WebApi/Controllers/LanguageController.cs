@@ -16,6 +16,15 @@ namespace LanguageCenter.WebApi.Controllers
             _languageService = languageService;
         }
 
+        /// <summary>
+        /// Creates new language
+        /// </summary>
+        /// <param name="model">
+        /// Object with property: (string) name
+        /// </param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("add-language")]
         public async Task<IActionResult> AddLanguageAsync(CreateLanguageVM model)
@@ -42,6 +51,13 @@ namespace LanguageCenter.WebApi.Controllers
             return Created("/add-language", new { message = "Language added successfully." });
         }
 
+        /// <summary>
+        /// Removes specific language.
+        /// </summary>
+        /// <param name="id">Selected language id</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("delete-language")]
         public async Task<IActionResult> DeleteLanguageAsync([FromQuery] string id)
@@ -65,6 +81,13 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Language deleted successfully." });
         }
 
+        /// <summary>
+        /// Get all languages
+        /// </summary>
+        /// <returns>
+        /// Returns collection of objects representing language entity.
+        /// If any problems occured returns message.
+        /// </returns>
         [HttpGet]
         [Route("all-languages")]
         public async Task<IActionResult> AllLanguagesAsync()
@@ -80,6 +103,15 @@ namespace LanguageCenter.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all languages as select list item
+        /// </summary>
+        /// <returns>
+        /// Returns collection of object with:
+        /// 1.Text
+        /// 2.Value
+        /// If any problems occured returns message.
+        /// </returns>
         [HttpGet]
         [Route("all-languages-as-selected-list")]
         public async Task<IActionResult> GetAllAsSelectListAsync()
@@ -96,6 +128,17 @@ namespace LanguageCenter.WebApi.Controllers
 
         }
 
+
+        /// <summary>
+        /// Get all teachers by specific language
+        /// </summary>
+        /// <param name="language">Searched language</param>
+        /// <returns>
+        /// Returns collection of object with:
+        /// 1.Text
+        /// 2.Value
+        /// If any problems occured returns message.
+        /// </returns>
         [HttpGet]
         [Route("all-teachers-by-language")]
         public async Task<IActionResult> GetAllTeachersByLanguage([FromQuery] string language)
