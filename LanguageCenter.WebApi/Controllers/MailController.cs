@@ -14,6 +14,18 @@ namespace LanguageCenter.WebApi.Controllers
             _mailService = mailService;
         }
 
+        /// <summary>
+        /// Sends message to owner email address
+        /// </summary>
+        /// <param name="msg">
+        /// Object with parameters:
+        /// 1.Name (required)
+        /// 2.Email (required)
+        /// 3.Phone number
+        /// 4.Subject
+        /// 5.Content
+        /// </param>
+        /// <returns>Doesnt return result.</returns>
         [HttpPost]
         [Route("send-email")]
         public IActionResult SendMessage(Contact msg)
