@@ -15,6 +15,22 @@ namespace LanguageCenter.WebApi.Controllers
             _teacherService = teacherService;
         }
 
+        /// <summary>
+        /// Get all teachers
+        /// </summary>
+        /// <param name="page">int value for current page</param>
+        /// <returns>
+        /// Returns object with:
+        /// 1.Current page
+        /// 2.Pages
+        /// 3.Collection of teachers which contains:
+        ///  3.1.Teacher id
+        ///  3.2.Full name
+        ///  3.3.Email
+        ///  3.4.Is active
+        ///  3.5.Collection of language names
+        ///  3.6.Collection of course names
+        /// </returns>
         [HttpGet]
         [Route("get-all-teachers")]
         public async Task<IActionResult> GetAllTeachersAsync(int page)
@@ -24,6 +40,14 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(teachers);
         }
 
+        /// <summary>
+        /// Get all currently active teachers
+        /// </summary>
+        /// <returns>
+        /// Returns collection of objects which contains:
+        /// 1.Teacher name
+        /// 2.Teacher description
+        /// </returns>
         [HttpGet]
         [Route("active-teachers")]
         public async Task<IActionResult> GetAllActiveTeachers()
@@ -33,6 +57,14 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(activeTeachers);
         }
 
+        /// <summary>
+        /// Get selected teacher info 
+        /// </summary>
+        /// <param name="id">Selected teacher id</param>
+        /// <returns>
+        /// Returns object representing teacher entity.
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpGet]
         [Route("get-teacher")]
         public async Task<IActionResult> GetTeacherAsync([FromQuery] string id)
@@ -48,6 +80,12 @@ namespace LanguageCenter.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all teachers id
+        /// </summary>
+        /// <returns>
+        /// Returns collection of teachers ids (as strings)
+        /// </returns>
         [HttpGet]
         [Route("get-teacher-ids")]
         public async Task<IActionResult> GetTeachersIdsAsync()
@@ -57,6 +95,15 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(teacherIds);
         }
 
+
+        /// <summary>
+        /// Get teacher description
+        /// </summary>
+        /// <param name="id">Selected teacher id</param>
+        /// <returns>
+        /// Returns object with description, user id and teacher id.
+        /// If teacher is not found returns object with (string)message
+        /// </returns>
         [HttpGet]
         [Route("get-teacher-description")]
         public async Task<IActionResult> GetTeacherDescription(string id)
@@ -72,6 +119,14 @@ namespace LanguageCenter.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds array of languages to selected teacher
+        /// </summary>
+        /// <param name="teacherId">Selected teacher id</param>
+        /// <param name="langauges">Array of objects with string property name</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("add-languages-to-teacher")]
         public async Task<IActionResult> AddLanguagesToTeacherAsync(string teacherId, ICollection<LanguageName> langauges)
@@ -96,6 +151,13 @@ namespace LanguageCenter.WebApi.Controllers
 
         }
 
+        /// <summary>
+        /// Removes all languages from teacher
+        /// </summary>
+        /// <param name="id">Teacher id</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("remove-all-languages-from-teacher")]
         public async Task<IActionResult> RemoveLanguagesFromTeacherAsync(string id)
@@ -119,6 +181,12 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Successfully removed languages from teacher" });
         }
 
+        /// <summary>
+        /// Makes inactive teacher active
+        /// </summary>
+        /// <param name="id">Selected teacher id</param>
+        /// Returns json object which contains (string)message property.
+        /// <returns></returns>
         [HttpPost]
         [Route("make-teacher-active")]
         public async Task<IActionResult> MakeActive(string id)
@@ -139,6 +207,13 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Successfully made teacher active." });
         }
 
+        /// <summary>
+        /// Makes user a teacher
+        /// </summary>
+        /// <param name="userId">Selected user id</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("make-teacher/userId")]
         public async Task<IActionResult> MakeTeacher(string userId)
@@ -155,6 +230,13 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "New teacher added." });
         }
 
+        /// <summary>
+        /// Makes active teacher inactive
+        /// </summary>
+        /// <param name="id">Teacher id</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("make-teacher-inactive")]
         public async Task<IActionResult> MakeInactive(string id)
@@ -175,6 +257,14 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Teacher successfully made inactive." });
         }
 
+        /// <summary>
+        /// Edit teacher description as admin
+        /// </summary>
+        /// <param name="teacherId">Selected teacher id</param>
+        /// <param name="description">Teacher's description</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("admin-edit-description")]
         public async Task<IActionResult> EditDescriptionAsync(string teacherId, string description)
@@ -195,6 +285,15 @@ namespace LanguageCenter.WebApi.Controllers
             return Ok(new { message = "Description edited successfully" });
         }
 
+        /// <summary>
+        /// Edits teacher description. Checks if current user is authorized to edit the description.
+        /// </summary>
+        /// <param name="teacherId">Teacher id</param>
+        /// <param name="userId">Current User id</param>
+        /// <param name="description">Teacher description</param>
+        /// <returns>
+        /// Returns json object which contains (string)message property.
+        /// </returns>
         [HttpPost]
         [Route("edit-description")]
         public async Task<IActionResult> EditDescriptionAsync(string teacherId, string userId, string description)
