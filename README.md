@@ -18,9 +18,11 @@ This projects is made only for education purposes. Its simple web application fo
 
 ## Backend<br/>
     -ASP.NET Core Web API
+    -ASP.NET Core MVC
     -ASP.NET Core Razor Pages
     -Entity Framework
     -MSSQL Server
+    -Newtonsoft.Json
     
  ## Frontend<br/>
     -HTML
