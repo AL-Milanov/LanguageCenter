@@ -16,16 +16,16 @@ This projects is made only for education purposes. Its simple web application fo
     
 # Tech Stack
 
- -Backend__
-    -ASP.NET Core Web API__
-    -ASP.NET Core Razor Pages__
-    -Entity Framework__
-    -MSSQL Server__
+ ##-Backend<br/>
+    -ASP.NET Core Web API<br/>
+    -ASP.NET Core Razor Pages<br/>
+    -Entity Framework<br/>
+    -MSSQL Server<br/>
     
- -Frontend__
-    -HTML__
-    -CSS__
-    -Bootstrap__
-    -Admin.Lte__
-    -Javascript__
-    -Razor pages__
+ ##-Frontend<br/>
+    -HTML<br/>
+    -CSS<br/>
+    -Bootstrap<br/>
+    -Admin.Lte<br/>
+    -Javascript<br/>
+    -Razor pages<br/>
