@@ -16,7 +16,7 @@ This projects is made only for education purposes. Its simple web application fo
     
 # Tech Stack
 
- Markup : * Backend<br/>
+ ## Backend<br/>
     *ASP.NET Core Web API
     *ASP.NET Core Razor Pages
     *Entity Framework
