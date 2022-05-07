@@ -23,7 +23,7 @@ namespace LanguageCenter.Core.Services
         public async Task AddAsync(AddCourseVM model)
         {
             var language = await _repo.GetAll<Language>()
-                .FirstOrDefaultAsync(l => l.Name == model.LanguageName);
+                .FirstOrDefaultAsync(l => l.NormalizedName == model.LanguageName.ToUpper());
 
             Guard.AgainstNull(language, nameof(language));
 
@@ -36,11 +36,11 @@ namespace LanguageCenter.Core.Services
                 LanguageId = language.Id,
                 TeacherId = model.TeacherId,
                 StartDate = model.StartDate,
+                Language = language
             };
 
             course.EndDate = course.StartDate.AddMonths(course.DurationInMonths);
 
-            course.Language = language;
 
             try
             {
@@ -54,15 +54,13 @@ namespace LanguageCenter.Core.Services
 
         }
 
-        public async Task<bool> AddTeacherToCourse(string courseId, string teacherId)
+        public async Task<Course> AddTeacherToCourse(string courseId, string teacherId)
         {
             var course = await _repo.GetAll<Course>()
                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
             var teacher = await _repo.GetAll<Teacher>()
                 .FirstOrDefaultAsync(t => t.Id == teacherId);
-
-            var result = true;
 
             Guard.AgainstNull(course, nameof(course));
             Guard.AgainstNull(teacher, nameof(teacher));
@@ -78,7 +76,7 @@ namespace LanguageCenter.Core.Services
                 throw new DbUpdateException(ExceptionMessage.DbException);
             }
 
-            return result;
+            return course;
         }
 
         public async Task<bool> DeleteAsync(string id)
@@ -155,7 +153,7 @@ namespace LanguageCenter.Core.Services
                 .GetAll<Course>()
                 .Include(c => c.Language)
                 .Where(c => c.EndDate > DateTime.UtcNow)
-                .Where(c => c.Language.Name == language)
+                .Where(c => c.Language.NormalizedName == language.ToUpper())
                 .OrderByDescending(c => c.StartDate)
                 .Select(c => new AllCourseVM
                 {
@@ -256,11 +254,9 @@ namespace LanguageCenter.Core.Services
         {
             var course = await _repo.GetAll<Course>()
                  .Include(c => c.Language)
-                 .Include(c => c.Students)
                  .Include(c => c.Teacher)
                  .ThenInclude(c => c.User)
-                 .Where(c => c.Id == courseId)
-                 .FirstOrDefaultAsync();
+                 .FirstOrDefaultAsync(c => c.Id == courseId);
 
             Guard.AgainstNull(course, nameof(course));
 
@@ -282,10 +278,9 @@ namespace LanguageCenter.Core.Services
             return courseVM;
         }
 
-        public Task<CourseStudentsVM> GetStudentsFromCourseAsync(string id)
+        public async Task<CourseStudentsVM> GetStudentsFromCourseAsync(string id)
         {
-            var course = _repo.GetAll<Course>()
-                .Where(c => c.Id == id)
+            var course = await _repo.GetAll<Course>()
                 .Select(c => new CourseStudentsVM
                 {
                     Id = c.Id,
@@ -299,14 +294,14 @@ namespace LanguageCenter.Core.Services
                         })
                         .ToList()
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            Guard.AgainstNull(course);
+            Guard.AgainstNull(course, nameof(course));
 
             return course;
         }
 
-        public async Task RemoveStudentFromCourseAsync(string courseId, string userId)
+        public async Task<Course> RemoveStudentFromCourseAsync(string courseId, string userId)
         {
             var course = await _repo.GetAll<Course>()
                 .Include(c => c.Students)
@@ -318,7 +313,7 @@ namespace LanguageCenter.Core.Services
             {
                 throw new ArgumentException("This student is not signed for this course.");
             }
-            
+
             var user = await _repo.GetAll<ApplicationUser>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -326,13 +321,17 @@ namespace LanguageCenter.Core.Services
 
             try
             {
-                course.Students.Remove(user);
+                var userToRemove = course.Students.FirstOrDefault(s => s.Id == userId);
+
+                course.Students.Remove(userToRemove);
                 await _repo.SaveChangesAsync();
             }
             catch (Exception)
             {
                 throw new DbUpdateException(ExceptionMessage.DbException);
             }
+
+            return course;
         }
     }
 }

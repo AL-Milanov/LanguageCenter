@@ -1,4 +1,5 @@
 ﻿using LanguageCenter.Core.Models.CourseModels;
+using LanguageCenter.Infrastructure.Data.Models;
 
 namespace LanguageCenter.Infrastructure.Services.Contracts
 {
@@ -18,7 +19,7 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
 
         Task<bool> DeleteAsync(string id);
 
-        Task<bool> AddTeacherToCourse(string courseId, string teacherId);
+        Task<Course> AddTeacherToCourse(string courseId, string teacherId);
 
         Task RemoveTeacherFromCourse(string courseId);
 
@@ -26,6 +27,6 @@ namespace LanguageCenter.Infrastructure.Services.Contracts
 
         Task<CourseStudentsVM> GetStudentsFromCourseAsync(string id);
 
-        Task RemoveStudentFromCourseAsync(string courseId, string userId);
+        Task<Course> RemoveStudentFromCourseAsync(string courseId, string userId);
     }
 }
