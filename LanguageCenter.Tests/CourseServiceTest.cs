@@ -454,7 +454,8 @@ namespace LanguageCenter.Tests
                 await _courseService.UpdateCourse(new EditCourseInfoVM
                 {
                     Id = "invalid"
-                }), "course not found");
+                }), 
+                "course not found");
         }
 
         [Test]
