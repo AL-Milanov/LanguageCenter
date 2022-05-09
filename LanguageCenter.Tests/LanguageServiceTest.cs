@@ -246,6 +246,7 @@ namespace LanguageCenter.Tests
         [Test]
         public async Task GetAllTeachersByLanguage_Success_ReturnsCollection()
         {
+
             var teachersMock = _teachers.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Teacher>())
