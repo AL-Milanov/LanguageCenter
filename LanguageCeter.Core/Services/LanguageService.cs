@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Common.ExceptionMessages;
+﻿using LanguageCenter.Core.Common;
+using LanguageCenter.Core.Common.ExceptionMessages;
 using LanguageCenter.Core.Models.LanguageModels;
 using LanguageCenter.Core.Models.TeacherModels;
 using LanguageCenter.Core.Services.Contracts;
@@ -41,15 +42,15 @@ namespace LanguageCenter.Core.Services
         {
             var result = false;
 
+            var language = await _repo.GetByIdAsync<Language>(id);
+
+            Guard.AgainstNull(language, nameof(language));
+
             try
             {
-                result = await _repo.Delete<Language>(id);
+                result = await _repo.Delete<Language>(language.Id);
 
                 await _repo.SaveChangesAsync();
-            }
-            catch (ArgumentException)
-            {
-                throw new ArgumentException("Language is not found!");
             }
             catch (Exception)
             {
@@ -68,10 +69,7 @@ namespace LanguageCenter.Core.Services
             var language = await _repo.GetAll<Language>()
                 .FirstOrDefaultAsync(l => l.NormalizedName == normalizedName);
 
-            if (language != null)
-            {
-                exists = true;
-            }
+            Guard.AgainstNull(language, nameof(language));
 
             return exists;
         }
