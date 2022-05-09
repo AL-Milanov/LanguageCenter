@@ -64,14 +64,12 @@ namespace LanguageCenter.Core.Services
         {
             var normalizedName = languageName.ToUpper().Trim();
 
-            var exists = false;
-
             var language = await _repo.GetAll<Language>()
                 .FirstOrDefaultAsync(l => l.NormalizedName == normalizedName);
 
             Guard.AgainstNull(language, nameof(language));
 
-            return exists;
+            return true;
         }
 
         public async Task<List<SelectListItem>> GetAllAsSelectListAsync()
@@ -88,7 +86,11 @@ namespace LanguageCenter.Core.Services
 
             foreach (var language in languages)
             {
-                selectListItems.Add(new SelectListItem() { Text = language.Name, Value = language.Name });
+                selectListItems.Add(new SelectListItem() 
+                { 
+                    Text = language.Name,
+                    Value = language.Name 
+                });
             }
 
             return selectListItems;
@@ -109,8 +111,9 @@ namespace LanguageCenter.Core.Services
             return languages;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetAllTeachersByLanguage(string searchedLanguage)
+        public async Task<ICollection<SelectListItem>> GetAllTeachersByLanguage(string searchedLanguage)
         {
+            var normalizedLanguage = searchedLanguage.ToUpper();
 
             var teachers = await _repo
                 .GetAll<Teacher>()
@@ -120,16 +123,17 @@ namespace LanguageCenter.Core.Services
                 {
                     Id = l.Id,
                     FullName = l.User.FirstName + " " + l.User.LastName,
-                    Languages = l.Languages.Select(l => l.Name)
+                    Languages = l.Languages.Select(l => l.NormalizedName)
                 })
-                .Where(t => t.Languages.Contains(searchedLanguage))
+                .Where(t => t.Languages.Contains(normalizedLanguage))
                 .ToListAsync();
 
             var teachersListItems = teachers.Select(t => new SelectListItem
             {
                 Text = t.FullName,
                 Value = t.Id
-            });
+            })
+                .ToList();
 
             return teachersListItems;
         }
