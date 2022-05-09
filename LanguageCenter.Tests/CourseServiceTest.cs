@@ -3,6 +3,7 @@ using LanguageCenter.Core.Models.UserModels;
 using LanguageCenter.Core.Services;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
+using LanguageCenter.Infrastructure.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
@@ -19,33 +20,34 @@ namespace LanguageCenter.Tests
     {
         private const double _pageResults = 6;
 
-        private List<Language> languages;
+        private List<Language> _languages;
 
-        private List<Course> courses;
+        private List<Course> _courses;
 
-        private List<Teacher> teachers;
+        private List<Teacher> _teachers;
 
-        private List<ApplicationUser> users;
+        private List<ApplicationUser> _users;
 
-        private readonly CourseService _courseService;
+        private readonly ICourseService _courseService;
 
-        private readonly Mock<IApplicationRepository> _applicationRepository = new();
+        private readonly Mock<IApplicationRepository> _applicationRepository;
 
         public CourseServiceTest()
         {
-            _courseService = new(_applicationRepository.Object);
+            _applicationRepository = new();
+            _courseService = new CourseService(_applicationRepository.Object);
         }
 
         [SetUp]
         public void Setup()
         {
-            languages = new List<Language>()
+            _languages = new List<Language>()
                 {
                     new Language { Id = "ab32b9ec-6e77-465f-86ff-e9c4a7a296ea", Name = "english", NormalizedName = "ENGLISH"},
                     new Language { Id = "124", Name = "Spanish", NormalizedName = "SPANISH"}
                 };
 
-            courses = new List<Course>()
+            _courses = new List<Course>()
             {
                 new Course
             {
@@ -136,7 +138,7 @@ namespace LanguageCenter.Tests
             }
             };
 
-            teachers = new List<Teacher>()
+            _teachers = new List<Teacher>()
         {
             new Teacher
             {
@@ -152,7 +154,7 @@ namespace LanguageCenter.Tests
             }
         };
 
-            users = new List<ApplicationUser>()
+            _users = new List<ApplicationUser>()
             {
                 new ApplicationUser
                 {
@@ -173,7 +175,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void AddAsync_Throws_IfLanguageNotExist()
         {
-            var languageMock = languages.BuildMock();
+            var languageMock = _languages.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Language>())
                 .Returns(languageMock);
@@ -195,7 +197,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void AddAsync_Throws_IfCourseNotSaved()
         {
-            var languageMock = languages.BuildMock();
+            var languageMock = _languages.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Language>())
                 .Returns(languageMock);
@@ -218,17 +220,8 @@ namespace LanguageCenter.Tests
         }
 
         [Test]
-        public void AddAsync_Success_WithCorrectDate()
+        public void AddAsync_Success_WithCorrectData()
         {
-            var languageMock = languages.BuildMock();
-            var courseMock = courses.BuildMock();
-
-            _applicationRepository.Setup(x => x.GetAll<Language>())
-                .Returns(languageMock);
-
-            _applicationRepository.Setup(x => x.GetAll<Course>())
-                .Returns(courseMock);
-
             var valid = new AddCourseVM()
             {
                 Description = "long and valid description",
@@ -240,17 +233,45 @@ namespace LanguageCenter.Tests
                 TeacherId = null,
             };
 
+            _courses.Add(new Course
+            {
+                Id = "valid-id",
+                Description = valid.Description,
+                DurationInMonths = valid.DurationInMonths,
+                Level = valid.Level,
+                Title = valid.Title,
+                Language = new Language()
+                {
+                    Name = _languages[0].Name,
+                    NormalizedName = _languages[0].NormalizedName,
+                    Id = _languages[0].Id,
+                },
+                Capacity = 12,
+                StartDate = DateTime.UtcNow,
+                EndDate = valid.StartDate.AddMonths(valid.DurationInMonths),
+                LanguageId = _languages[0].Id
+            });
+
+            var languageMock = _languages.BuildMock();
+            var courseMock = _courses.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Language>())
+                .Returns(languageMock);
+
+            _applicationRepository.Setup(x => x.GetAll<Course>())
+                .Returns(courseMock);
+
             Task.FromResult(_courseService.AddAsync(valid));
             var coursesResult = _courseService.GetAllAsync().Result;
 
-            Assert.AreEqual(courses.Count, coursesResult.Count);
+            Assert.AreEqual(_courses.Count, coursesResult.Count);
         }
 
         [Test]
         public void AddTeacherToCourse_Throws_IfCourseOrTeacherNotExists()
         {
-            var courseMock = courses.BuildMock();
-            var teacherMock = teachers.BuildMock();
+            var courseMock = _courses.BuildMock();
+            var teacherMock = _teachers.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(courseMock);
@@ -267,8 +288,8 @@ namespace LanguageCenter.Tests
         [Test]
         public void AddTeacherToCourse_Success()
         {
-            var courseMock = courses.BuildMock();
-            var teacherMock = teachers.BuildMock();
+            var courseMock = _courses.BuildMock();
+            var teacherMock = _teachers.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(courseMock);
@@ -276,9 +297,9 @@ namespace LanguageCenter.Tests
             _applicationRepository.Setup(x => x.GetAll<Teacher>())
                 .Returns(teacherMock);
 
-            var course = _courseService.AddTeacherToCourse(courses[0].Id, teachers[0].Id).Result;
+            var course = _courseService.AddTeacherToCourse(_courses[0].Id, _teachers[0].Id).Result;
 
-            Assert.AreEqual(teachers[0], course.Teacher);
+            Assert.AreEqual(_teachers[0], course.Teacher);
         }
 
         [Test]
@@ -305,7 +326,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetAll_Success()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -330,23 +351,23 @@ namespace LanguageCenter.Tests
             Assert.AreEqual(expected[0].StartDate, actual[0].StartDate);
             Assert.AreEqual(expected[0].LanguageName, actual[0].LanguageName);
 
-            Assert.AreEqual(courses.Count, actual.Count);
+            Assert.AreEqual(_courses.Count, actual.Count);
         }
 
         [Test]
         public void GetAllActiveAsync_Success()
         {
             var currentPage = 1;
-            var pageCount = Math.Ceiling(courses.Count / _pageResults);
+            var pageCount = Math.Ceiling(_courses.Count / _pageResults);
 
-            var courseMock = courses.BuildMock();
+            var courseMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(courseMock);
 
             var actual = _courseService.GetAllActiveAsync(currentPage).Result;
 
-            Assert.AreNotEqual(courses.Count, actual.Courses.Count);
+            Assert.AreNotEqual(_courses.Count, actual.Courses.Count);
 
             Assert.AreEqual(currentPage, actual.CurrentPage);
             Assert.AreEqual(pageCount, actual.Pages);
@@ -355,7 +376,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetCoursesByLanguageAsync_SpanishCourses_ShouldReturnEmptyCollection()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -370,7 +391,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetCoursesByLanguageAsync_EnglishCourses_ShouldCollection()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -385,7 +406,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveTeacherFromCourse_Throws_IfCourseNotFound()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -397,7 +418,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveTeacherFromCourse_Throws_IfNotSaved()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -412,7 +433,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveTeacherFromCourse_Success()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -424,7 +445,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void UpdateCourse_Throws_IfCourseNotFound()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -439,7 +460,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void UpdateCourse_Throws_IfNotSaved()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -463,7 +484,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void UpdateCourse_Success()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -485,17 +506,17 @@ namespace LanguageCenter.Tests
             })
             .Wait();
 
-            Assert.AreEqual(newTitle, courses[0].Title);
-            Assert.AreEqual(newDescription, courses[0].Description);
-            Assert.AreEqual(newDuration, courses[0].DurationInMonths);
-            Assert.AreEqual(newLevel, courses[0].Level);
-            Assert.AreEqual(newStartDate, courses[0].StartDate);
+            Assert.AreEqual(newTitle, _courses[0].Title);
+            Assert.AreEqual(newDescription, _courses[0].Description);
+            Assert.AreEqual(newDuration, _courses[0].DurationInMonths);
+            Assert.AreEqual(newLevel, _courses[0].Level);
+            Assert.AreEqual(newStartDate, _courses[0].StartDate);
         }
 
         [Test]
         public void GetDetailsAsync_Throws_IfCourseNotFound()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -507,7 +528,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetDetailsAsync_Success_ReturnsCourseModel()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -515,18 +536,18 @@ namespace LanguageCenter.Tests
 
             var expected = new GetCourseVM()
             {
-                Id = courses[0].Id,
-                Description = courses[0].Description,
-                DurationInMonths = courses[0].DurationInMonths,
-                LanguageName = courses[0].Language.Name,
-                Level = courses[0].Level,
-                Title = courses[0].Title,
-                StartDate = courses[0].StartDate.ToString("dd/MM/yyyy"),
-                EndDate = courses[0].EndDate.ToString("dd/MM/yyyy"),
+                Id = _courses[0].Id,
+                Description = _courses[0].Description,
+                DurationInMonths = _courses[0].DurationInMonths,
+                LanguageName = _courses[0].Language.Name,
+                Level = _courses[0].Level,
+                Title = _courses[0].Title,
+                StartDate = _courses[0].StartDate.ToString("dd/MM/yyyy"),
+                EndDate = _courses[0].EndDate.ToString("dd/MM/yyyy"),
                 TeacherName = "Alexander Milanov"
             };
 
-            var actual = _courseService.GetDetailsAsync(courses[0].Id).Result;
+            var actual = _courseService.GetDetailsAsync(_courses[0].Id).Result;
 
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual(expected.Description, actual.Description);
@@ -542,7 +563,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetStudentsFromCourseAsync_Throws_IfCourseIsNotFound()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -555,21 +576,21 @@ namespace LanguageCenter.Tests
         [Test]
         public void GetStudentsFromCourseAsync_Success_ReturnsCourse()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
 
             var actual = _courseService.GetStudentsFromCourseAsync("valid-course").Result;
 
-            Assert.AreEqual(courses[0].Students.Count, actual.Students.Count);
-            Assert.AreEqual(courses[0].Id, actual.Id);
+            Assert.AreEqual(_courses[0].Students.Count, actual.Students.Count);
+            Assert.AreEqual(_courses[0].Id, actual.Id);
         }
 
         [Test]
         public void RemoveStudentFromCourseAsync_Throws_IfCourseNotFound()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -581,7 +602,7 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveStudentFromCourseAsync_Throws_IfStudentIsNotInCourse()
         {
-            var coursesMock = courses.BuildMock();
+            var coursesMock = _courses.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -594,8 +615,8 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveStudentFromCourseAsync_Throws_IfStudentNotFound()
         {
-            var coursesMock = courses.BuildMock();
-            var usersMock = users.BuildMock();
+            var coursesMock = _courses.BuildMock();
+            var usersMock = _users.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -609,8 +630,8 @@ namespace LanguageCenter.Tests
         [Test]
         public void RemoveStudentFromCourseAsync_Success()
         {
-            var coursesMock = courses.BuildMock();
-            var usersMock = users.BuildMock();
+            var coursesMock = _courses.BuildMock();
+            var usersMock = _users.BuildMock();
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
@@ -618,12 +639,12 @@ namespace LanguageCenter.Tests
             _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
                 .Returns(usersMock);
 
-            var expected = courses[0].Students.Count - 1;
+            var expected = _courses[0].Students.Count - 1;
 
-            var actual = _courseService?.RemoveStudentFromCourseAsync(courses[0].Id, users[0].Id).Result;
+            var actual = _courseService?.RemoveStudentFromCourseAsync(_courses[0].Id, _users[0].Id).Result;
 
             Assert.AreEqual(expected, actual?.Students.Count);
-            Assert.IsNull(actual?.Students.FirstOrDefault(s => s.Id == users[0].Id));
+            Assert.IsNull(actual?.Students.FirstOrDefault(s => s.Id == _users[0].Id));
         }
     }
 }
