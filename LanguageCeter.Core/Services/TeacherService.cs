@@ -23,7 +23,7 @@ namespace LanguageCenter.Core.Services
         {
             var languages = await _repo
                 .GetAll<Language>()
-                .Where(language => languagesNames.Contains(language.Name))
+                .Where(language => languagesNames.Contains(language.NormalizedName))
                 .ToListAsync();
 
             var teacher = await _repo.GetAll<Teacher>()

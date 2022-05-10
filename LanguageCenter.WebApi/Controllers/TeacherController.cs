@@ -134,7 +134,7 @@ namespace LanguageCenter.WebApi.Controllers
             try
             {
                 var langaugeNames = langauges?
-                    .Select(l => l.Name)
+                    .Select(l => l.Name.ToUpper())
                     .ToList();
 
                 await _teacherService.AddLanguagesToTeacher(teacherId, langaugeNames);
