@@ -1,4 +1,5 @@
-﻿using LanguageCenter.Core.Services;
+﻿using LanguageCenter.Core.Models.TeacherModels;
+using LanguageCenter.Core.Services;
 using LanguageCenter.Core.Services.Contracts;
 using LanguageCenter.Infrastructure.Data.Models;
 using LanguageCenter.Infrastructure.Data.Repository.Contracts;
@@ -17,7 +18,7 @@ namespace LanguageCenter.Tests
     [TestFixture]
     internal class TeacherServiceTest
     {
-        private const string teacherNotFound = "teacher not found.";
+        private const string _teacherNotFound = "teacher not found.";
 
         private const int _page = 1;
 
@@ -100,14 +101,16 @@ namespace LanguageCenter.Tests
                     Languages = new List<Language>()
                     {
                         english
-                    }
+                    },
+                    IsActive = true,
                 },
                 new Teacher()
                 {
                     Id = "2",
                     UserId = user2.Id,
                     User = user2,
-                    Languages = new List<Language>()
+                    Languages = new List<Language>(),
+                    IsActive = false,
                 }
             };
         }
@@ -128,7 +131,7 @@ namespace LanguageCenter.Tests
                     "invalid",
                     new List<string>()));
 
-            Assert.AreEqual(teacherNotFound, ex?.Message);
+            Assert.AreEqual(_teacherNotFound, ex?.Message);
         }
 
         [Test]
@@ -173,7 +176,7 @@ namespace LanguageCenter.Tests
 
             var ex = Assert.CatchAsync<ArgumentException>(async () =>
                 await _teacherService.RemoveLanguagesFromTeacher("invalid"));
-            Assert.AreEqual(teacherNotFound, ex?.Message);
+            Assert.AreEqual(_teacherNotFound, ex?.Message);
         }
 
         [Test]
@@ -204,6 +207,269 @@ namespace LanguageCenter.Tests
 
             CollectionAssert.IsNotEmpty(actual.Teachers);
             CollectionAssert.IsEmpty(empty.Teachers);
+        }
+
+        [Test]
+        public void GetTeacher_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.GetTeacher("invalid"));
+
+            Assert.AreEqual(_teacherNotFound, ex?.Message);
+        }
+
+        [Test]
+        public async Task GetTeacher_Success_ReturnsTeacher()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var actual = await _teacherService.GetTeacher(_teachers[0].Id);
+
+            Assert.NotNull(actual);
+            Assert.AreEqual(_teachers[0].Id, actual.Id);
+        }
+
+        [Test]
+        public async Task GetTeachersId_Success_ReturnsCollection()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var actual = (List<string>)await _teacherService.GetTeachersId();
+
+            CollectionAssert.AllItemsAreInstancesOfType(actual, typeof(string));
+            CollectionAssert.IsNotEmpty(actual);
+
+            for (int i = 0; i < actual.Count; i++)
+            {
+                Assert.AreEqual(_teachers[i].UserId, actual[i]);
+            }
+        }
+
+        [Test]
+        public void MakeActive_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.MakeActive("not-existing"));
+
+            Assert.AreEqual(_teacherNotFound, ex?.Message);
+        }
+
+        [Test]
+        public async Task MakeActive_Success()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
+            var before = _teachers[1].IsActive;
+
+            var actual = await _teacherService.MakeActive(_teachers[1].Id);
+
+            Assert.AreNotEqual(before, actual);
+        }
+
+        [Test]
+        public void MakeInactive_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.MakeInactive("not-existing"));
+
+            Assert.AreEqual(_teacherNotFound, ex?.Message);
+        }
+
+        [Test]
+        public async Task MakeInactive_Success()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
+            var before = _teachers[0].IsActive;
+
+            var actual = await _teacherService.MakeInactive(_teachers[0].Id);
+
+            Assert.AreNotEqual(before, actual);
+        }
+
+        [Test]
+        public void MakeTeacher_Throws_IfUserNotFound()
+        {
+            ApplicationUser user = null;
+
+            _applicationRepository.Setup(x => x.GetByIdAsync<ApplicationUser>(It.IsAny<string>()))
+                .Returns(Task.FromResult(user));
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.MakeTeacher("not-existing"));
+
+            Assert.AreEqual("user not found.", ex?.Message);
+        }
+
+        [Test]
+        public async Task MakeTeacher_Success()
+        {
+
+            var userNotTeacher = new ApplicationUser()
+            {
+                Id = "valid-id",
+                FirstName = "Valid",
+                LastName = "User",
+                Email = "validuser@gmail.com"
+            };
+
+            _users.Add(userNotTeacher);
+
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetByIdAsync<ApplicationUser>(It.IsAny<string>()))
+                .Returns(Task.FromResult(userNotTeacher));
+
+            var expected = true;
+
+            var actual = await _teacherService.MakeTeacher(userNotTeacher.Id);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public async Task GetAllActiveTeachers_ReturnsCollection()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var actual = await _teacherService.GetAllActiveTeachers();
+
+            Assert.AreNotEqual(_teachers.Count, actual.Count);
+        }
+
+        [Test]
+        public void EditDescription_AsUser_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.EditDescription(_teachers[1].Id, _teachers[1].UserId, "new description"));
+
+        }
+
+        [Test]
+        public void EditDescription_AsUser_Throws_IfUserIsNotTeacher()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            Assert.CatchAsync<UnauthorizedAccessException>(async () =>
+                await _teacherService.EditDescription(_teachers[0].Id, _teachers[1].UserId, "new description"));
+
+        }
+
+        [Test]
+        public async Task EditDescription_AsUser_Success()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
+            var newDescription = "changed description";
+
+            await _teacherService.EditDescription(_teachers[0].Id, _teachers[0].UserId, newDescription);
+
+            Assert.AreEqual(newDescription, _teachers[0].Description);
+        }
+
+        [Test]
+        public void EditDescription_AsAdmin_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            Assert.CatchAsync<ArgumentException>(async () =>
+                await _teacherService.EditDescription(_teachers[1].Id, "new description"));
+
+        }
+
+        [Test]
+        public async Task EditDescription_AsAdmin_Success()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
+            var newDescription = "changed description as admin";
+
+            await _teacherService.EditDescription(_teachers[0].Id, newDescription);
+
+            Assert.AreEqual(newDescription, _teachers[0].Description);
+        }
+
+        [Test]
+        public void GetTeacherDescription_Throws_IfTeacherNotFound()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            Assert.CatchAsync<ArgumentException>(async () => 
+                await _teacherService.GetTeacherDescription("not-existing"));
+        }
+
+        [Test]
+        public async Task GetTeacherDescription_Success()
+        {
+            var teacherMock = _teachers.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Teacher>())
+                .Returns(teacherMock);
+
+            var actual = await _teacherService.GetTeacherDescription(_teachers[0].Id);
+
+            Assert.IsAssignableFrom<TeacherDescriptionVM>(actual);
+            Assert.AreEqual(_teachers[0].Id, actual.TeacherId);
         }
     }
 }
