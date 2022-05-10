@@ -41,7 +41,7 @@ namespace LanguageCenter.WebApplication.Areas.Admin.Controllers
 
             var users = JsonConvert.DeserializeObject<UserResponse>(userResult);
 
-            var teacherResponse = await _client.GetAsync("/Teacher/get-teacher-ids");
+            var teacherResponse = await _client.GetAsync("/Teacher/get-teachers-id");
             var teacherResult = await teacherResponse.Content.ReadAsStringAsync();
 
             var teachers = JsonConvert.DeserializeObject<ICollection<string>>(teacherResult);

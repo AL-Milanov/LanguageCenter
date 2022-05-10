@@ -87,7 +87,7 @@ namespace LanguageCenter.WebApi.Controllers
         /// Returns collection of teachers ids (as strings)
         /// </returns>
         [HttpGet]
-        [Route("get-teacher-ids")]
+        [Route("get-teachers-id")]
         public async Task<IActionResult> GetTeachersIdsAsync()
         {
             var teacherIds = await _teacherService.GetTeachersId();

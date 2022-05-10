@@ -159,29 +159,6 @@ namespace LanguageCenter.Core.Services
             return teacher.IsActive;
         }
 
-        public async Task<bool> MakeTeacher(string id)
-        {
-            var teacher = new Teacher()
-            {
-                UserId = id
-            };
-
-            var result = false;
-
-            try
-            {
-                await _repo.AddAsync(teacher);
-                await _repo.SaveChangesAsync();
-                result = true;
-            }
-            catch (Exception)
-            {
-                throw new DbUpdateException(ExceptionMessage.DbException);
-            }
-
-            return result;
-        }
-
         public async Task<bool> MakeInactive(string id)
         {
             var teacher = await _repo.GetAll<Teacher>()
@@ -200,6 +177,33 @@ namespace LanguageCenter.Core.Services
             }
 
             return teacher.IsActive;
+        }
+
+        public async Task<bool> MakeTeacher(string id)
+        {
+
+            var user = await _repo.GetByIdAsync<ApplicationUser>(id);
+
+            Guard.AgainstNull(user, nameof(user));
+
+            var teacher = new Teacher()
+            {
+                UserId = user.Id,
+                User = user,
+            };
+
+            try
+            {
+                await _repo.AddAsync(teacher);
+                await _repo.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new DbUpdateException(ExceptionMessage.DbException);
+            }
+
         }
 
         public async Task<ICollection<MeetTeachersVM>> GetAllActiveTeachers()
