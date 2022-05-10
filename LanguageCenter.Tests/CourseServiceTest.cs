@@ -297,16 +297,24 @@ namespace LanguageCenter.Tests
             _applicationRepository.Setup(x => x.GetAll<Teacher>())
                 .Returns(teacherMock);
 
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
             var course = _courseService.AddTeacherToCourse(_courses[0].Id, _teachers[0].Id).Result;
 
             Assert.AreEqual(_teachers[0], course.Teacher);
         }
 
         [Test]
-        public void DeleteAsync_Throws_IfCantRemove()
+        public async Task DeleteAsync_Throws_IfCantRemove()
         {
+            _applicationRepository.Setup(x => x.Delete<Course>(It.IsAny<string>()))
+                .Returns(Task.FromResult(false));
 
-            var result = _courseService.DeleteAsync("valid-course").Result;
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
+            var result = await _courseService.DeleteAsync("valid-course");
 
             Assert.AreEqual(false, result);
         }
@@ -317,6 +325,8 @@ namespace LanguageCenter.Tests
 
             _applicationRepository.Setup(x => x.Delete<Course>("valid-course"))
                 .Returns(Task.FromResult(true));
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
 
             var result = _courseService.DeleteAsync("valid-course").Result;
 
@@ -438,6 +448,9 @@ namespace LanguageCenter.Tests
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
 
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
             Assert.DoesNotThrowAsync(async () =>
                 await _courseService.RemoveTeacherFromCourse("valid-course"));
         }
@@ -489,6 +502,9 @@ namespace LanguageCenter.Tests
 
             _applicationRepository.Setup(x => x.GetAll<Course>())
                 .Returns(coursesMock);
+
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
 
             var newTitle = "Brand new Title";
             var newDescription = "Brand new Description";
@@ -639,6 +655,9 @@ namespace LanguageCenter.Tests
 
             _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
                 .Returns(usersMock);
+
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
 
             var expected = _courses[0].Students.Count - 1;
 

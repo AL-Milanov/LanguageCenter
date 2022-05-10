@@ -171,6 +171,9 @@ namespace LanguageCenter.Tests
             _applicationRepository.Setup(x => x.Delete<Language>(It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
 
+            _applicationRepository.Setup(x => x.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
+
             var result = await _languageService.DeleteAsync(languageToRemove.Id);
 
             Assert.AreEqual(true, result);
