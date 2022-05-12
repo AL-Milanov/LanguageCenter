@@ -16,6 +16,7 @@ namespace LanguageCenter.Tests
     [TestFixture]
     internal class UserServiceTest
     {
+        private const string _userNotFound = "user not found.";
 
         private List<ApplicationUser> _users;
 
@@ -81,7 +82,26 @@ namespace LanguageCenter.Tests
                 user3
             };
 
-
+            _courses = new()
+            {
+                new Course
+                {
+                    Id = "full-course",
+                    Title = "Английски за начинаещи",
+                    EndDate = DateTime.Now,
+                    Capacity = 1,
+                    Students = new List<ApplicationUser>()
+                    {
+                        user1
+                    }
+                },
+                new Course
+                {
+                    Id = "inactive-valid-course",
+                    Title = "Английски за начинаещи",
+                    EndDate = DateTime.Parse("11/11/2021")
+                }
+            };
         }
 
 
@@ -111,7 +131,7 @@ namespace LanguageCenter.Tests
             var ex = Assert.CatchAsync<ArgumentException>(async () =>
                 await _userService.GetAllUserCourses("invalid"));
 
-            Assert.AreEqual("user not found.", ex?.Message);
+            Assert.AreEqual(_userNotFound, ex?.Message);
         }
 
         [Test]
@@ -127,6 +147,108 @@ namespace LanguageCenter.Tests
             Assert.AreEqual(_users[0].Id, actual.Id);
             CollectionAssert.IsNotEmpty(actual.ActiveCourses);
             CollectionAssert.IsNotEmpty(actual.PastCourses);
+        }
+
+        [Test]
+        public void GetUserDetails_Throws_IfUserNotFound()
+        {
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _userService.GetUserDetails("not-existing"));
+
+            Assert.AreEqual(_userNotFound, ex?.Message);
+        }
+
+        [Test]
+        public async Task GetUserDetail_Success_ReturnsUser()
+        {
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            var expected = _users[0];
+
+            var expectedFullName = expected.FirstName + " " + expected.LastName;
+
+            var actual = await _userService.GetUserDetails(_users[0].Id);
+
+
+            Assert.AreEqual(expected.Id, actual.Id);
+            Assert.AreEqual(expectedFullName, actual.FullName);
+            Assert.AreEqual(expected.Email, actual.Email);
+        }
+
+        [Test]
+        public void JoinCourse_Throws_IfCourseNotFound()
+        {
+            var coursesMock = _courses.BuildMock();
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Course>())
+                .Returns(coursesMock);
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _userService.JoinCourse("not-existing", "not-existing"));
+
+            Assert.AreEqual("course not found.", ex?.Message);
+        }
+
+        [Test]
+        public void JoinCourse_Throws_IfUserNotFound()
+        {
+            var coursesMock = _courses.BuildMock();
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Course>())
+                .Returns(coursesMock);
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            var ex = Assert.CatchAsync<ArgumentException>(async () =>
+                await _userService.JoinCourse("not-existing", _courses[0].Id));
+
+            Assert.AreEqual(_userNotFound, ex?.Message);
+        }
+
+        [Test]
+        public void JoinCourse_Throws_IfUserTryToJoinFullCourse()
+        {
+            var coursesMock = _courses.BuildMock();
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Course>())
+                .Returns(coursesMock);
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            var ex = Assert.CatchAsync<InvalidOperationException>(async () =>
+                await _userService.JoinCourse(_users[1].Id, _courses[0].Id));
+
+            Assert.AreEqual("Няма повече свободни места в курса.", ex?.Message);
+        }
+
+        [Test]
+        public void JoinCourse_Success()
+        {
+            var coursesMock = _courses.BuildMock();
+            var userMock = _users.BuildMock();
+
+            _applicationRepository.Setup(x => x.GetAll<Course>())
+                .Returns(coursesMock);
+            _applicationRepository.Setup(x => x.GetAll<ApplicationUser>())
+                .Returns(userMock);
+
+            Assert.DoesNotThrowAsync(async () =>
+                await _userService.JoinCourse(_users[1].Id, _courses[1].Id));
+
+            Assert.AreEqual(1, _courses[1].Students.Count);
         }
     }
 }

@@ -90,7 +90,7 @@ namespace LanguageCenter.Core.Services
                 .Select(u => new UserDetailsVM
                 {
                     Email = u.Email,
-                    FullName = u.FirstName,
+                    FullName = u.FirstName + " " + u.LastName,
                     Id = u.Id,
                 })
                 .FirstOrDefaultAsync();
@@ -114,7 +114,7 @@ namespace LanguageCenter.Core.Services
             Guard.AgainstNull(course, nameof(course));
             Guard.AgainstNull(user, nameof(user));
 
-            if (course.Students.Count > course.Capacity)
+            if (course.Students.Count >= course.Capacity)
             {
                 throw new InvalidOperationException("Няма повече свободни места в курса.");
             }
